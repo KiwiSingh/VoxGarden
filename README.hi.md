@@ -71,6 +71,6 @@ ctest --test-dir build --output-on-failure
 
 VoxGarden का लाइसेंस **GNU AGPL v3** है: [LICENSE](LICENSE)। निर्भरताओं के लाइसेंस अलग हैं: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt)। VCTK संदर्भ **CC BY 4.0** हैं; [AI/Voices](AI/Voices) में श्रेय व मूल विवरण हैं। परियोजना स्वतंत्र है; Cymatics का कोड, सामग्री या प्रीसेट शामिल नहीं है।
 
-## ☕ परियोजना का समर्थन करें
+## ☕️ परियोजना का समर्थन करें
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

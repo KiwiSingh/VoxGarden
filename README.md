@@ -71,6 +71,6 @@ Artifacts are under `build/VoxGarden_artefacts/Release`. See [validation](VALIDA
 
 VoxGarden uses the **GNU AGPL v3** license included in [LICENSE](LICENSE). Dependency licenses remain separate: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), and [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). VCTK references are **CC BY 4.0**, with attribution and corpus metadata in [AI/Voices](AI/Voices). This is an independent project; no Cymatics code, assets or presets are included.
 
-## ☕ Support the Project
+## ☕️ Support the Project
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

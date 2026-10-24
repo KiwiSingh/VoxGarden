@@ -71,6 +71,6 @@ ctest --test-dir build --output-on-failure
 
 VoxGarden использует **GNU AGPL v3**: [LICENSE](LICENSE). Лицензии зависимостей отдельные: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). Референсы VCTK — **CC BY 4.0**, с атрибуцией и метаданными в [AI/Voices](AI/Voices). Независимый проект без кода, материалов или пресетов Cymatics.
 
-## ☕ Поддержать проект
+## ☕️ Поддержать проект
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)
