@@ -5,28 +5,55 @@
 #include <numeric>
 #include <deque>
 namespace vg {
-struct ScoreNote { double start=0,duration=.5; int midi=60; juce::String syllable; };
+struct ScoreNote { double start=0,duration=.5; int midi=60; juce::String syllable; int velocity=127; double gain=1; };
 using Score=std::vector<ScoreNote>;
-inline juce::String scoreText(const Score& notes){juce::String text;for(auto& n:notes)text<<juce::String(n.start,4)<<"\t"<<juce::String(n.duration,4)<<"\t"<<n.midi<<"\t"<<n.syllable<<"\n";return text;}
+inline juce::String scoreText(const Score& notes){juce::String text;for(auto& n:notes)text<<juce::String(n.start,4)<<"\t"<<juce::String(n.duration,4)<<"\t"<<n.midi<<"\t"<<n.syllable<<"\t"<<n.velocity<<"\n";return text;}
 inline juce::String parseScore(const juce::String& text,Score& notes){
     notes.clear();auto lines=juce::StringArray::fromLines(text);int row=0;
     for(auto line:lines){++row;if(line.trim().isEmpty())continue;auto fields=juce::StringArray::fromTokens(line,"\t","");
-        if(fields.size()!=4)return "Row "+juce::String(row)+": use four TAB-separated columns.";
+        if(fields.size()!=4&&fields.size()!=5)return "Row "+juce::String(row)+": use four or five TAB-separated columns.";
         auto number=[](juce::String value,double& result){auto v=value.trim();if(v.isEmpty()||v.containsOnly("+- ."))return false;auto bytes=v.toStdString();char* end=nullptr;result=std::strtod(bytes.c_str(),&end);return end==bytes.c_str()+bytes.size()&&std::isfinite(result);};
         double start,duration,pitch;
         auto pitchText=fields[2].trim();bool pitchValid=number(pitchText,pitch);
         if(!pitchValid&&pitchText.length()>=2){auto letter=pitchText.substring(0,1).toUpperCase();int base=letter=="C"?0:letter=="D"?2:letter=="E"?4:letter=="F"?5:letter=="G"?7:letter=="A"?9:letter=="B"?11:-100;int index=1;if(pitchText.substring(1,2)=="#"){++base;++index;}else if(pitchText.substring(1,2)=="b"){--base;++index;}double octave;if(base>-90&&number(pitchText.substring(index),octave)&&octave==std::floor(octave)){pitch=(octave+1)*12+base;pitchValid=true;}}
         if(!number(fields[0],start)||!number(fields[1],duration)||!pitchValid||start<0||duration<.06||start+duration>300||pitch<36||pitch>96||pitch!=std::floor(pitch))return "Row "+juce::String(row)+": start >= 0, duration >= 0.06, end <= 300 seconds, MIDI integer 36-96.";
         auto syllable=fields[3].trim();if(syllable.isEmpty()||syllable.length()>160)return "Each note needs a syllable (up to 160 characters).";
-        notes.push_back({start,duration,(int)pitch,syllable});if(notes.size()>2048)return "Use at most 2048 notes.";
+        double velocity=127;if(fields.size()==5&&(!number(fields[4],velocity)||velocity<1||velocity>127||velocity!=std::floor(velocity)))return "Velocity must be an integer from 1 to 127.";
+        notes.push_back({start,duration,(int)pitch,syllable,(int)velocity});if(notes.size()>2048)return "Use at most 2048 notes.";
     }
     if(notes.empty())return "Add or import some notes first.";
     return {};
 }
+// Each group shares at least 30 ms of overlap (or a near-identical onset).
+// Common intersection prevents one long legato chain merging an entire song.
+inline std::vector<std::vector<size_t>> scoreChordGroups(const Score& notes){
+    std::vector<size_t> order(notes.size());std::iota(order.begin(),order.end(),0);
+    std::stable_sort(order.begin(),order.end(),[&](size_t a,size_t b){return notes[a].start<notes[b].start;});
+    std::vector<std::vector<size_t>> groups;double onset=0,end=0;
+    for(auto i:order){auto& n=notes[i];if(groups.empty()||(n.start-onset>.002&&std::min(end,n.start+n.duration)-n.start<.03)){groups.push_back({});onset=n.start;end=n.start+n.duration;}groups.back().push_back(i);end=std::min(end,n.start+n.duration);}
+    return groups;
+}
+// Match exact pitch-class sets for common triads and sevenths. If more than
+// one root fits, prefer the bass candidate; unknown/ambiguous sets use bass.
+inline size_t chordLeader(const Score& notes,const std::vector<size_t>& group,int mode){
+    auto bass=group.front();for(auto i:group)if(notes[i].midi<notes[bass].midi)bass=i;
+    if(mode==1){auto leader=bass;for(auto i:group)if(notes[i].velocity>notes[leader].velocity||(notes[i].velocity==notes[leader].velocity&&notes[i].midi<notes[leader].midi))leader=i;return leader;}
+    std::array<bool,12> present{};for(auto i:group)present[(size_t)(notes[i].midi%12)]=true;
+    const std::vector<std::vector<int>> shapes{{0,4,7},{0,3,7},{0,3,6},{0,4,8},{0,2,7},{0,5,7},{0,4,7,10},{0,4,7,11},{0,3,7,10},{0,3,6,10},{0,3,6,9},{0,3,7,11}};
+    std::vector<int> roots;for(int root=0;root<12;++root)for(auto& shape:shapes){std::array<bool,12> expected{};for(int step:shape)expected[(size_t)((root+step)%12)]=true;if(expected==present){roots.push_back(root);break;}}
+    int root=notes[bass].midi%12;if(roots.size()==1)root=roots.front();else if(std::find(roots.begin(),roots.end(),root)==roots.end())return bass;
+    auto leader=bass;bool found=false;for(auto i:group)if(notes[i].midi%12==root&&(!found||notes[i].midi<notes[leader].midi)){leader=i;found=true;}return leader;
+}
+// Operates on the render copy: editable pitches, lengths and source velocities survive.
+inline void prepareScoreChords(Score& notes,int mode){
+    if(mode==0)return;
+    for(auto& group:scoreChordGroups(notes)){auto leader=chordLeader(notes,group,mode);auto word=notes[leader].syllable;double loudest=0;for(auto i:group)loudest=std::max(loudest,(double)notes[i].velocity);for(auto i:group){notes[i].syllable=word;notes[i].gain=i==leader?1.:.55*notes[i].velocity/loudest;notes[i].velocity=127;}}
+}
 // A lyric can describe an individual row or a simultaneous chord onset.
-inline bool assignScoreSyllables(Score& notes,const juce::StringArray& syllables){
+inline bool assignScoreSyllables(Score& notes,const juce::StringArray& syllables,int mode=0){
     if(syllables.contains(juce::String{}))return false;
     if(syllables.size()==(int)notes.size()){for(size_t i=0;i<notes.size();++i)notes[i].syllable=syllables[(int)i];return true;}
+    if(mode!=0){auto groups=scoreChordGroups(notes);if(syllables.size()!=(int)groups.size())return false;for(size_t g=0;g<groups.size();++g)for(auto i:groups[g])notes[i].syllable=syllables[(int)g];return true;}
     std::vector<size_t> order(notes.size());std::iota(order.begin(),order.end(),0);
     std::stable_sort(order.begin(),order.end(),[&](size_t a,size_t b){return notes[a].start<notes[b].start;});
     std::vector<int> group(notes.size());int groups=0;double anchor=-1;
@@ -47,7 +74,7 @@ inline juce::String readMidiScore(const juce::File& file,std::vector<ScoreTrack>
             if(message.isTrackNameEvent())track.name=message.getTextFromTextMetaEvent();
             if((!message.isNoteOn()&&!message.isNoteOff())||message.getChannel()==10)continue;
             auto& queue=pending[(size_t)((message.getChannel()-1)*128+message.getNoteNumber())];
-            if(message.isNoteOn()){queue.push_back(track.notes.size());track.notes.push_back({message.getTimeStamp(),0,message.getNoteNumber(),"la"});}
+            if(message.isNoteOn()){queue.push_back(track.notes.size());track.notes.push_back({message.getTimeStamp(),0,message.getNoteNumber(),"la",message.getVelocity()});}
             else if(!queue.empty()){auto index=queue.front();queue.pop_front();track.notes[index].duration=message.getTimeStamp()-track.notes[index].start;}
         }
         for(auto& queue:pending)if(!queue.empty())return "MIDI contains an unterminated note.";

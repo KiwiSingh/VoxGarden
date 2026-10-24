@@ -95,6 +95,10 @@ ctest --test-dir build --output-on-failure
 
 VoxGarden का लाइसेंस **GNU AGPL v3** है: [LICENSE](LICENSE)। निर्भरताओं के लाइसेंस अलग हैं: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt)। VCTK संदर्भ **CC BY 4.0** हैं; [AI/Voices](AI/Voices) में श्रेय व मूल विवरण हैं। परियोजना स्वतंत्र है; Cymatics का कोड, सामग्री या प्रीसेट शामिल नहीं है।
 
+## कॉर्ड-प्रधान गायन
+
+**Notes + lyrics** में सटीक MIDI, वेग-प्रधान कॉर्ड या कॉर्ड मूल स्वर चुनें। MIDI वेग (1–127) आयात होता है और बदला जा सकता है। कम-से-कम 30 ms का साझा ओवरलैप या 2 ms के भीतर शुरुआत वाले स्वर एक समूह बनते हैं। समूह प्रधान स्वर का शब्द साझा करता है; प्रधान स्वर हार्मनी से तेज़ सुनाई देता है। हर समूह या स्वर को एक अक्षरांश दें। वेग मोड सबसे तेज़ स्वर चुनता है; बराबरी पर निचला स्वर चुनता है। मूल स्वर मोड सामान्य त्रिस्वर व सप्तक कॉर्ड और उनके उलटाव पहचानता है; अनिश्चितता पर निम्न स्वर लेता है। मूल सुर और अवधि सुरक्षित रहते हैं। यह शब्द व मिश्रण नियंत्रित करता है, न्यूरल उच्चारण का भाव नहीं।
+
 ## ☕️ परियोजना का समर्थन करें
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

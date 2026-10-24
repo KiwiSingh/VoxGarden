@@ -95,6 +95,10 @@ Uitvoer: `build/VoxGarden_artefacts/Release`. Zie [validatie](VALIDATION.txt), [
 
 VoxGarden gebruikt **GNU AGPL v3**: [LICENSE](LICENSE). Afhankelijkheden behouden hun eigen licenties: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). VCTK-referenties: **CC BY 4.0**, met bronvermelding en metadata in [AI/Voices](AI/Voices). Onafhankelijk project zonder code, materiaal of presets van Cymatics.
 
+## Zang op basis van akkoorden
+
+Kies in **Notes + lyrics** exacte MIDI, akkoorden op aanslag of op grondtoon. MIDI-aanslagsterkte (1–127) wordt geïmporteerd en is bewerkbaar. Akkoordmodi groeperen noten met minstens 30 ms gezamenlijke overlap of een start binnen 2 ms. Ze delen het woord van de leidende noot en mengen die luider dan de harmonieën. Wijs één lettergreep per groep of noot toe. Aanslagmodus kiest de sterkste noot; bij gelijke aanslag de laagste. Grondtoonmodus herkent gangbare drie- en septiemklanken, ook omkeringen; bij twijfel wordt de bas gebruikt. Oorspronkelijke noten en lengtes blijven behouden. Dit regelt woorden en mengbalans, geen expressieve neurale klemtoon.
+
 ## ☕️ Steun het project
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

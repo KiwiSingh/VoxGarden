@@ -95,6 +95,10 @@ Ergebnisse: `build/VoxGarden_artefacts/Release`. Siehe [Validierung](VALIDATION.
 
 VoxGarden nutzt **GNU AGPL v3**, siehe [LICENSE](LICENSE). Abhängigkeiten behalten ihre Lizenzen: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). VCTK-Referenzen: **CC BY 4.0**, mit Attribution und Metadaten in [AI/Voices](AI/Voices). Unabhängiges Projekt ohne Cymatics-Code, -Assets oder -Presets.
 
+## Akkordgeführter Gesang
+
+Unter **Notes + lyrics** stehen exaktes MIDI, anschlaggeführte und grundtongeführte Akkorde bereit. MIDI-Anschlagstärke (1–127) wird importiert und ist editierbar. Akkordmodi gruppieren Noten mit mindestens 30 ms gemeinsamer Überlappung oder höchstens 2 ms Startabstand. Sie teilen das Wort der führenden Note und mischen diese lauter als die Harmonien. Eine Silbe pro Gruppe oder Note zuweisen. Der Anschlagmodus wählt die stärkste Note, bei Gleichstand die tiefste. Der Grundtonmodus erkennt gängige Drei- und Septakkorde samt Umkehrungen; unsichere Grundtöne fallen auf den Bass zurück. Originalnoten und Dauern bleiben erhalten. Gesteuert werden Wortverteilung und Pegel, keine expressive neuronale Betonung.
+
 ## ☕️ Das Projekt unterstützen
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

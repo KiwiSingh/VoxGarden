@@ -1826,6 +1826,48 @@
       "MIDI-Spur",
       "MIDI-track",
       "MIDI-дорожка"
+    ],
+    [
+      "Velocity",
+      "वेग",
+      "Anschlagstärke",
+      "Aanslagsterkte",
+      "Сила нажатия"
+    ],
+    [
+      "Exact MIDI",
+      "सटीक MIDI",
+      "Exaktes MIDI",
+      "Exacte MIDI",
+      "Точное MIDI"
+    ],
+    [
+      "Velocity-led chords",
+      "वेग-प्रधान कॉर्ड",
+      "Anschlaggeführte Akkorde",
+      "Akkoorden op aanslag",
+      "Аккорды по силе нажатия"
+    ],
+    [
+      "Chord-root chords",
+      "कॉर्ड मूल स्वर",
+      "Grundtongeführte Akkorde",
+      "Akkoorden op grondtoon",
+      "Аккорды по основному тону"
+    ],
+    [
+      "Chord modes share the leader word. Root mode recognises common triads and sevenths; uncertain roots use bass.",
+      "कॉर्ड प्रधान स्वर का शब्द साझा करते हैं। सामान्य त्रिस्वर व सप्तक कॉर्ड का मूल पहचाना जाता है; अनिश्चित होने पर निम्न स्वर चुनता है।",
+      "Akkordmodi teilen das führende Wort. Grundtonmodus erkennt gängige Drei- und Vierklänge; bei Unsicherheit dient der Bass.",
+      "Akkoordmodi delen het leidende woord. Grondtoonmodus herkent gangbare drie- en septiemklanken; bij twijfel wordt de bas gebruikt.",
+      "Режимы аккордов используют ведущее слово. Распознаются обычные трезвучия и септаккорды; при неясном корне используется бас."
+    ],
+    [
+      "Velocity must be an integer from 1 to 127.",
+      "वेग 1 से 127 के बीच पूर्णांक होना चाहिए।",
+      "Anschlagstärke muss eine ganze Zahl von 1 bis 127 sein.",
+      "Aanslagsterkte moet een geheel getal van 1 tot 127 zijn.",
+      "Сила нажатия должна быть целым числом от 1 до 127."
     ]
   ]
 }

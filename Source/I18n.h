@@ -3,11 +3,12 @@
 #include <array>
 namespace vg {
 inline constexpr std::array<const char*,5> languageNames{"English","हिन्दी","Deutsch","Nederlands","Русский"};
-inline const std::array<std::array<const char*,5>,260> translations{{
+inline const std::array<std::array<const char*,5>,266> translations{{
     {"Reference voices for AI printing. DSP preview uses voicing and formant colour. New character presets set both. No input voice classification is performed.","AI रेंडर के संदर्भ स्वर। DSP में स्वर-विन्यास व रंग बदलते हैं। इनपुट की पहचान नहीं की जाती।","Referenzstimmen für KI-Rendern. DSP nutzt Voicings und Formanten. Keine Klassifizierung der Eingangsstimme.","Referentiestemmen voor AI-renderen. DSP gebruikt stemvoering en formanten. De invoerstem wordt niet geclassificeerd.","Референсы для ИИ-рендера. DSP меняет ноты и форманты. Входной голос не классифицируется."},
     {"Import a melody, align syllables, then render. Neural speech is retimed to your score; this is an experimental singing voice.","धुन आयात करें, अक्षरांश मिलाएँ और रेंडर करें। न्यूरल बोली का समय व सुर बदले जाते हैं; यह प्रयोगात्मक गायन है।","Melodie importieren, Silben zuweisen, rendern. Neuronale Sprache wird an die Noten angepasst; experimentelle Gesangsstimme.","Importeer een melodie, lijn lettergrepen uit en render. Neurale spraak wordt aan de noten aangepast; experimentele zangstem.","Импортируйте мелодию, назначьте слоги и создайте вокал. Нейронная речь подгоняется под ноты; это экспериментальное пение."},
     {"Import a monophonic melody or edit the example. This first voice is a synthetic vocoder, not a natural AI singer.","एक स्वर वाली धुन आयात करें या उदाहरण बदलें। यह पहला स्वर कृत्रिम वोकोडर है, प्राकृतिक AI गायक नहीं।","Einstimmige Melodie importieren oder Beispiel bearbeiten. Die erste Stimme ist ein synthetischer Vocoder, kein natürlicher KI-Gesang.","Importeer een eenstemmige melodie of bewerk het voorbeeld. De eerste stem is een synthetische vocoder, geen natuurlijke AI-zanger.","Импортируйте одноголосную мелодию или измените пример. Первый голос — синтетический вокодер, а не естественный ИИ-певец."},
     {"Track rendering uses Scale harmony or Chromatic mode. Print MIDI-chord performances with Live's audio recorder.","ट्रैक रेंडर में स्वर-समूह या क्रोमैटिक मोड चुनें। MIDI प्रदर्शन Live में रिकॉर्ड करें।","Spurrendern nutzt Tonleiter oder Chromatik. MIDI-Akkorde in Live aufnehmen.","Gebruik toonladder- of chromatische modus. Neem MIDI-akkoorden in Live op.","Для рендера выберите лад или хроматику. MIDI-аккорды записывайте в Live."},
+    {"Chord modes share the leader word. Root mode recognises common triads and sevenths; uncertain roots use bass.","कॉर्ड प्रधान स्वर का शब्द साझा करते हैं। सामान्य त्रिस्वर व सप्तक कॉर्ड का मूल पहचाना जाता है; अनिश्चित होने पर निम्न स्वर चुनता है।","Akkordmodi teilen das führende Wort. Grundtonmodus erkennt gängige Drei- und Vierklänge; bei Unsicherheit dient der Bass.","Akkoordmodi delen het leidende woord. Grondtoonmodus herkent gangbare drie- en septiemklanken; bij twijfel wordt de bas gebruikt.","Режимы аккордов используют ведущее слово. Распознаются обычные трезвучия и септаккорды; при неясном корне используется бас."},
     {"Update AI cast support: run Setup AI.command from the new VoxGarden package. Existing models can be reused.","AI स्वर-समूह अपडेट करें: नए पैकेज से Setup AI.command चलाएँ। पुराने मॉडल काम करेंगे।","KI-Besetzung aktualisieren: Setup AI.command aus neuem Paket starten. Modelle bleiben nutzbar.","Werk AI-stembezetting bij met Setup AI.command uit het nieuwe pakket. Modellen blijven bruikbaar.","Обновите ИИ-состав: запустите Setup AI.command из нового пакета. Модели можно использовать повторно."},
     {"Update AI raga support: run Setup AI.command from the new VoxGarden package. Existing models can be reused.","AI राग समर्थन अपडेट करें: नए पैकेज से Setup AI.command चलाएँ। पुराने मॉडल काम करेंगे।","KI-Raga-Unterstützung aktualisieren: Setup AI.command aus neuem Paket starten. Modelle bleiben nutzbar.","Werk AI-ragaondersteuning bij met Setup AI.command uit het nieuwe pakket. Modellen blijven bruikbaar.","Обновите поддержку раг: запустите Setup AI.command из нового пакета. Модели можно использовать повторно."},
     {"No installed macOS voice for this language. Add one in System Settings > Accessibility > Spoken Content.","इस भाषा का macOS स्वर स्थापित नहीं है। सिस्टम सेटिंग्स > ऐक्सेसिबिलिटी > बोली गई सामग्री में जोड़ें।","Keine macOS-Stimme für diese Sprache installiert. In Systemeinstellungen > Bedienungshilfen > Gesprochene Inhalte hinzufügen.","Geen macOS-stem voor deze taal geïnstalleerd. Voeg er een toe via Systeeminstellingen > Toegankelijkheid > Gesproken materiaal.","Нет голоса macOS для этого языка. Добавьте его в Системных настройках > Универсальный доступ > Устный контент."},
@@ -63,6 +64,7 @@ inline const std::array<std::array<const char*,5>,260> translations{{
     {"Use an audio excerpt of five minutes or less.","पाँच मिनट या कम का ऑडियो लें।","Audioausschnitt von höchstens fünf Minuten verwenden.","Gebruik een audiofragment van maximaal vijf minuten.","Используйте аудиофрагмент не длиннее пяти минут."},
     {"Downloading and verifying the voice models…","स्वर मॉडल डाउनलोड और जाँचे जा रहे हैं…","Sprachmodelle laden und prüfen…","Stemmodellen downloaden en controleren…","Загрузка и проверка голосовых моделей…"},
     {"Render cancelled. Partial files remain in ","रेंडर रद्द। आंशिक फ़ाइलें यहाँ हैं: ","Rendern abgebrochen. Teildateien bleiben in ","Render geannuleerd. Gedeeltelijke bestanden staan in ","Рендер отменён. Частичные файлы находятся в "},
+    {"Velocity must be an integer from 1 to 127.","वेग 1 से 127 के बीच पूर्णांक होना चाहिए।","Anschlagstärke muss eine ganze Zahl von 1 bis 127 sein.","Aanslagsterkte moet een geheel getal van 1 tot 127 zijn.","Сила нажатия должна быть целым числом от 1 до 127."},
     {"Choose a raga or keep your Western scale.","राग चुनें या अपना पश्चिमी स्वर-समूह रखें।","Raga wählen oder westliche Tonleiter beibehalten.","Kies een raga of behoud je westerse toonladder.","Выберите рагу или оставьте западный лад."},
     {"AI singers ready for the final choir mix","अंतिम मिश्रण के लिए AI स्वर तैयार हैं","KI-Stimmen bereit für den Chormix","AI-stemmen klaar voor de koormix","ИИ-голоса готовы к сведению хора"},
     {"Could not create the AI render folder.","AI रेंडर फ़ोल्डर नहीं बन सका।","KI-Renderordner konnte nicht erstellt werden.","Kan de AI-rendermap niet maken.","Не удалось создать папку ИИ-рендера."},
@@ -121,6 +123,7 @@ inline const std::array<std::array<const char*,5>,260> translations{{
     {"Original mixed cast","मूल मिश्रित स्वर-समूह","Ursprüngliche Mischbesetzung","Oorspronkelijke gemengde bezetting","Исходный смешанный состав"},
     {"Render a vocal file","स्वर की फ़ाइल रेंडर करें","Gesangsdatei rendern","Zangbestand renderen","Рендер вокального файла"},
     {"CAPTURING DRY INPUT","मूल स्वर रिकॉर्ड हो रहा है","TROCKENSIGNAL WIRD AUFGENOMMEN","DROOG SIGNAAL OPNEMEN","ЗАПИСЬ СУХОГО ВХОДА"},
+    {"Velocity-led chords","वेग-प्रधान कॉर्ड","Anschlaggeführte Akkorde","Akkoorden op aanslag","Аккорды по силе нажатия"},
     {"START WITH A SOUND","ध्वनि से शुरू करें","MIT EINEM KLANG BEGINNEN","BEGIN MET EEN KLANK","ВЫБЕРИТЕ ЗВУЧАНИЕ"},
     {"Major pentatonic 7","मेजर पेंटाटोनिक 7","Dur-Pentatonik mit 7","Majeurpentatoniek met 7","Мажорная пентатоника с 7"},
     {"Cinematic ensemble","सिनेमाई मंडली","Filmensemble","Filmisch ensemble","Кинематографический ансамбль"},
@@ -136,6 +139,7 @@ inline const std::array<std::array<const char*,5>,260> translations{{
     {"Send dry to choir","मूल गायन मंडली में भेजें","Gesang an Chor senden","Zang naar koor sturen","Передать вокал в хор"},
     {"MIDI melody track","MIDI धुन ट्रैक","MIDI-Melodiespur","MIDI-melodietrack","Дорожка MIDI-мелодии"},
     {"Open model folder","मॉडल फ़ोल्डर खोलें","Modellordner öffnen","Modelmap openen","Открыть папку моделей"},
+    {"Chord-root chords","कॉर्ड मूल स्वर","Grundtongeführte Akkorde","Akkoorden op grondtoon","Аккорды по основному тону"},
     {"Major pentatonic","मेजर पेंटाटोनिक","Dur-Pentatonik","Majeurpentatoniek","Мажорная пентатоника"},
     {"Minor pentatonic","माइनर पेंटाटोनिक","Moll-Pentatonik","Mineurpentatoniek","Минорная пентатоника"},
     {"Beyond the choir","मंडली से आगे","Jenseits des Chors","Voorbij het koor","За пределами хора"},
@@ -211,6 +215,7 @@ inline const std::array<std::array<const char*,5>,260> translations{{
     {"Cancelled.","रद्द किया गया।","Abgebrochen.","Geannuleerd.","Отменено."},
     {"Length (s)","अवधि (से.)","Dauer (s)","Duur (s)","Длина (с)"},
     {"MIDI track","MIDI ट्रैक","MIDI-Spur","MIDI-track","MIDI-дорожка"},
+    {"Exact MIDI","सटीक MIDI","Exaktes MIDI","Exacte MIDI","Точное MIDI"},
     {"Dark mode","डार्क मोड","Dunkelmodus","Donkere modus","Тёмная тема"},
     {"CHOIR MIX","मंडली मिश्रण","CHORMIX","KOORMIX","МИКС ХОРА"},
     {"Chromatic","क्रोमैटिक","Chromatisch","Chromatisch","Хроматический"},
@@ -224,6 +229,7 @@ inline const std::array<std::array<const char*,5>,260> translations{{
     {"Malkauns","मालकौंस (Malkauns)","Malkauns","Malkauns","Малкаунс (Malkauns)"},
     {" stems: "," अलग ट्रैक: "," Einzelspuren: "," losse stemmen: "," партий: "},
     {"Add note","स्वर जोड़ें","Note hinzufügen","Noot toevoegen","Добавить ноту"},
+    {"Velocity","वेग","Anschlagstärke","Aanslagsterkte","Сила нажатия"},
     {"DISTANT","दूर","FERN","VER WEG","ДАЛЕКО"},
     {"HARMONY","स्वर-संगति","HARMONIE","HARMONIE","ГАРМОНИЯ"},
     {"Bhupali","भूपाली (Bhupali)","Bhupali","Bhupali","Бхупали (Bhupali)"},

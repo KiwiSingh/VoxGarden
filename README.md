@@ -95,6 +95,10 @@ Artifacts are under `build/VoxGarden_artefacts/Release`. See [validation](VALIDA
 
 VoxGarden uses the **GNU AGPL v3** license included in [LICENSE](LICENSE). Dependency licenses remain separate: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), and [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). VCTK references are **CC BY 4.0**, with attribution and corpus metadata in [AI/Voices](AI/Voices). This is an independent project; no Cymatics code, assets or presets are included.
 
+## Chord-led singing
+
+In **Notes + lyrics**, choose **Exact MIDI**, **Velocity-led chords** or **Chord-root chords**. MIDI velocity (1–127) is imported and editable. Chord modes group notes sharing at least 30 ms of overlap (or an onset within 2 ms), share the leader’s word, and render the leader louder than its harmonies. Assign one lyric per grouped chord or per note. Velocity mode chooses the strongest note; ties use the lowest. Root mode recognises common triads/sevenths, including inversions, and falls back to bass for uncertain roots. Pitches, note lengths and the original score stay intact. These modes control lyric sharing and mix balance, not expressive neural stress or automatic chord composition.
+
 ## ☕️ Support the Project
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)

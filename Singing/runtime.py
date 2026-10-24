@@ -114,6 +114,8 @@ def render(job,report):
     end=0
     for note in score:
         start,duration,pitch=note['start'],note['duration'],note['midi']
+        velocity,gain=note.get('velocity',127),note.get('gain',1)
+        if not np.isfinite(velocity) or not 1<=velocity<=127 or int(velocity)!=velocity or not np.isfinite(gain) or not 0<=gain<=1:raise ValueError('Invalid velocity or chord gain.')
         if not all(np.isfinite(x) for x in (start,duration,pitch)) or start<0 or duration<.06 or start+duration>300 or not 36<=pitch<=96 or pitch!=int(pitch) or not note['syllable'].strip() or len(note['syllable'])>160:raise ValueError('Invalid score.')
         end=max(end,start+duration)
     started=time.perf_counter();status(report,'waiting',-1,'Waiting for the GPU singing renderer…')
@@ -133,7 +135,7 @@ def render(job,report):
             os.utime(path,None)
             audio,rate=sf.read(path,dtype='float32')
             if rate!=sr:raise RuntimeError('Syllable cache sample rate mismatch.')
-            sung=retime(audio,sr,note['midi'],note['duration']);offset=round(note['start']*sr);count=min(len(sung),len(output)-offset);output[offset:offset+count]+=sung[:count]
+            sung=retime(audio,sr,note['midi'],note['duration']);offset=round(note['start']*sr);count=min(len(sung),len(output)-offset);output[offset:offset+count]+=sung[:count]*note.get('gain',1)*note.get('velocity',127)/127
         peak=float(np.max(np.abs(output)));mix_gain=min(1.,.95/max(peak,1e-8));output*=mix_gain
         folder=Path(job['output']);folder.mkdir(parents=True,exist_ok=True);target=folder/'Dry Singing.wav';temporary=folder/'Dry Singing.partial.wav';sf.write(temporary,output,sr,subtype='PCM_24');temporary.replace(target)
         entries=sorted(cache.glob('*.wav'),key=lambda p:p.stat().st_mtime);size=sum(p.stat().st_size for p in entries)
