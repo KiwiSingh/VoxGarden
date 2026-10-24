@@ -29,7 +29,7 @@ The source tree now includes an **experimental score-to-singing workspace**: imp
 
 ## SnappySnap support
 
-Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmony, voice-count, formant and Mutation settings as **Snaps**. This lets one choir move between natural and unusual sounds. Sound parameters and host-state restoration are supported; a complete morphing session in a licensed, activated SnappySnapFX copy has not yet been verified. Offline AI/singing renders are files, not a real-time morphable synthesis engine.
+Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmony, voice-count, formant and Mutation settings as **Snaps**. This lets one choir move between natural and unusual sounds. Sound parameters and host-state restoration are supported. End-to-end morphing has been confirmed by the user with Electric Smudge's official seven-day SnappySnapFX trial. Offline AI/singing renders are files, not a real-time morphable synthesis engine.
 
 ## What it does
 
@@ -60,7 +60,7 @@ Click **Render vocal + stems**, play the passage in Live, then **Stop + render**
 
 **M** preserves a voice's level while muting it. Multiple **S** solos combine; mute takes precedence. Set Choir Mix to 100% to hear soloed choir parts without the dry lead. Excluded printed stems remain aligned and silent.
 
-Keep Delay Compensation enabled: DSP latency is about **192 ms at 48 kHz**. Record a lead dry, then add the choir. Print MIDI-chord performances with Live's recorder. SnappySnapFX can host different parameter states as Snaps; end-to-end morphing in an activated copy has not been verified.
+Keep Delay Compensation enabled: DSP latency is about **192 ms at 48 kHz**. Record a lead dry, then add the choir. Print MIDI-chord performances with Live's recorder. SnappySnapFX can host different parameter states as Snaps. The user has confirmed morphing with Electric Smudge's official trial.
 
 ## Optional AI singers
 

@@ -29,7 +29,7 @@ De broncode bevat een **experimentele werkruimte voor noten naar zang**: importe
 
 ## SnappySnap-ondersteuning
 
-Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende instellingen voor harmonie, aantal stemmen, formanten en Mutation als **Snaps**. Zo kan het koor tussen natuurlijke en vreemde klanken bewegen. Klankparameters en herstel van de hoststatus worden ondersteund; een volledige morphingsessie in een geactiveerde kopie met licentie is nog niet geverifieerd. Offline AI- en zangrenders zijn bestanden, geen realtime morphbare synthese.
+Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende instellingen voor harmonie, aantal stemmen, formanten en Mutation als **Snaps**. Zo kan het koor tussen natuurlijke en vreemde klanken bewegen. Klankparameters en herstel van de hoststatus worden ondersteund. De gebruiker heeft volledige morphing bevestigd met de officiële zevendaagse SnappySnapFX-proefversie van Electric Smudge. Offline AI- en zangrenders zijn bestanden, geen realtime morphbare synthese.
 
 ## Functies
 
@@ -60,7 +60,7 @@ Klik op **Koor en losse stemmen renderen**, speel de passage in Live af en klik 
 
 **M** dempt zonder het niveau te wijzigen. Meerdere **S**-solo's spelen samen; dempen heeft voorrang. Zet Koormix op 100% om alleen de solostemmen te horen. Uitgesloten stemmen blijven uitgelijnde, stille bestanden.
 
-Laat Delay Compensation aan: ongeveer **192 ms DSP-vertraging bij 48 kHz**. Neem de lead eerst droog op. Neem MIDI-akkoorden met de recorder van Live op. SnappySnapFX kan verschillende parameterstanden als Snaps hosten; volledig morphinggedrag in een geactiveerde kopie is niet geverifieerd.
+Laat Delay Compensation aan: ongeveer **192 ms DSP-vertraging bij 48 kHz**. Neem de lead eerst droog op. Neem MIDI-akkoorden met de recorder van Live op. SnappySnapFX kan verschillende parameterstanden als Snaps hosten. De gebruiker heeft morphing bevestigd met de officiële proefversie van Electric Smudge.
 
 ## Optionele AI-stemmen
 

@@ -18,5 +18,9 @@ The AI engine, worker, reference pack and raga routing are unchanged from
 0.6. Prior real neural Yaman/cast conversion and reference provenance remain
 in Validation/ai-raga-*. This 1.0 change adds factory configurations and menu
 grouping; it does not claim a new AI model or a fresh perceptual singing test.
-Please audit on your own vocal in Live. SnappySnap end-to-end morphing in an
-activated copy remains unverified. Validation records were prepared before repository publication.
+Please audit on your own vocal in Live. Validation records above were prepared
+before repository publication.
+
+Update 2026-10-25: the user confirms SnappySnapFX end-to-end morphing with
+Electric Smudge's official seven-day trial. This updates the earlier unverified
+status; it is a user report, not an additional automated test.

@@ -29,7 +29,7 @@ Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**:
 
 ## SnappySnap-Unterstützung
 
-VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstellungen für Harmonie, Stimmenzahl, Formanten und Mutation als **Snaps** speichern. So kann der Chor zwischen natürlichen und ungewöhnlichen Klängen wechseln. Klangparameter und Wiederherstellung des Host-Zustands werden unterstützt; eine vollständige Morphing-Sitzung in einer lizenzierten, aktivierten Kopie wurde noch nicht verifiziert. Offline-KI- und Gesangsrender sind Dateien, keine in Echtzeit morphbare Synthese.
+VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstellungen für Harmonie, Stimmenzahl, Formanten und Mutation als **Snaps** speichern. So kann der Chor zwischen natürlichen und ungewöhnlichen Klängen wechseln. Klangparameter und Wiederherstellung des Host-Zustands werden unterstützt. Der Nutzer hat den vollständigen Morphing-Ablauf mit der offiziellen siebentägigen SnappySnapFX-Testversion von Electric Smudge bestätigt. Offline-KI- und Gesangsrender sind Dateien, keine in Echtzeit morphbare Synthese.
 
 ## Funktionen
 
@@ -60,7 +60,7 @@ Eine Standalone-App ist enthalten. Ziel des nativen Builds ist macOS 12+; die Bi
 
 **M** schaltet stumm und erhält den Pegel. Mehrere **S**-Solos kombinieren sich; Stumm hat Vorrang. Chormix auf 100% setzen, um nur die Solostimmen ohne trockenen Lead zu hören. Ausgeschlossene Einzelspuren bleiben zeitlich ausgerichtet und stumm.
 
-Delay Compensation aktivieren: etwa **192 ms DSP-Latenz bei 48 kHz**. Lead zunächst trocken aufnehmen. MIDI-Akkorde mit Lives Recorder aufzeichnen. SnappySnapFX kann unterschiedliche Parameterzustände als Snaps hosten; vollständiges Morphing in einer aktivierten Kopie ist nicht verifiziert.
+Delay Compensation aktivieren: etwa **192 ms DSP-Latenz bei 48 kHz**. Lead zunächst trocken aufnehmen. MIDI-Akkorde mit Lives Recorder aufzeichnen. SnappySnapFX kann unterschiedliche Parameterzustände als Snaps hosten. Der Nutzer hat Morphing mit der offiziellen Testversion von Electric Smudge bestätigt.
 
 ## Optionale KI-Stimmen
 
