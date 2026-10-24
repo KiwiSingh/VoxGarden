@@ -81,7 +81,9 @@ public:
 class ComposerWindow final:public juce::DialogWindow {
 public:
     ComposerWindow(VoxGardenProcessor& p,std::function<void(const juce::File&)> callback,const juce::File& initial):DialogWindow(vg::tr(p.language.load(),"Notes + lyrics"),juce::Colour(0xff20292d),true){
-        setUsingNativeTitleBar(true);auto* content=new ScoreComposer(p,std::move(callback),initial);setContentOwned(content,true);centreWithSize(920,750);setVisible(true);
+        // Keep the drop target above the host when the user clicks a source clip.
+        // Do not grab focus while a drag is in progress.
+        setAlwaysOnTop(true);setUsingNativeTitleBar(true);auto* content=new ScoreComposer(p,std::move(callback),initial);setContentOwned(content,true);centreWithSize(920,750);setVisible(true);
     }
     void closeButtonPressed()override{setVisible(false);}
 };

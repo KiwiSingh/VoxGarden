@@ -62,6 +62,8 @@ Eine Standalone-App ist enthalten. Ziel des nativen Builds ist macOS 12+; die Bi
 
 Delay Compensation aktivieren: etwa **192 ms DSP-Latenz bei 48 kHz**. Lead zunächst trocken aufnehmen. MIDI-Akkorde mit Lives Recorder aufzeichnen. SnappySnapFX kann unterschiedliche Parameterzustände als Snaps hosten. Der Nutzer hat Morphing mit der offiziellen Testversion von Electric Smudge bestätigt.
 
+Zum Ziehen von einer anderen Spur in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** ausschalten und **Noten + Liedtext** öffnen. Dieses Fenster bleibt über dem Host. Interne Clip-Übertragung ist noch nicht verifiziert; wenn der Drop nicht angenommen wird, exportierte MIDI-/Audiodateien verwenden.
+
 ## Optionale KI-Stimmen
 
 Die neuen Gesangsmodelle werden in **Noten + Liedtext** geladen. Die folgende separate Einrichtung betrifft nur die ältere Seed-VC-Stimmkonvertierung.

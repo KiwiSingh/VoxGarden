@@ -62,6 +62,8 @@ Click **Render vocal + stems**, play the passage in Live, then **Stop + render**
 
 Keep Delay Compensation enabled: DSP latency is about **192 ms at 48 kHz**. Record a lead dry, then add the choir. Print MIDI-chord performances with Live's recorder. SnappySnapFX can host different parameter states as Snaps. The user has confirmed morphing with Electric Smudge's official trial.
 
+For cross-track dragging, turn off **Settings → Plug-Ins → Auto-Hide Plug-In Windows** in Live, then open **Notes + lyrics**. The lyrics workspace floats above the host. Direct internal clip transfer remains unverified; use exported MIDI/audio files if the drag is not accepted.
+
 ## Optional AI singers
 
 The new score-singing voices are downloaded inside **Notes + lyrics**. The separate setup below is only for the older Seed-VC voice-conversion workflow.

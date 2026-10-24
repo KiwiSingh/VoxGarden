@@ -4,7 +4,7 @@ This workspace prioritises **specified MIDI pitches and editable syllable timing
 
 ## Workflow in Ableton Live
 
-1. Open **Notes + lyrics**. Import a standard `.mid`/`.midi` file and select a melody track, or drop the file onto the plugin. Live's **Export MIDI Clip** provides a standard MIDI file.
+1. In Live, turn off **Settings → Plug-Ins → Auto-Hide Plug-In Windows** so changing tracks does not hide the host editor. Open **Notes + lyrics**; this workspace floats above the host so selecting a source clip does not cover the drop target. Import a standard `.mid`/`.midi` file and select a melody track, or drop the file onto the plugin. Live's **Export MIDI Clip** provides a standard MIDI file.
 2. Alternatively, use **Audio to notes** or drop an audio file into this workspace. Start with a clean solo melody. The detector produces a pitch sketch, not polyphonic transcription. Correct octave errors, note boundaries and repeated notes before continuing.
 3. Double-click cells in the table to edit **start in seconds**, **length in seconds**, **note name** and **syllable/word**. Use Add note or Delete selected note to change the melody. C4 is MIDI 60; note names and MIDI numbers are accepted. Tempo changes in the MIDI file are converted to seconds; rests remain gaps. The plugin does not follow subsequent Live tempo changes.
 4. Enter syllables separated by `|`, then click **Assign syllables**. For D4 C4 D4 A4, four syllables map to notes 62, 60, 62, 69. Split multi-syllable words yourself. Japanese morae and Hindi syllables require the same explicit alignment; automatic spacing cannot reliably infer them. For a melisma, duplicate a vowel across notes and audition the articulation.

@@ -62,6 +62,8 @@ Klik op **Koor en losse stemmen renderen**, speel de passage in Live af en klik 
 
 Laat Delay Compensation aan: ongeveer **192 ms DSP-vertraging bij 48 kHz**. Neem de lead eerst droog op. Neem MIDI-akkoorden met de recorder van Live op. SnappySnapFX kan verschillende parameterstanden als Snaps hosten. De gebruiker heeft morphing bevestigd met de officiële proefversie van Electric Smudge.
 
+Zet voor slepen vanaf een andere track in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** uit en open **Noten + tekst**. Dit venster blijft boven de host. Rechtstreekse overdracht van interne clips is nog niet geverifieerd; gebruik geëxporteerde MIDI-/audiobestanden als de drop niet wordt geaccepteerd.
+
 ## Optionele AI-stemmen
 
 De nieuwe zangmodellen download je in **Noten + tekst**. De aparte installatie hieronder is alleen voor de oudere Seed-VC-stemconversie.
