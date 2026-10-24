@@ -70,3 +70,7 @@ Uitvoer: `build/VoxGarden_artefacts/Release`. Zie [validatie](VALIDATION.txt), [
 ## Licentie en credits
 
 VoxGarden gebruikt **GNU AGPL v3**: [LICENSE](LICENSE). Afhankelijkheden behouden hun eigen licenties: [JUCE](Licenses/JUCE.md), [Signalsmith Stretch](Licenses/Signalsmith-Stretch.txt), [Signalsmith Linear](Licenses/Signalsmith-Linear.txt), [Seed-VC GPL v3](Licenses/Seed-VC-GPL-3.0.txt). VCTK-referenties: **CC BY 4.0**, met bronvermelding en metadata in [AI/Voices](AI/Voices). Onafhankelijk project zonder code, materiaal of presets van Cymatics.
+
+## ☕ Steun het project
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)
