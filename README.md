@@ -14,8 +14,26 @@ A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, pl
 
 </details>
 
+## Source preview: notes + lyrics and colourful themes
+
+The source tree now includes an **experimental score-to-singing workspace**: import standard MIDI, select a melody track, assign Unicode syllables and edit note names, start and duration in a table. Isolated audio supplies an editable monophonic pitch sketch. **Download voices inside the plugin** (~401 MB of models plus a private runtime/cache), choose from ten voices, then render a dry vocal or send it to the fast DSP choir. **Supertonic 3 neural pronunciation + PSOLA** retiming supports English, Hindi in Devanagari, German, Japanese, Russian and Dutch. **Core ML with GPU-preferred settings** handles neural inference; CPU handles score retiming and unsupported graph operations. This is speech adapted into singing, not a trained singing model; naturalness needs auditioning. **Rose, Ocean and Sunset** each offer light and dark variants. These additions are not in the v1.0.0 download below. [Workflow, benchmarks and limits](Singing.md).
+
+
+![Notes and lyrics preview](Media/VoxGarden-1.1-preview-en-score.png)
+
+<details><summary>Rose / 🌸</summary>
+
+![VoxGarden Rose](Media/VoxGarden-1.1-preview-en-rose.png)
+
+</details>
+
+## SnappySnap support
+
+Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmony, voice-count, formant and Mutation settings as **Snaps**. This lets one choir move between natural and unusual sounds. Sound parameters and host-state restoration are supported; a complete morphing session in a licensed, activated SnappySnapFX copy has not yet been verified. Offline AI/singing renders are files, not a real-time morphable synthesis engine.
+
 ## What it does
 
+- **SnappySnapFX support:** host VoxGarden and store different sound settings as Snaps; see the compatibility notes below.
 - **1–8 choir voices**, with individual harmony, level, pan, formant and depth controls; per-voice mute and additive solo.
 - **62 factory sounds**, including female-choir/male-lead and male-choir/female-lead textures.
 - **Eight raga-inspired families:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga and Hamsadhwani. Each has an original sound and both voice-cast variants, alongside Western note-set names and transposed notes.
@@ -45,6 +63,8 @@ Click **Render vocal + stems**, play the passage in Live, then **Stop + render**
 Keep Delay Compensation enabled: DSP latency is about **192 ms at 48 kHz**. Record a lead dry, then add the choir. Print MIDI-chord performances with Live's recorder. SnappySnapFX can host different parameter states as Snaps; end-to-end morphing in an activated copy has not been verified.
 
 ## Optional AI singers
+
+The new score-singing voices are downloaded inside **Notes + lyrics**. The separate setup below is only for the older Seed-VC voice-conversion workflow.
 
 Run **Setup AI.command** from the release package once, or `bash "AI/Setup AI.command"` from this source tree. It needs Git and either **uv** or **Python 3.10**, plus internet access and several GB for initial model setup. Existing model downloads can be reused when updating.
 

@@ -9,7 +9,10 @@ public:
     vg::Engine engine;
     TrackCapture capture;
     std::atomic<bool> printInProgress{false}, darkMode{true};
-    std::atomic<int> language{0};
+    std::atomic<int> language{0}, themeAccent{0};
+    juce::CriticalSection scoreLock;
+    juce::String scoreDraft{"0\t0.5\t62\tHello\n0.5\t0.5\t60\tmy\n1\t0.5\t62\tnew\n1.5\t1\t69\tchoir"};
+    int scoreLanguage=0,scoreVoice=0;
     vg::Settings captureRenderSettings;
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();
     vg::Settings settings() const;

@@ -14,8 +14,26 @@ Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitst
 
 </details>
 
+## Quellcode-Vorschau: Noten + Liedtext und farbige Themen
+
+Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**: Standard-MIDI importieren, Melodiespur wählen, Unicode-Silben zuweisen und Notennamen, Start und Dauer in einer Tabelle bearbeiten. Isoliertes Audio liefert eine editierbare einstimmige Notenskizze. **Stimmen direkt im Plugin laden** (~401 MB Modelle plus eigene Laufzeit/Cache), eine von zehn Stimmen wählen und trockenen Gesang rendern oder an den schnellen DSP-Chor senden. **Supertonic 3 für neuronale Aussprache + PSOLA** für Zeit/Tonhöhe unterstützt Englisch, Hindi in Devanagari, Deutsch, Japanisch, Russisch und Niederländisch. **Core ML bevorzugt die GPU**; Zeitbearbeitung und nicht unterstützte Graphoperationen laufen auf der CPU. Dies ist an Noten angepasste Sprache, kein trainiertes Gesangsmodell; Natürlichkeit bitte anhören. **Rosa, Ozean und Sonnenuntergang** bieten helle/dunkle Varianten. Nicht im folgenden v1.0.0-Download enthalten. [Ablauf, Messwerte und Grenzen (Englisch)](Singing.md).
+
+
+![Vorschau Noten und Liedtext](Media/VoxGarden-1.1-preview-de-score.png)
+
+<details><summary>Rose / 🌸</summary>
+
+![VoxGarden Rose](Media/VoxGarden-1.1-preview-de-rose.png)
+
+</details>
+
+## SnappySnap-Unterstützung
+
+VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstellungen für Harmonie, Stimmenzahl, Formanten und Mutation als **Snaps** speichern. So kann der Chor zwischen natürlichen und ungewöhnlichen Klängen wechseln. Klangparameter und Wiederherstellung des Host-Zustands werden unterstützt; eine vollständige Morphing-Sitzung in einer lizenzierten, aktivierten Kopie wurde noch nicht verifiziert. Offline-KI- und Gesangsrender sind Dateien, keine in Echtzeit morphbare Synthese.
+
 ## Funktionen
 
+- **SnappySnapFX-Unterstützung:** VoxGarden hosten und verschiedene Klangeinstellungen als Snaps speichern; Kompatibilitätshinweise unten.
 - **1–8 Chorstimmen**, jeweils mit Harmonie, Pegel, Panorama, Formanten und Tiefe; Stummschaltung und kombinierbare Solos pro Stimme.
 - **62 Werksklänge**, darunter Frauenchor für Männerlead und Männerchor für Frauenlead.
 - **Acht Raga-Familien:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga und Hamsadhwani. Jede bietet den Originalklang und beide Besetzungsvarianten, mit westlichen Tonvorräten und transponierten Noten.
@@ -45,6 +63,8 @@ Eine Standalone-App ist enthalten. Ziel des nativen Builds ist macOS 12+; die Bi
 Delay Compensation aktivieren: etwa **192 ms DSP-Latenz bei 48 kHz**. Lead zunächst trocken aufnehmen. MIDI-Akkorde mit Lives Recorder aufzeichnen. SnappySnapFX kann unterschiedliche Parameterzustände als Snaps hosten; vollständiges Morphing in einer aktivierten Kopie ist nicht verifiziert.
 
 ## Optionale KI-Stimmen
+
+Die neuen Gesangsmodelle werden in **Noten + Liedtext** geladen. Die folgende separate Einrichtung betrifft nur die ältere Seed-VC-Stimmkonvertierung.
 
 **Setup AI.command** aus dem Release einmal ausführen oder im Quellbaum `bash "AI/Setup AI.command"` starten. Benötigt Git und **uv** oder **Python 3.10**, Internetzugang und mehrere GB für die Ersteinrichtung. Bereits geladene Modelle können bei Updates weiterverwendet werden.
 

@@ -1350,6 +1350,440 @@
       "Keine gewöhnliche Dur-/Moll-Entsprechung",
       "Geen gewone majeur-/mineurtegenhanger",
       "Нет обычного мажорного/минорного аналога"
+    ],
+    [
+      "Garden",
+      "बगीचा",
+      "Garten",
+      "Tuin",
+      "Сад"
+    ],
+    [
+      "Rose",
+      "गुलाबी",
+      "Rosa",
+      "Roze",
+      "Розовая"
+    ],
+    [
+      "Ocean",
+      "समुद्री",
+      "Ozean",
+      "Oceaan",
+      "Океан"
+    ],
+    [
+      "Sunset",
+      "सूर्यास्त",
+      "Sonnenuntergang",
+      "Zonsondergang",
+      "Закат"
+    ],
+    [
+      "Notes + lyrics",
+      "स्वर + गीत",
+      "Noten + Liedtext",
+      "Noten + tekst",
+      "Ноты + текст"
+    ],
+    [
+      "Import MIDI",
+      "MIDI आयात करें",
+      "MIDI importieren",
+      "MIDI importeren",
+      "Импорт MIDI"
+    ],
+    [
+      "Audio → notes",
+      "ऑडियो → स्वर",
+      "Audio → Noten",
+      "Audio → noten",
+      "Аудио → ноты"
+    ],
+    [
+      "Assign syllables",
+      "अक्षरांश जोड़ें",
+      "Silben zuweisen",
+      "Lettergrepen toewijzen",
+      "Назначить слоги"
+    ],
+    [
+      "Render dry singing",
+      "मूल गायन रेंडर करें",
+      "Trockenen Gesang rendern",
+      "Droge zang renderen",
+      "Создать сухой вокал"
+    ],
+    [
+      "Send dry to choir",
+      "मूल गायन मंडली में भेजें",
+      "Gesang an Chor senden",
+      "Zang naar koor sturen",
+      "Передать вокал в хор"
+    ],
+    [
+      "Show dry vocal",
+      "मूल गायन दिखाएँ",
+      "Gesangsdatei anzeigen",
+      "Droge zang tonen",
+      "Показать сухой вокал"
+    ],
+    [
+      "Synthetic singing • MIDI notes + your syllables • offline macOS voices",
+      "कृत्रिम गायन • MIDI स्वर + आपके अक्षरांश • ऑफ़लाइन macOS स्वर",
+      "Synthetischer Gesang • MIDI-Noten + Ihre Silben • lokale macOS-Stimmen",
+      "Synthetische zang • MIDI-noten + je lettergrepen • lokale macOS-stemmen",
+      "Синтетическое пение • MIDI-ноты + ваши слоги • локальные голоса macOS"
+    ],
+    [
+      "Start (seconds)    Duration (seconds)    MIDI note    Syllable — TAB-separated columns",
+      "शुरुआत (सेकंड)    अवधि (सेकंड)    MIDI स्वर    अक्षरांश — कॉलम TAB से अलग करें",
+      "Start (Sekunden)    Dauer (Sekunden)    MIDI-Note    Silbe — Spalten mit TAB trennen",
+      "Start (seconden)    Duur (seconden)    MIDI-noot    Lettergreep — kolommen met TAB scheiden",
+      "Начало (секунды)    Длина (секунды)    MIDI-нота    Слог — столбцы через TAB"
+    ],
+    [
+      "Type syllables separated by |, one per note. Example: Hel | lo | my | choir",
+      "हर स्वर के लिए एक अक्षरांश, | से अलग करें। जैसे: सा | रे | गा | मा",
+      "Eine Silbe pro Note, mit | trennen. Beispiel: Hal | lo | mein | Chor",
+      "Eén lettergreep per noot, gescheiden door |. Voorbeeld: Hal | lo | mijn | koor",
+      "По слогу на ноту, разделяя |. Например: При | вет | мой | хор"
+    ],
+    [
+      "MIDI melody track",
+      "MIDI धुन ट्रैक",
+      "MIDI-Melodiespur",
+      "MIDI-melodietrack",
+      "Дорожка MIDI-мелодии"
+    ],
+    [
+      "Choose a melody track. Edit overlapping notes before rendering.",
+      "धुन ट्रैक चुनें। रेंडर से पहले साथ बजते स्वर ठीक करें।",
+      "Melodiespur wählen. Überlappende Noten vor dem Rendern bearbeiten.",
+      "Kies een melodietrack. Bewerk overlappende noten vóór het renderen.",
+      "Выберите мелодию. Устраните пересечения нот перед рендером."
+    ],
+    [
+      "Extracting a monophonic melody…",
+      "एक स्वर वाली धुन निकाली जा रही है…",
+      "Einstimmige Melodie wird erkannt…",
+      "Eenstemmige melodie wordt herkend…",
+      "Распознаётся одноголосная мелодия…"
+    ],
+    [
+      "Rendering synthetic singing…",
+      "कृत्रिम गायन बन रहा है…",
+      "Synthetischer Gesang wird gerendert…",
+      "Synthetische zang wordt gerenderd…",
+      "Создаётся синтетическое пение…"
+    ],
+    [
+      "Pitch sketch ready. Check notes and timing before assigning lyrics.",
+      "स्वर रूपरेखा तैयार है। गीत जोड़ने से पहले स्वर व समय जाँचें।",
+      "Notenskizze bereit. Noten und Timing vor der Textzuweisung prüfen.",
+      "Notenschets klaar. Controleer noten en timing vóór het toewijzen van tekst.",
+      "Ноты распознаны приблизительно. Проверьте высоту и время перед назначением текста."
+    ],
+    [
+      "Dry singing saved. Use it directly or send it to the choir.",
+      "मूल गायन सहेजा गया। सीधे इस्तेमाल करें या मंडली में भेजें।",
+      "Trockener Gesang gespeichert. Direkt nutzen oder an den Chor senden.",
+      "Droge zang opgeslagen. Gebruik deze direct of stuur hem naar het koor.",
+      "Сухой вокал сохранён. Используйте его напрямую или передайте в хор."
+    ],
+    [
+      "Supply exactly one nonempty syllable per note, separated by |.",
+      "हर स्वर के लिए एक अक्षरांश लिखें और | से अलग करें।",
+      "Genau eine nicht leere Silbe pro Note, getrennt durch |.",
+      "Geef precies één niet-lege lettergreep per noot, gescheiden door |.",
+      "Введите ровно один непустой слог на ноту, разделяя их |."
+    ],
+    [
+      "Syllables assigned. Adjust note start and duration in seconds.",
+      "अक्षरांश जुड़ गए। स्वर की शुरुआत और अवधि सेकंड में बदलें।",
+      "Silben zugewiesen. Notenstart und Dauer in Sekunden bearbeiten.",
+      "Lettergrepen toegewezen. Pas start en duur in seconden aan.",
+      "Слоги назначены. Отредактируйте начало и длину нот в секундах."
+    ],
+    [
+      "Import a monophonic melody or edit the example. This first voice is a synthetic vocoder, not a natural AI singer.",
+      "एक स्वर वाली धुन आयात करें या उदाहरण बदलें। यह पहला स्वर कृत्रिम वोकोडर है, प्राकृतिक AI गायक नहीं।",
+      "Einstimmige Melodie importieren oder Beispiel bearbeiten. Die erste Stimme ist ein synthetischer Vocoder, kein natürlicher KI-Gesang.",
+      "Importeer een eenstemmige melodie of bewerk het voorbeeld. De eerste stem is een synthetische vocoder, geen natuurlijke AI-zanger.",
+      "Импортируйте одноголосную мелодию или измените пример. Первый голос — синтетический вокодер, а не естественный ИИ-певец."
+    ],
+    [
+      "No installed macOS voice for this language. Add one in System Settings > Accessibility > Spoken Content.",
+      "इस भाषा का macOS स्वर स्थापित नहीं है। सिस्टम सेटिंग्स > ऐक्सेसिबिलिटी > बोली गई सामग्री में जोड़ें।",
+      "Keine macOS-Stimme für diese Sprache installiert. In Systemeinstellungen > Bedienungshilfen > Gesprochene Inhalte hinzufügen.",
+      "Geen macOS-stem voor deze taal geïnstalleerd. Voeg er een toe via Systeeminstellingen > Toegankelijkheid > Gesproken materiaal.",
+      "Нет голоса macOS для этого языка. Добавьте его в Системных настройках > Универсальный доступ > Устный контент."
+    ],
+    [
+      "Overlapping notes: choose a monophonic melody track or edit the times.",
+      "स्वर साथ बज रहे हैं: एक स्वर वाली धुन चुनें या समय बदलें।",
+      "Noten überlappen: einstimmige Melodiespur wählen oder Zeiten bearbeiten.",
+      "Noten overlappen: kies een eenstemmige melodie of bewerk de tijden.",
+      "Ноты пересекаются: выберите одноголосную мелодию или измените время."
+    ],
+    [
+      "Add or import some notes first.",
+      "पहले स्वर जोड़ें या आयात करें।",
+      "Zuerst Noten hinzufügen oder importieren.",
+      "Voeg eerst noten toe of importeer ze.",
+      "Сначала добавьте или импортируйте ноты."
+    ],
+    [
+      "Each note needs a syllable (up to 160 characters).",
+      "हर स्वर को एक अक्षरांश चाहिए (अधिकतम 160 अक्षर)।",
+      "Jede Note braucht eine Silbe (bis zu 160 Zeichen).",
+      "Elke noot heeft een lettergreep nodig (maximaal 160 tekens).",
+      "Каждой ноте нужен слог (до 160 символов)."
+    ],
+    [
+      "Use at most 2048 notes.",
+      "अधिकतम 2048 स्वर इस्तेमाल करें।",
+      "Höchstens 2048 Noten verwenden.",
+      "Gebruik maximaal 2048 noten.",
+      "Используйте не более 2048 нот."
+    ],
+    [
+      "Could not read a standard MIDI file.",
+      "मानक MIDI फ़ाइल पढ़ी नहीं जा सकी।",
+      "Standard-MIDI-Datei konnte nicht gelesen werden.",
+      "Kan standaard MIDI-bestand niet lezen.",
+      "Не удалось прочитать стандартный MIDI-файл."
+    ],
+    [
+      "No stable monophonic notes detected. Try a clean, isolated melody.",
+      "स्थिर एक स्वर वाली धुन नहीं मिली। साफ़, अलग धुन आज़माएँ।",
+      "Keine stabilen einstimmigen Noten erkannt. Saubere, isolierte Melodie versuchen.",
+      "Geen stabiele eenstemmige noten herkend. Probeer een schone, geïsoleerde melodie.",
+      "Стабильные ноты не найдены. Попробуйте чистую изолированную мелодию."
+    ],
+    [
+      "Use an audio excerpt of five minutes or less.",
+      "पाँच मिनट या कम का ऑडियो लें।",
+      "Audioausschnitt von höchstens fünf Minuten verwenden.",
+      "Gebruik een audiofragment van maximaal vijf minuten.",
+      "Используйте аудиофрагмент не длиннее пяти минут."
+    ],
+    [
+      "Cancel",
+      "रद्द करें",
+      "Abbrechen",
+      "Annuleren",
+      "Отмена"
+    ],
+    [
+      "Cancelling…",
+      "रद्द हो रहा है…",
+      "Wird abgebrochen…",
+      "Annuleren…",
+      "Отмена…"
+    ],
+    [
+      "Cancelled.",
+      "रद्द किया गया।",
+      "Abgebrochen.",
+      "Geannuleerd.",
+      "Отменено."
+    ],
+    [
+      "Neural pronunciation • MIDI pitch + syllable timing • Core ML GPU preferred",
+      "न्यूरल उच्चारण • MIDI स्वर + अक्षरांश समय • Core ML GPU प्राथमिक",
+      "Neuronale Aussprache • MIDI-Tonhöhe + Silbentiming • Core ML bevorzugt GPU",
+      "Neurale uitspraak • MIDI-toonhoogte + lettergreeptiming • Core ML met GPU-voorkeur",
+      "Нейронное произношение • MIDI-высота + время слогов • приоритет GPU Core ML"
+    ],
+    [
+      "Double-click a cell to edit timing, note or syllable. C4 = MIDI 60.",
+      "समय, स्वर या अक्षरांश बदलने के लिए सेल पर डबल-क्लिक करें। C4 = MIDI 60।",
+      "Zelle doppelklicken, um Zeit, Note oder Silbe zu bearbeiten. C4 = MIDI 60.",
+      "Dubbelklik een cel om timing, noot of lettergreep te bewerken. C4 = MIDI 60.",
+      "Дважды щёлкните ячейку для правки времени, ноты или слога. C4 = MIDI 60."
+    ],
+    [
+      "Start (s)",
+      "शुरुआत (से.)",
+      "Start (s)",
+      "Start (s)",
+      "Начало (с)"
+    ],
+    [
+      "Length (s)",
+      "अवधि (से.)",
+      "Dauer (s)",
+      "Duur (s)",
+      "Длина (с)"
+    ],
+    [
+      "Note",
+      "स्वर",
+      "Note",
+      "Noot",
+      "Нота"
+    ],
+    [
+      "Syllable / word",
+      "अक्षरांश / शब्द",
+      "Silbe / Wort",
+      "Lettergreep / woord",
+      "Слог / слово"
+    ],
+    [
+      "Add note",
+      "स्वर जोड़ें",
+      "Note hinzufügen",
+      "Noot toevoegen",
+      "Добавить ноту"
+    ],
+    [
+      "Delete selected note",
+      "चुना स्वर हटाएँ",
+      "Gewählte Note löschen",
+      "Geselecteerde noot wissen",
+      "Удалить выбранную ноту"
+    ],
+    [
+      "Download voices (~401 MB)",
+      "स्वर डाउनलोड करें (~401 MB)",
+      "Stimmen laden (~401 MB)",
+      "Stemmen laden (~401 MB)",
+      "Скачать голоса (~401 МБ)"
+    ],
+    [
+      "Model licence",
+      "मॉडल लाइसेंस",
+      "Modelllizenz",
+      "Modellicentie",
+      "Лицензия модели"
+    ],
+    [
+      "Ready • Core ML GPU preferred",
+      "तैयार • Core ML GPU प्राथमिक",
+      "Bereit • Core ML bevorzugt GPU",
+      "Klaar • Core ML met GPU-voorkeur",
+      "Готово • приоритет GPU Core ML"
+    ],
+    [
+      "401 MB of models + private runtime/cache. Allow 2 GB free. Model licence: OpenRAIL-M.",
+      "401 MB मॉडल + निजी रनटाइम/कैश। 2 GB खाली रखें। मॉडल लाइसेंस: OpenRAIL-M।",
+      "401 MB Modelle + eigene Laufzeit/Cache. 2 GB frei halten. Modelllizenz: OpenRAIL-M.",
+      "401 MB modellen + eigen runtime/cache. Houd 2 GB vrij. Modellicentie: OpenRAIL-M.",
+      "401 МБ моделей + отдельная среда/кэш. Нужно 2 ГБ свободно. Лицензия: OpenRAIL-M."
+    ],
+    [
+      "Import a melody, align syllables, then render. Neural speech is retimed to your score; this is an experimental singing voice.",
+      "धुन आयात करें, अक्षरांश मिलाएँ और रेंडर करें। न्यूरल बोली का समय व सुर बदले जाते हैं; यह प्रयोगात्मक गायन है।",
+      "Melodie importieren, Silben zuweisen, rendern. Neuronale Sprache wird an die Noten angepasst; experimentelle Gesangsstimme.",
+      "Importeer een melodie, lijn lettergrepen uit en render. Neurale spraak wordt aan de noten aangepast; experimentele zangstem.",
+      "Импортируйте мелодию, назначьте слоги и создайте вокал. Нейронная речь подгоняется под ноты; это экспериментальное пение."
+    ],
+    [
+      "Download the singing models in this window first.",
+      "पहले इसी विंडो से गायन मॉडल डाउनलोड करें।",
+      "Zuerst die Gesangsmodelle in diesem Fenster laden.",
+      "Download eerst de zangmodellen in dit venster.",
+      "Сначала скачайте модели пения в этом окне."
+    ],
+    [
+      "Loading the GPU speech model…",
+      "GPU स्वर मॉडल लोड हो रहा है…",
+      "GPU-Sprachmodell wird geladen…",
+      "GPU-spraakmodel wordt geladen…",
+      "Загружается речевая модель GPU…"
+    ],
+    [
+      "Model setup needs at least 2 GB of free disk space.",
+      "मॉडल सेटअप के लिए कम से कम 2 GB खाली स्थान चाहिए।",
+      "Modelleinrichtung benötigt mindestens 2 GB freien Speicher.",
+      "Modelinstallatie vereist minimaal 2 GB vrije schijfruimte.",
+      "Для установки моделей нужно не менее 2 ГБ свободного места."
+    ],
+    [
+      "Model setup is already running in another plugin window.",
+      "मॉडल सेटअप दूसरी प्लगइन विंडो में चल रहा है।",
+      "Modelleinrichtung läuft bereits in einem anderen Pluginfenster.",
+      "Modelinstallatie loopt al in een ander pluginvenster.",
+      "Установка моделей уже выполняется в другом окне плагина."
+    ],
+    [
+      "Stop the channel capture before rendering another file.",
+      "दूसरी फ़ाइल रेंडर करने से पहले ट्रैक रिकॉर्डिंग रोकें।",
+      "Vor dem Rendern einer anderen Datei die Spuraufnahme stoppen.",
+      "Stop de trackopname voordat je een ander bestand rendert.",
+      "Остановите запись дорожки перед рендером другого файла."
+    ],
+    [
+      "Downloading models: ",
+      "मॉडल डाउनलोड: ",
+      "Modelle laden: ",
+      "Modellen downloaden: ",
+      "Загрузка моделей: "
+    ],
+    [
+      "Waiting for the GPU singing renderer…",
+      "GPU गायन रेंडरर का इंतज़ार…",
+      "Warten auf GPU-Gesangsrenderer…",
+      "Wachten op de GPU-zangrenderer…",
+      "Ожидание GPU-рендера пения…"
+    ],
+    [
+      "Compiling GPU models and checking a first voice…",
+      "GPU मॉडल संकलित हो रहे हैं और पहला स्वर जाँचा जा रहा है…",
+      "GPU-Modelle kompilieren und erste Stimme prüfen…",
+      "GPU-modellen compileren en eerste stem controleren…",
+      "Компиляция моделей GPU и проверка первого голоса…"
+    ],
+    [
+      "Preparing the private Python runtime…",
+      "निजी Python रनटाइम तैयार हो रहा है…",
+      "Eigene Python-Laufzeit vorbereiten…",
+      "Eigen Python-runtime voorbereiden…",
+      "Подготовка отдельной среды Python…"
+    ],
+    [
+      "Downloading the runtime manager (Apple Silicon)…",
+      "रनटाइम प्रबंधक डाउनलोड हो रहा है (Apple Silicon)…",
+      "Laufzeitverwaltung laden (Apple Silicon)…",
+      "Runtimebeheer laden (Apple Silicon)…",
+      "Загрузка менеджера среды (Apple Silicon)…"
+    ],
+    [
+      "Installing the neural runtime (no global Python changes)…",
+      "न्यूरल रनटाइम स्थापित हो रहा है (वैश्विक Python बदलाव नहीं)…",
+      "Neuronale Laufzeit installieren (globales Python bleibt unverändert)…",
+      "Neurale runtime installeren (geen globale Python-wijzigingen)…",
+      "Установка нейронной среды (системный Python не меняется)…"
+    ],
+    [
+      "Downloading and verifying the voice models…",
+      "स्वर मॉडल डाउनलोड और जाँचे जा रहे हैं…",
+      "Sprachmodelle laden und prüfen…",
+      "Stemmodellen downloaden en controleren…",
+      "Загрузка и проверка голосовых моделей…"
+    ],
+    [
+      "Check / repair models",
+      "मॉडल जाँचें / सुधारें",
+      "Modelle prüfen / reparieren",
+      "Modellen controleren / herstellen",
+      "Проверить / исправить модели"
+    ],
+    [
+      "Open model folder",
+      "मॉडल फ़ोल्डर खोलें",
+      "Modellordner öffnen",
+      "Modelmap openen",
+      "Открыть папку моделей"
+    ],
+    [
+      "Audio to notes",
+      "ऑडियो से स्वर",
+      "Audio zu Noten",
+      "Audio naar noten",
+      "Аудио в ноты"
     ]
   ]
 }

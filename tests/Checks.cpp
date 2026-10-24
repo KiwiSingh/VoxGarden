@@ -2,12 +2,23 @@
 #include "Offline.h"
 #include "AI.h"
 #include "I18n.h"
+#include "Composer.h"
 #include <iostream>
 #include <chrono>
 static int failures=0;
 static void check(bool pass,const char* message){std::cout<<(pass?"PASS ":"FAIL ")<<message<<std::endl;if(!pass)++failures;}
 int main(int argc,char** argv) {
     juce::ScopedJuceInitialiser_GUI gui;
+    if(argc>1 && juce::String(argv[1])=="--neural-setup"){
+        check(vg::installSingingHelpers(),"Embedded model helpers install without a separate script package");auto root=vg::singingRoot();int code=vg::runSingingProcess({"/bin/sh",root.getChildFile("bootstrap.sh").getFullPathName(),root.getFullPathName()},root.getChildFile("Setup.log"),[]{return false;},[]{});check(code==0&&vg::singingReady(),"Integrated setup verifies models and confirms Core ML execution");return failures?1:0;
+    }
+    if(argc>2 && juce::String(argv[1])=="--neural-smoke"){
+        auto folder=juce::File(juce::String(argv[2]));std::atomic<float> progress{0};constexpr const char* words[]{"la","सा","la","ら","ла","la"};
+        for(int language=0;language<6;++language){auto word=juce::String::fromUTF8(words[language]);vg::Score score{{0,.8,62,word},{1,.8,60,word},{2,.8,69,word}};juce::File dry;auto error=vg::renderNeuralScore(score,language,"F1",folder.getChildFile(juce::String(vg::singingLocales[(size_t)language])),progress,[]{return false;},dry);std::cout<<vg::singingLocales[(size_t)language]<<" "<<error<<std::endl;check(error.isEmpty()&&dry.existsAsFile(),"GPU neural score render returns a dry vocal");if(error.isNotEmpty())continue;
+            juce::AudioFormatManager fm;fm.registerBasicFormats();std::unique_ptr<juce::AudioFormatReader> r(fm.createReaderFor(dry));check(r&&std::abs(r->lengthInSamples/r->sampleRate-2.8)<.001,"Neural singing preserves score length");
+            if(r){juce::AudioBuffer<float> audio(1,(int)r->lengthInSamples);r->read(&audio,0,audio.getNumSamples(),0,true,false);check(audio.getMagnitude(0,(int)(.8*r->sampleRate), (int)(.2*r->sampleRate))<.00001f,"Neural score rests remain silent");auto analysis=vg::singingRoot().getChildFile("python/bin/python");std::cout<<folder.getChildFile(juce::String(vg::singingLocales[(size_t)language])).getChildFile("Render Stats.json").loadFileAsString()<<std::endl;}
+        }return failures?1:0;
+    }
     if(argc>3 && juce::String(argv[1])=="--ai-smoke"){
         VoxGardenProcessor p;p.applyPreset(5);p.setValue("root",9);p.setValue("scale",1);p.setValue("aiPrint",1);p.setValue("aiBlend",1);
         if(argc>4)p.setValue("aiCast",juce::String(argv[4]).getIntValue());
@@ -15,6 +26,23 @@ int main(int argc,char** argv) {
         auto settings=p.settings();juce::File input{juce::String(argv[2])},output{juce::String(argv[3])};std::atomic<float> progress{0};std::vector<juce::File> singers;
         auto error=vg::createAISingers(input,output,settings,progress,[]{return false;},singers);check(error.isEmpty(),"Plugin launches local AI worker and receives two singers");if(error.isNotEmpty()){std::cout<<error<<std::endl;return 1;}
         auto result=renderVocal(input,output,settings,progress,[]{return false;},singers);std::cout<<result<<std::endl;check(progress.load()==1,"AI singers pass through native mixing and stem export");return failures?1:0;
+    }
+    {
+        vg::Score notes;check(vg::parseScore(juce::String::fromUTF8("0\t0.5\t62\tसा\n0.75\t0.4\t60\tら"),notes).isEmpty()&&notes.size()==2&&notes[0].syllable==juce::String::fromUTF8("सा"),"Score preserves Unicode syllables, exact pitches and rests");
+        check(vg::parseScore("0\t1\t62\tla\n0.5\t1\t60\tla",notes).isNotEmpty(),"Overlapping melody notes require explicit editing");
+        for(auto bad:{"abc\t1\t62\tla","0\tnan\t62\tla","0\t1\t62.5\tla","0\t301\t62\tla","0\t1\t62\t"})check(vg::parseScore(bad,notes).isNotEmpty(),"Malformed or unbounded score is rejected");
+        auto path=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("VoxGarden score test",".mid");juce::MidiFile midi;midi.setTicksPerQuarterNote(480);juce::MidiMessageSequence tempo,melody;
+        auto event=juce::MidiMessage::tempoMetaEvent(500000);event.setTimeStamp(0);tempo.addEvent(event);event=juce::MidiMessage::tempoMetaEvent(1000000);event.setTimeStamp(480);tempo.addEvent(event);midi.addTrack(tempo);
+        for(int i=0;i<2;++i){event=juce::MidiMessage::noteOn(1,62-i*2,(juce::uint8)100);event.setTimeStamp(i*480);melody.addEvent(event);event=juce::MidiMessage::noteOff(1,62-i*2);event.setTimeStamp((i+1)*480);melody.addEvent(event);}midi.addTrack(melody);
+        {auto stream=path.createOutputStream();midi.writeTo(*stream);}std::vector<vg::ScoreTrack> tracks;auto error=vg::readMidiScore(path,tracks);check(error.isEmpty()&&tracks.size()==1&&tracks[0].notes.size()==2&&std::abs(tracks[0].notes[0].duration-.5)<1e-6&&std::abs(tracks[0].notes[1].duration-1)<1e-6,"MIDI import applies cross-track tempo changes and note lengths");path.deleteFile();
+        {ScoreGrid grid;grid.setText("0\t0.5\t62\tla\n0.75\t0.5\t60\tla",false);vg::Score roundTrip;check(vg::parseScore(grid.getText(),roundTrip).isEmpty()&&roundTrip.size()==2&&roundTrip[0].midi==62&&roundTrip[1].midi==60,"Editable note names retain the correct MIDI octave");}
+        {
+            auto file=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("VoxGarden melody test",".wav");juce::AudioBuffer<float> audio(1,48000*2);audio.clear();for(int n=0;n<audio.getNumSamples();++n){double seconds=n/48000.;if(seconds<.7||(seconds>=1&&seconds<1.7)){double hz=seconds<.7?293.6647679:261.6255653;audio.setSample(0,n,.25f*std::sin(juce::MathConstants<double>::twoPi*hz*n/48000));}}
+            {juce::WavAudioFormat wav;auto stream=file.createOutputStream();std::unique_ptr<juce::AudioFormatWriter> writer(wav.createWriterFor(stream.release(),48000,1,24,{},0));writer->writeFromAudioSampleBuffer(audio,0,audio.getNumSamples());}
+            vg::Score sketch;auto result=vg::transcribeScore(file,sketch,[]{return false;});check(result.isEmpty()&&sketch.size()==2&&sketch[0].midi==62&&sketch[1].midi==60&&sketch[1].start>sketch[0].start+sketch[0].duration,"Audio pitch sketch detects isolated D4/C4 and retains a rest");file.deleteFile();
+            auto log=file.withFileExtension(".log");auto start=juce::Time::getMillisecondCounterHiRes();auto code=vg::runSingingProcess({"/bin/sh","-c","sleep 30"},log,[&]{return juce::Time::getMillisecondCounterHiRes()-start>150;},[]{});check(code==-2&&juce::Time::getMillisecondCounterHiRes()-start<2000,"Cancelling setup/render stops the child process group promptly");log.deleteFile();
+        }
+        VoxGardenProcessor p;p.themeAccent=3;{const juce::ScopedLock lock(p.scoreLock);p.scoreDraft=juce::String::fromUTF8("0\t1\t60\tनमस्ते");p.scoreLanguage=1;}juce::MemoryBlock state;p.getStateInformation(state);p.themeAccent=0;p.scoreDraft={};p.setStateInformation(state.getData(),(int)state.getSize());check(p.themeAccent==3&&p.scoreLanguage==1&&p.scoreDraft.contains(juce::String::fromUTF8("नमस्ते")),"Host state restores accent, multilingual score and lyric language");
     }
     for(int root=0;root<12;++root)for(int scale=0;scale<(int)vg::intervals.size();++scale)for(int note=36;note<85;++note)for(int degree=-14;degree<=14;++degree)
         if(!vg::inScale(vg::degreeNote((float)note+.31f,degree,root,scale),root,scale)){check(false,"Scale membership");return 1;}
@@ -198,7 +226,11 @@ int main(int argc,char** argv) {
         auto image=editor->createComponentSnapshot(editor->getLocalBounds(),true,1);
         juce::PNGImageFormat png;auto out=folder.getChildFile("VoxGarden-preview.png").createOutputStream();if(out){out->setPosition(0);out->truncate();png.writeImageToStream(image,*out);}
         check(image.isValid(),"Plugin editor renders to image");
-        out.reset();editor.reset();processor.darkMode=false;editor.reset(processor.createEditor());
+        out.reset();editor.reset();
+        for(int accent=1;accent<=3;++accent){processor.themeAccent=accent;for(bool dark:{false,true}){processor.darkMode=dark;editor.reset(processor.createEditor());auto snapshot=editor->createComponentSnapshot(editor->getLocalBounds(),true,1);auto stream=folder.getChildFile("Theme-"+juce::String(accent)+(dark?"-dark.png":"-light.png")).createOutputStream();if(stream)png.writeImageToStream(snapshot,*stream);editor.reset();}}
+        processor.themeAccent=1;processor.darkMode=true;{ScoreComposer composer(processor,[](const juce::File&){},{});auto snapshot=composer.createComponentSnapshot(composer.getLocalBounds(),true,1);auto stream=folder.getChildFile("Notes-and-lyrics.png").createOutputStream();if(stream)png.writeImageToStream(snapshot,*stream);}processor.themeAccent=0;
+        for(int locale=0;locale<5;++locale){processor.language=locale;processor.themeAccent=1;processor.darkMode=true;editor.reset(processor.createEditor());auto shot=editor->createComponentSnapshot(editor->getLocalBounds(),true,1);auto stream=folder.getChildFile("Preview-"+juce::String(locale)+"-rose.png").createOutputStream();if(stream)png.writeImageToStream(shot,*stream);stream.reset();editor.reset();ScoreComposer composer(processor,[](const juce::File&){},{});shot=composer.createComponentSnapshot(composer.getLocalBounds(),true,1);stream=folder.getChildFile("Preview-"+juce::String(locale)+"-score.png").createOutputStream();if(stream)png.writeImageToStream(shot,*stream);}
+        processor.language=0;processor.themeAccent=0;processor.darkMode=false;editor.reset(processor.createEditor());
         if(auto* menu=dynamic_cast<juce::ComboBox*>(editor->findChildWithID("presets")))menu->setSelectedId(47,juce::dontSendNotification);
         auto light=editor->createComponentSnapshot(editor->getLocalBounds(),true,1);auto lightOut=folder.getChildFile("VoxGarden-light-preview.png").createOutputStream();if(lightOut){lightOut->setPosition(0);lightOut->truncate();png.writeImageToStream(light,*lightOut);}
         check(light.getPixelAt(0,0)!=image.getPixelAt(0,0),"Light and dark themes render independently");

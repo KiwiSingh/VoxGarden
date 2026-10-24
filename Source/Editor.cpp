@@ -1,6 +1,7 @@
 #include "Editor.h"
 #include "Offline.h"
 #include "AI.h"
+#include "Composer.h"
 namespace {
 #define VG_PALETTE const auto& palette=static_cast<GardenLook&>(getLookAndFeel()).palette; const auto paper=palette.paper,ink=palette.ink,forest=palette.forest,sage=palette.sage,muted=palette.muted,line=palette.line,gold=palette.gold;
 void caption(juce::Graphics& g,const juce::String& s,int x,int y,int w,juce::Colour colour){g.setColour(colour);g.setFont(juce::FontOptions(vg::usesDevanagari(s)?12.f:10.f,juce::Font::bold));g.drawText(s,x,y,w,16,juce::Justification::centredLeft);}
@@ -33,9 +34,9 @@ void GardenLook::drawComboBox(juce::Graphics& g,int w,int h,bool,int,int,int,int
 }
 void Stage::paint(juce::Graphics& g){ VG_PALETTE
     auto t=[this](const juce::String& text){return vg::tr(p.language.load(),text);};
-    auto a=getLocalBounds().toFloat();g.setGradientFill(juce::ColourGradient(juce::Colour(0xff25463f),0,0,juce::Colour(0xff18382f),a.getRight(),a.getBottom(),false));g.fillRoundedRectangle(a,16);
+    auto a=getLocalBounds().toFloat();g.setGradientFill(juce::ColourGradient(palette.forest.darker(.65f),0,0,palette.background.darker(.3f),a.getRight(),a.getBottom(),false));g.fillRoundedRectangle(a,16);
     g.setColour(gold);g.setFont(juce::FontOptions(10,juce::Font::bold));g.drawText(t("THE SOUNDSTAGE"),18,12,200,18,juce::Justification::left);
-    g.setColour(juce::Colour(0xffb7cabc));g.setFont(p.language.load()==1?13:11);g.drawText(t("Drag each singer to place their voice"),18,33,330,18,juce::Justification::left);
+    g.setColour(juce::Colour(0xffe0e4e9));g.setFont(p.language.load()==1?13:11);g.drawText(t("Drag each singer to place their voice"),18,33,330,18,juce::Justification::left);
     for(int i=0;i<5;++i){juce::Path arc;float y=70.f+i*32;arc.startNewSubPath(14,y+25);arc.quadraticTo(a.getCentreX(),y-28,a.getRight()-14,y+25);g.setColour(sage.withAlpha(.15f));g.strokePath(arc,juce::PathStrokeType(.8f));}
     auto area=getLocalBounds().reduced(35,25).withTrimmedTop(40).withTrimmedBottom(10).toFloat();auto s=p.settings();
     for(int v=0;v<8;++v){auto vs=s.voice[(size_t)v];bool active=vg::voiceAudible(s,v) && vs.level>.001f;float x=area.getCentreX()+vs.pan*area.getWidth()*.5f,y=area.getY()+vs.delay/80*area.getHeight();
@@ -53,11 +54,11 @@ void Stage::mouseDrag(const juce::MouseEvent& e){if(selected<0)return;auto a=get
     auto set=[&](const char* id,float val){auto* param=p.state.getParameter(prefix+id);param->setValueNotifyingHost(param->convertTo0to1(val));};set("pan",juce::jlimit(-1.f,1.f,(e.position.x-a.getCentreX())/(a.getWidth()*.5f)));set("delay",juce::jlimit(0.f,80.f,(e.position.y-a.getY())/a.getHeight()*80));repaint();}
 void Stage::mouseUp(const juce::MouseEvent&){if(selected>=0)for(auto suffix:{"pan","delay"})p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix)->endChangeGesture();selected=-1;}
 VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(proc),Thread("VoxGarden file renderer"),p(proc),stage(proc){
-    look.palette=GardenPalette(p.darkMode.load());const auto paper=look.palette.paper,ink=look.palette.ink,forest=look.palette.forest,sage=look.palette.sage,muted=look.palette.muted,line=look.palette.line;
+    look.palette=GardenPalette(p.darkMode.load(),p.themeAccent.load());const auto paper=look.palette.paper,ink=look.palette.ink,forest=look.palette.forest,sage=look.palette.sage,muted=look.palette.muted,line=look.palette.line;
     look.setColour(juce::Slider::textBoxTextColourId,ink);look.setColour(juce::Slider::textBoxOutlineColourId,juce::Colours::transparentBlack);look.setColour(juce::Slider::textBoxBackgroundColourId,juce::Colours::transparentBlack);look.setColour(juce::Slider::textBoxHighlightColourId,sage.withAlpha(.4f));look.setColour(juce::ComboBox::backgroundColourId,juce::Colours::white.withAlpha(.7f));look.setColour(juce::ComboBox::textColourId,ink);look.setColour(juce::ComboBox::outlineColourId,line);look.setColour(juce::TextButton::buttonColourId,juce::Colour(0xffe9e9df));look.setColour(juce::TextButton::textColourOffId,ink);look.setColour(juce::ToggleButton::textColourId,ink);look.setColour(juce::ToggleButton::tickColourId,forest);look.setColour(juce::PopupMenu::backgroundColourId,paper);look.setColour(juce::PopupMenu::textColourId,ink);look.setColour(juce::PopupMenu::highlightedBackgroundColourId,forest);look.setColour(juce::PopupMenu::highlightedTextColourId,paper);setLookAndFeel(&look);
     title.setText("VoxGarden",juce::dontSendNotification);title.setFont(juce::FontOptions("Georgia",35,juce::Font::plain));title.setColour(juce::Label::textColourId,ink);
     subtitle.setText("One voice. A room full of possibility.  /  Kiwi Singh",juce::dontSendNotification);subtitle.setFont(juce::FontOptions(13));subtitle.setColour(juce::Label::textColourId,muted);
-    for(auto* c:std::initializer_list<juce::Component*>{&title,&subtitle,&pitch,&status,&root,&scale,&mode,&presets,&voiceCount,&stage,&formants,&render,&help,&reveal,&importFile,&aiPrint,&aiBlend,&theme,&aiCast,&raga,&ragaNotes,&languageChoice})addAndMakeVisible(c);
+    for(auto* c:std::initializer_list<juce::Component*>{&title,&subtitle,&pitch,&status,&root,&scale,&mode,&presets,&voiceCount,&stage,&formants,&render,&help,&reveal,&importFile,&aiPrint,&aiBlend,&theme,&aiCast,&raga,&ragaNotes,&languageChoice,&themeChoice,&compose})addAndMakeVisible(c);
     for(int i=0;i<12;++i)root.addItem(vg::roots[(size_t)i],i+1);for(int i=0;i<9;++i)scale.addItem(vg::scales[(size_t)i],i+1);for(int i=1;i<=8;++i)voiceCount.addItem(juce::String(i)+(i==1?" voice":" voices"),i);
     mode.addItemList({"Scale harmony","MIDI chord","Chromatic intervals"},1);
     presets.addItem("Natural backing",1);presets.addItem("Unison ensemble",2);presets.addItem("Chapel",3);
@@ -81,7 +82,7 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
     for(int i=0;i<5;++i)languageChoice.addItem(juce::String::fromUTF8(vg::languageNames[(size_t)i]),i+1);
     languageChoice.setComponentID("languageChoice");raga.setComponentID("ragaChoice");
     languageChoice.setSelectedId(p.language.load()+1,juce::dontSendNotification);
-    languageChoice.onChange=[this]{p.language.store(languageChoice.getSelectedId()-1);applyLanguage();};
+    languageChoice.onChange=[this]{p.language.store(languageChoice.getSelectedId()-1);applyLanguage();p.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));};
     aiCast.addItemList({"Original mixed cast","Female voices","Male voices","Alternating female / male"},1);
     aiCast.setTooltip("Reference voices for AI printing. DSP preview uses voicing and formant colour. New character presets set both. No input voice classification is performed.");
     presets.setComponentID("presets");presets.setText("Explore the choir...",juce::dontSendNotification);presets.onChange=[this]{p.applyPreset(presets.getSelectedId()-1);};
@@ -103,18 +104,21 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
     help.onClick=[this]{juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::InfoIcon,t("Your choir in Ableton Live"),vg::helpText(p.language.load()));};
     status.setColour(juce::Label::textColourId,muted);status.setFont(juce::FontOptions(12));pitch.setColour(juce::Label::textColourId,forest);pitch.setFont(juce::FontOptions(12));status.setText(vg::aiReady()?"AI singers are ready. Enable AI singers on print for neural voice conversion.":"Capture the vocal from this track, then print your choir and individual parts.",juce::dontSendNotification);
     capturePending=p.capture.getPhase()==TrackCapture::starting||p.capture.getPhase()==TrackCapture::recording||p.capture.getPhase()==TrackCapture::stopping||p.capture.getPhase()==TrackCapture::complete;
-    theme.onClick=[this]{p.darkMode.store(theme.getToggleState());applyTheme();};applyTheme();
-    for(auto* combo:{&root,&scale,&mode,&presets,&voiceCount,&aiCast,&raga})englishMenus.emplace(combo,*combo->getRootMenu());
+    themeChoice.addItemList({"Garden","Rose","Ocean","Sunset"},1);themeChoice.setComponentID("themeChoice");
+    themeChoice.onChange=[this]{p.themeAccent.store(themeChoice.getSelectedId()-1);applyTheme();p.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));};
+    compose.onClick=[this]{if(composer){composer->setVisible(true);composer->toFront(true);return;}composer=showComposer(p,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::File& file){if(safe)safe->renderFile(file,false,true);});};
+    theme.onClick=[this]{p.darkMode.store(theme.getToggleState());applyTheme();p.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));};applyTheme();
+    for(auto* combo:{&root,&scale,&mode,&presets,&voiceCount,&aiCast,&raga,&themeChoice})englishMenus.emplace(combo,*combo->getRootMenu());
     ragaNotes.setFont(juce::FontOptions(12));ragaNotes.setColour(juce::Label::textColourId,muted);
     applyLanguage();setSize(1120,900);timerCallback();startTimerHz(12);
 }
-VoxGardenEditor::~VoxGardenEditor(){signalThreadShouldExit();stopThread(-1);p.printInProgress=false;setLookAndFeel(nullptr);}
+VoxGardenEditor::~VoxGardenEditor(){composer.reset();signalThreadShouldExit();stopThread(-1);p.printInProgress=false;setLookAndFeel(nullptr);}
 void VoxGardenEditor::addControl(const juce::String& id,const juce::String& name){ VG_PALETTE auto c=std::make_unique<Control>();c->label.setText(name,juce::dontSendNotification);c->label.setColour(juce::Label::textColourId,muted);c->label.setFont(juce::FontOptions(9.5f,juce::Font::bold));c->label.setJustificationType(juce::Justification::centred);bool global=controls.size()<10;c->slider.setLookAndFeel(&look);c->slider.setComponentID(id);c->slider.setSliderStyle(global?juce::Slider::RotaryHorizontalVerticalDrag:juce::Slider::LinearHorizontal);c->slider.setTextBoxStyle(juce::Slider::TextBoxBelow,false,76,19);c->slider.setDoubleClickReturnValue(true,p.state.getParameter(id)->convertFrom0to1(p.state.getParameter(id)->getDefaultValue()));addAndMakeVisible(c->label);addAndMakeVisible(c->slider);c->attachment=std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(p.state,id,c->slider);controls.push_back(std::move(c));}
 void VoxGardenEditor::paint(juce::Graphics& g){ VG_PALETTE
     g.setGradientFill(juce::ColourGradient(paper,0,0,palette.background,1100,900,false));g.fillAll();
     // Small botanical mark; drawn natively so it stays crisp on Retina displays.
     g.setColour(juce::Colour(0xff294f46));g.fillRoundedRectangle(24,23,47,47,14);g.setColour(juce::Colour(0xffd4dfbe));juce::Path stem;stem.startNewSubPath(47,61);stem.quadraticTo(42,42,57,31);g.strokePath(stem,juce::PathStrokeType(1.5f));g.fillEllipse(34,35,11,19);g.fillEllipse(49,31,10,16);
-    caption(g,t("KIWI SINGH  /  VOXGARDEN 1.0"),83,76,300,muted);caption(g,t("START WITH A SOUND"),768,17,320,muted);caption(g,t("AI VOICE CAST"),768,78,100,muted);
+    caption(g,t("KIWI SINGH  /  VOXGARDEN 1.1 PREVIEW"),83,76,300,muted);caption(g,t("START WITH A SOUND"),768,17,320,muted);caption(g,t("AI VOICE CAST"),768,78,100,muted);
     g.setColour(palette.panel);g.fillRoundedRectangle(20,103,1080,126,13);caption(g,t("ROOT"),36,111,105,muted);caption(g,t("SCALE"),147,111,170,muted);caption(g,t("HARMONY MODE"),345,111,190,muted);caption(g,t("CHOIR SIZE"),565,111,125,muted);
     caption(g,t("RAGA / NOTE SET"),36,166,300,muted);
     g.setColour(palette.panel);g.fillRoundedRectangle(505,242,595,215,16);
@@ -125,7 +129,7 @@ void VoxGardenEditor::paint(juce::Graphics& g){ VG_PALETTE
     g.setColour(line);g.drawHorizontalLine(835,24,1096);
 }
 void VoxGardenEditor::resized(){
-    theme.setBounds(610,25,135,32);title.setBounds(82,17,420,46);subtitle.setBounds(84,58,510,22);presets.setBounds(768,39,328,33);aiCast.setBounds(870,76,226,23);
+    theme.setBounds(610,9,135,25);themeChoice.setBounds(610,37,135,27);compose.setBounds(345,464,145,25);title.setBounds(82,17,420,46);subtitle.setBounds(84,58,510,22);presets.setBounds(768,39,328,33);aiCast.setBounds(870,76,226,23);
     languageChoice.setBounds(610,70,135,26);raga.setBounds(36,185,300,30);ragaNotes.setBounds(352,174,730,48);
     root.setBounds(36,130,99,30);scale.setBounds(147,130,185,30);mode.setBounds(345,130,205,30);voiceCount.setBounds(565,130,130,30);formants.setBounds(712,130,190,30);pitch.setBounds(900,130,194,30);
     stage.setBounds(20,242,470,215);
@@ -137,13 +141,14 @@ void VoxGardenEditor::resized(){
 }
 void VoxGardenEditor::timerCallback(){
     if(lastLanguage!=p.language.load())applyLanguage();
-    if(theme.getToggleState()!=p.darkMode.load())applyTheme();
+    if(theme.getToggleState()!=p.darkMode.load()||lastAccent!=p.themeAccent.load())applyTheme();
     VG_PALETTE
     auto note=p.engine.detectedNote.load();auto conf=p.engine.pitchConfidence.load();int n=(int)std::round(note);pitch.setText(conf>.8f?"Input  "+juce::String(vg::roots[(size_t)((n%12+12)%12)])+juce::String(n/12-1)+" / "+juce::String((note-n)*100,0)+" ct":"Listening for your vocal",juce::dontSendNotification);
     aiBlend.setEnabled(p.settings().aiPrint);
     int count=p.settings().count;if(lastCount!=count){lastCount=count;for(int v=0;v<8;++v)for(int k=0;k<5;++k)controls[(size_t)(10+v*5+k)]->slider.setEnabled(v<count);repaint();}
     for(int v=0;v<vg::voices;++v){muteButtons[(size_t)v].setEnabled(v<count);soloButtons[(size_t)v].setEnabled(v<count);}
     repaint();stage.repaint();
+    compose.setEnabled(!rendering.load()&&!capturePending);
     auto phase=p.capture.getPhase();
     if(capturePending){
         if(phase==TrackCapture::starting){render.setEnabled(false);status.setText("Preparing channel capture...",juce::dontSendNotification);}
@@ -182,11 +187,12 @@ void VoxGardenEditor::beginRender(){
     else status.setText("Start audio playback in your host before capturing.",juce::dontSendNotification);
 }
 void VoxGardenEditor::chooseFile(){chooser=std::make_unique<juce::FileChooser>(t("Render a vocal file"),juce::File{},"*.wav;*.aif;*.aiff;*.flac");chooser->launchAsync(juce::FileBrowserComponent::openMode|juce::FileBrowserComponent::canSelectFiles,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::FileChooser& c){if(safe&&c.getResult().existsAsFile())safe->renderFile(c.getResult());});}
-bool VoxGardenEditor::isInterestedInFileDrag(const juce::StringArray& files){return files.size()==1&&juce::File(files[0]).hasFileExtension("wav;aif;aiff;flac")&&!rendering.load()&&!capturePending;}
-void VoxGardenEditor::filesDropped(const juce::StringArray& files,int,int){if(isInterestedInFileDrag(files))renderFile(juce::File(files[0]));}
-void VoxGardenEditor::renderFile(const juce::File& f,bool trackTake){ VG_PALETTE
+bool VoxGardenEditor::isInterestedInFileDrag(const juce::StringArray& files){return files.size()==1&&juce::File(files[0]).hasFileExtension("wav;aif;aiff;flac;mid;midi")&&!rendering.load()&&!capturePending;}
+void VoxGardenEditor::filesDropped(const juce::StringArray& files,int,int){if(isInterestedInFileDrag(files)){auto file=juce::File(files[0]);if(file.hasFileExtension("mid;midi")){if(composer){composer->setVisible(true);composer->toFront(true);if(auto* content=dynamic_cast<ScoreComposer*>(composer->getContentComponent()))content->filesDropped(files,0,0);return;}composer=showComposer(p,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::File& f){if(safe)safe->renderFile(f,false,true);},file);}else renderFile(file);}}
+void VoxGardenEditor::renderFile(const juce::File& f,bool trackTake,bool scoreTake){ VG_PALETTE
+    if(capturePending&&!trackTake){status.setText(t("Stop the channel capture before rendering another file."),juce::dontSendNotification);return;}
     if(isThreadRunning()||rendering.load())return;inputFile=f;
-    if(!trackTake)renderSettings=p.settings();
+    if(!trackTake)renderSettings=p.settings();if(scoreTake)renderSettings.aiPrint=false;
     if(renderSettings.aiPrint && renderSettings.aiBlend>0 && !vg::aiReady()){status.setText("AI runtime is not ready. Turn off AI singers for a DSP print, or run Setup AI.command.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");return;}
     if(renderSettings.mode==1){status.setText("Choose Scale harmony or Chromatic mode to render a vocal.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");render.setColour(juce::TextButton::buttonColourId,forest);return;}
     outputFolder=trackTake?f.getParentDirectory():f.getParentDirectory().getNonexistentChildFile(f.getFileNameWithoutExtension()+" - VoxGarden","");progress=0;rendering=true;p.printInProgress=true;render.setEnabled(false);importFile.setEnabled(false);reveal.setEnabled(false);render.setButtonText("Cancel print");render.setEnabled(true);startThread();
@@ -198,8 +204,8 @@ void VoxGardenEditor::run(){
 }
 
 void VoxGardenEditor::applyTheme(){
-    look.palette=GardenPalette(p.darkMode.load());auto c=look.palette;
-    theme.setToggleState(p.darkMode.load(),juce::dontSendNotification);
+    look.palette=GardenPalette(p.darkMode.load(),p.themeAccent.load());auto c=look.palette;
+    theme.setToggleState(p.darkMode.load(),juce::dontSendNotification);lastAccent=p.themeAccent.load();themeChoice.setSelectedId(lastAccent+1,juce::dontSendNotification);
     look.setColour(juce::Slider::textBoxTextColourId,c.ink);look.setColour(juce::Slider::textBoxHighlightColourId,c.sage.withAlpha(.4f));
     look.setColour(juce::TooltipWindow::backgroundColourId,c.panel);look.setColour(juce::TooltipWindow::textColourId,c.ink);look.setColour(juce::TooltipWindow::outlineColourId,c.line);
     look.setColour(juce::ComboBox::backgroundColourId,c.panel);look.setColour(juce::ComboBox::textColourId,c.ink);

@@ -14,8 +14,26 @@ Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergro
 
 </details>
 
+## Broncodevoorbeeld: noten + tekst en kleurrijke thema’s
+
+De broncode bevat een **experimentele werkruimte voor noten naar zang**: importeer standaard MIDI, kies een melodietrack, wijs Unicode-lettergrepen toe en bewerk nootnamen, start en duur in een tabel. Geïsoleerde audio levert een bewerkbare eenstemmige notenschets. **Download stemmen in de plugin** (~401 MB modellen plus eigen runtime/cache), kies uit tien stemmen en render droge zang of stuur deze naar het snelle DSP-koor. **Supertonic 3 voor neurale uitspraak + PSOLA** voor timing/toonhoogte ondersteunt Engels, Hindi in Devanagari, Duits, Japans, Russisch en Nederlands. **Core ML geeft de GPU voorrang**; timing en niet-ondersteunde graafbewerkingen gebruiken de CPU. Dit is spraak aangepast naar zang, geen getraind zangmodel; beluister de natuurlijkheid. **Roze, Oceaan en Zonsondergang** hebben lichte/donkere varianten. Niet inbegrepen in de onderstaande v1.0.0-download. [Werkwijze, metingen en grenzen (Engels)](Singing.md).
+
+
+![Voorbeeld noten en tekst](Media/VoxGarden-1.1-preview-nl-score.png)
+
+<details><summary>Rose / 🌸</summary>
+
+![VoxGarden Rose](Media/VoxGarden-1.1-preview-nl-rose.png)
+
+</details>
+
+## SnappySnap-ondersteuning
+
+Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende instellingen voor harmonie, aantal stemmen, formanten en Mutation als **Snaps**. Zo kan het koor tussen natuurlijke en vreemde klanken bewegen. Klankparameters en herstel van de hoststatus worden ondersteund; een volledige morphingsessie in een geactiveerde kopie met licentie is nog niet geverifieerd. Offline AI- en zangrenders zijn bestanden, geen realtime morphbare synthese.
+
 ## Functies
 
+- **SnappySnapFX-ondersteuning:** host VoxGarden en sla verschillende klankinstellingen op als Snaps; zie de compatibiliteitsnotities hieronder.
 - **1–8 koorstemmen**, elk met harmonie, niveau, pan, formanten en diepte; dempen en combineerbare solo per stem.
 - **62 fabrieksklanken**, waaronder vrouwenkoor voor mannenlead en mannenkoor voor vrouwenlead.
 - **Acht ragafamilies:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga en Hamsadhwani. Elke familie heeft de oorspronkelijke klank en beide stemvarianten, met westerse notensets en getransponeerde noten.
@@ -45,6 +63,8 @@ Klik op **Koor en losse stemmen renderen**, speel de passage in Live af en klik 
 Laat Delay Compensation aan: ongeveer **192 ms DSP-vertraging bij 48 kHz**. Neem de lead eerst droog op. Neem MIDI-akkoorden met de recorder van Live op. SnappySnapFX kan verschillende parameterstanden als Snaps hosten; volledig morphinggedrag in een geactiveerde kopie is niet geverifieerd.
 
 ## Optionele AI-stemmen
+
+De nieuwe zangmodellen download je in **Noten + tekst**. De aparte installatie hieronder is alleen voor de oudere Seed-VC-stemconversie.
 
 Voer **Setup AI.command** uit het releasepakket eenmaal uit, of `bash "AI/Setup AI.command"` vanuit de broncode. Git en **uv** of **Python 3.10**, internet en meerdere GB voor de eerste modelinstallatie zijn nodig. Bestaande modeldownloads kunnen bij updates worden hergebruikt.
 
