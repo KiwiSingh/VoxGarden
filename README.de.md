@@ -27,6 +27,8 @@ Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**:
 
 </details>
 
+MIDI-Akkorde und überlappende Noten behalten ihre Dauer, auch bei wiederholten Tonhöhen. Klicken wählt eine Zeile; Cmd/Strg-Klick wählt mehrere Noten, Umschalt-Klick einen Bereich, Doppelklick bearbeitet eine Zelle. Text kann pro Note oder gleichzeitigem Akkord zugewiesen werden.
+
 ## SnappySnap-Unterstützung
 
 VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstellungen für Harmonie, Stimmenzahl, Formanten und Mutation als **Snaps** speichern. So kann der Chor zwischen natürlichen und ungewöhnlichen Klängen wechseln. Klangparameter und Wiederherstellung des Host-Zustands werden unterstützt. Der Nutzer hat den vollständigen Morphing-Ablauf mit der offiziellen siebentägigen SnappySnapFX-Testversion von Electric Smudge bestätigt. Offline-KI- und Gesangsrender sind Dateien, keine in Echtzeit morphbare Synthese.

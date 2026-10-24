@@ -27,6 +27,8 @@ De broncode bevat een **experimentele werkruimte voor noten naar zang**: importe
 
 </details>
 
+MIDI-akkoorden en overlappende noten behouden hun duur, ook bij herhaalde toonhoogten. Klik om een rij te selecteren; Cmd/Ctrl-klik selecteert meerdere noten, Shift-klik een bereik en dubbelklik bewerkt een cel. Tekst kan per noot of gelijktijdig akkoord worden toegewezen.
+
 ## SnappySnap-ondersteuning
 
 Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende instellingen voor harmonie, aantal stemmen, formanten en Mutation als **Snaps**. Zo kan het koor tussen natuurlijke en vreemde klanken bewegen. Klankparameters en herstel van de hoststatus worden ondersteund. De gebruiker heeft volledige morphing bevestigd met de officiële zevendaagse SnappySnapFX-proefversie van Electric Smudge. Offline AI- en zangrenders zijn bestanden, geen realtime morphbare synthese.

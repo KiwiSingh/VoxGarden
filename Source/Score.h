@@ -2,6 +2,8 @@
 #include "Engine.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <functional>
+#include <numeric>
+#include <deque>
 namespace vg {
 struct ScoreNote { double start=0,duration=.5; int midi=60; juce::String syllable; };
 using Score=std::vector<ScoreNote>;
@@ -19,24 +21,37 @@ inline juce::String parseScore(const juce::String& text,Score& notes){
         notes.push_back({start,duration,(int)pitch,syllable});if(notes.size()>2048)return "Use at most 2048 notes.";
     }
     if(notes.empty())return "Add or import some notes first.";
-    std::stable_sort(notes.begin(),notes.end(),[](auto& a,auto& b){return a.start<b.start;});
-    for(size_t i=1;i<notes.size();++i)if(notes[i].start+1e-6<notes[i-1].start+notes[i-1].duration)return "Overlapping notes: choose a monophonic melody track or edit the times.";
     return {};
+}
+// A lyric can describe an individual row or a simultaneous chord onset.
+inline bool assignScoreSyllables(Score& notes,const juce::StringArray& syllables){
+    if(syllables.contains(juce::String{}))return false;
+    if(syllables.size()==(int)notes.size()){for(size_t i=0;i<notes.size();++i)notes[i].syllable=syllables[(int)i];return true;}
+    std::vector<size_t> order(notes.size());std::iota(order.begin(),order.end(),0);
+    std::stable_sort(order.begin(),order.end(),[&](size_t a,size_t b){return notes[a].start<notes[b].start;});
+    std::vector<int> group(notes.size());int groups=0;double anchor=-1;
+    for(auto index:order){if(anchor<0||notes[index].start-anchor>.002){anchor=notes[index].start;++groups;}group[index]=groups-1;}
+    if(syllables.size()!=groups)return false;for(size_t i=0;i<notes.size();++i)notes[i].syllable=syllables[group[i]];return true;
 }
 struct ScoreTrack {juce::String name;Score notes;};
 inline juce::String readMidiScore(const juce::File& file,std::vector<ScoreTrack>& tracks){
     if(file.getSize()>8*1024*1024)return "Use a MIDI file smaller than 8 MB.";
-    auto stream=file.createInputStream();juce::MidiFile midi;tracks.clear();int type=0;if(!stream||!midi.readFrom(*stream,true,&type))return "Could not read a standard MIDI file.";
+    auto stream=file.createInputStream();juce::MidiFile midi;tracks.clear();int type=0;if(!stream||!midi.readFrom(*stream,false,&type))return "Could not read a standard MIDI file.";
     if(type==2)return "MIDI type 2 has independent track timelines. Export a type 0 or 1 melody.";
     midi.convertTimestampTicksToSeconds();
-    for(int t=0;t<midi.getNumTracks();++t){auto sequence=*midi.getTrack(t);sequence.updateMatchedPairs();ScoreTrack track{"Track "+juce::String(t+1),{}};
-        for(int i=0;i<sequence.getNumEvents();++i){auto* event=sequence.getEventPointer(i);auto& message=event->message;
+    for(int t=0;t<midi.getNumTracks();++t){const auto& sequence=*midi.getTrack(t);ScoreTrack track{"Track "+juce::String(t+1),{}};
+        // Match raw note-offs FIFO. JUCE's monophonic pairing truncates a held
+        // note when the same channel/pitch is retriggered by overlapping chords.
+        std::array<std::deque<size_t>,16*128> pending;
+        for(int i=0;i<sequence.getNumEvents();++i){const auto& message=sequence.getEventPointer(i)->message;
             if(message.isTrackNameEvent())track.name=message.getTextFromTextMetaEvent();
-            if(!message.isNoteOn()||message.getChannel()==10)continue;
-            if(!event->noteOffObject)return "MIDI contains an unterminated note.";
-            double start=message.getTimeStamp(),duration=event->noteOffObject->message.getTimeStamp()-start;
-            if(duration>0)track.notes.push_back({start,duration,message.getNoteNumber(),"la"});
+            if((!message.isNoteOn()&&!message.isNoteOff())||message.getChannel()==10)continue;
+            auto& queue=pending[(size_t)((message.getChannel()-1)*128+message.getNoteNumber())];
+            if(message.isNoteOn()){queue.push_back(track.notes.size());track.notes.push_back({message.getTimeStamp(),0,message.getNoteNumber(),"la"});}
+            else if(!queue.empty()){auto index=queue.front();queue.pop_front();track.notes[index].duration=message.getTimeStamp()-track.notes[index].start;}
         }
+        for(auto& queue:pending)if(!queue.empty())return "MIDI contains an unterminated note.";
+        track.notes.erase(std::remove_if(track.notes.begin(),track.notes.end(),[](const auto& note){return note.duration<=0;}),track.notes.end());
         if(!track.notes.empty())tracks.push_back(std::move(track));
     }
     return tracks.empty()?"No pitched MIDI notes found (drum channel 10 is excluded).":juce::String{};

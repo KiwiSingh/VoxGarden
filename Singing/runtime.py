@@ -111,16 +111,16 @@ def render(job,report):
     score=job['notes'];language=job['language'];voice=job.get('voice','F1')
     if language not in ('en','hi','de','ja','ru','nl') or voice not in [f'{s}{i}' for s in ('F','M') for i in range(1,6)]:raise ValueError('Invalid pronunciation language or voice.')
     if not 1<=len(score)<=2048:raise ValueError('Use 1–2048 notes.')
-    previous=0
+    end=0
     for note in score:
         start,duration,pitch=note['start'],note['duration'],note['midi']
-        if not all(np.isfinite(x) for x in (start,duration,pitch)) or start<previous-1e-6 or duration<.06 or start+duration>300 or not 36<=pitch<=96 or pitch!=int(pitch) or not note['syllable'].strip() or len(note['syllable'])>160:raise ValueError('Invalid score or overlapping notes.')
-        previous=start+duration
+        if not all(np.isfinite(x) for x in (start,duration,pitch)) or start<0 or duration<.06 or start+duration>300 or not 36<=pitch<=96 or pitch!=int(pitch) or not note['syllable'].strip() or len(note['syllable'])>160:raise ValueError('Invalid score.')
+        end=max(end,start+duration)
     started=time.perf_counter();status(report,'waiting',-1,'Waiting for the GPU singing renderer…')
     with (ROOT/'renderer.lock').open('w') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         status(report,'loading',0,'Loading the GPU speech model…');tts=None;sr=44100;cache=ROOT/'syllable-cache';cache.mkdir(exist_ok=True)
-        output=np.zeros(round(previous*sr),dtype='float32');neural_seconds=0;new_syllables=0
+        output=np.zeros(round(end*sr),dtype='float32');neural_seconds=0;new_syllables=0
         for i,note in enumerate(score):
             key=hashlib.sha256(json.dumps([REVISION,voice,language,note['syllable'],5],ensure_ascii=False).encode()).hexdigest();path=cache/f'{key}.wav'
             status(report,'rendering',i/len(score),f'Syllable {i+1}/{len(score)} • Core ML GPU preferred')
@@ -133,13 +133,14 @@ def render(job,report):
             os.utime(path,None)
             audio,rate=sf.read(path,dtype='float32')
             if rate!=sr:raise RuntimeError('Syllable cache sample rate mismatch.')
-            sung=retime(audio,sr,note['midi'],note['duration']);offset=round(note['start']*sr);count=min(len(sung),len(output)-offset);output[offset:offset+count]=sung[:count]
+            sung=retime(audio,sr,note['midi'],note['duration']);offset=round(note['start']*sr);count=min(len(sung),len(output)-offset);output[offset:offset+count]+=sung[:count]
+        peak=float(np.max(np.abs(output)));mix_gain=min(1.,.95/max(peak,1e-8));output*=mix_gain
         folder=Path(job['output']);folder.mkdir(parents=True,exist_ok=True);target=folder/'Dry Singing.wav';temporary=folder/'Dry Singing.partial.wav';sf.write(temporary,output,sr,subtype='PCM_24');temporary.replace(target)
         entries=sorted(cache.glob('*.wav'),key=lambda p:p.stat().st_mtime);size=sum(p.stat().st_size for p in entries)
         for entry in entries:
             if size<=512*1024*1024:break
             size-=entry.stat().st_size;entry.unlink()
-        stats=dict(wall_seconds=time.perf_counter()-started,neural_seconds=neural_seconds,new_syllables=new_syllables,cached_syllables=len(score)-new_syllables,audio_seconds=len(output)/sr,backend='Core ML GPU preferred; CPU PSOLA timing/pitch')
+        stats=dict(mix_gain=mix_gain,wall_seconds=time.perf_counter()-started,neural_seconds=neural_seconds,new_syllables=new_syllables,cached_syllables=len(score)-new_syllables,audio_seconds=len(output)/sr,backend='Core ML GPU preferred; CPU PSOLA timing/pitch')
         (folder/'Render Stats.json').write_text(json.dumps(stats,indent=2));status(report,'complete',1,'Dry singing saved.',**stats)
 
 if __name__=='__main__':

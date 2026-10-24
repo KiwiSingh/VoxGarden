@@ -27,6 +27,8 @@ The source tree now includes an **experimental score-to-singing workspace**: imp
 
 </details>
 
+MIDI chords and overlapping notes retain their durations, including repeated pitches. Click a row to select it; Cmd/Ctrl-click selects several notes, Shift-click selects a range, and double-click edits a cell. Lyrics can be assigned per note or per simultaneous chord.
+
 ## SnappySnap support
 
 Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmony, voice-count, formant and Mutation settings as **Snaps**. This lets one choir move between natural and unusual sounds. Sound parameters and host-state restoration are supported. End-to-end morphing has been confirmed by the user with Electric Smudge's official seven-day SnappySnapFX trial. Offline AI/singing renders are files, not a real-time morphable synthesis engine.

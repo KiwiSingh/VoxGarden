@@ -1784,6 +1784,48 @@
       "Audio zu Noten",
       "Audio naar noten",
       "Аудио в ноты"
+    ],
+    [
+      "Delete selected notes",
+      "चुने स्वर हटाएँ",
+      "Gewählte Noten löschen",
+      "Geselecteerde noten wissen",
+      "Удалить выбранные ноты"
+    ],
+    [
+      "Click to select. Cmd/Ctrl-click for more. Double-click to edit.",
+      "चुनने के लिए क्लिक करें। कई स्वरों के लिए Cmd/Ctrl-क्लिक करें। संपादन के लिए डबल-क्लिक करें।",
+      "Klicken zum Auswählen, Cmd/Strg-Klick für weitere Noten. Doppelklicken zum Bearbeiten.",
+      "Klik om te selecteren, Cmd/Ctrl-klik voor meer. Dubbelklik om te bewerken.",
+      "Щёлкните для выбора, Cmd/Ctrl-щелчок — для нескольких нот. Двойной щелчок — правка."
+    ],
+    [
+      "Choose a MIDI track. Overlapping notes are rendered together.",
+      "MIDI ट्रैक चुनें। साथ बजते स्वर एक साथ रेंडर होते हैं।",
+      "MIDI-Spur wählen. Überlappende Noten werden zusammen gerendert.",
+      "Kies een MIDI-track. Overlappende noten worden samen gerenderd.",
+      "Выберите MIDI-дорожку. Пересекающиеся ноты звучат вместе."
+    ],
+    [
+      "Supply one syllable per note or simultaneous chord, separated by |.",
+      "हर स्वर या एक साथ बजने वाले कॉर्ड के लिए एक अक्षरांश दें और | से अलग करें।",
+      "Eine Silbe pro Note oder gleichzeitigem Akkord eingeben, getrennt durch |.",
+      "Geef één lettergreep per noot of gelijktijdig akkoord, gescheiden door |.",
+      "Введите по слогу на ноту или одновременный аккорд, разделяя их |."
+    ],
+    [
+      "Separate lyrics with |: one entry per note or simultaneous chord.",
+      "गीत को | से अलग करें: हर स्वर या एक साथ बजने वाले कॉर्ड के लिए एक प्रविष्टि।",
+      "Text mit | trennen: ein Eintrag pro Note oder gleichzeitigem Akkord.",
+      "Scheid tekst met |: één invoer per noot of gelijktijdig akkoord.",
+      "Разделяйте текст знаком |: запись на ноту или одновременный аккорд."
+    ],
+    [
+      "MIDI track",
+      "MIDI ट्रैक",
+      "MIDI-Spur",
+      "MIDI-track",
+      "MIDI-дорожка"
     ]
   ]
 }
