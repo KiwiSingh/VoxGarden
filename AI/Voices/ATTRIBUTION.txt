@@ -1,0 +1,4 @@
+Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten (2019). CSTR VCTK Corpus version 0.92. University of Edinburgh, CSTR. DOI: 10.7488/ds/2645.
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Selected mic2 recordings concatenated with short silent gaps, cropped to at most 8 seconds, and peak reduced where necessary. No speaker names inferred.
+Source: https://doi.org/10.7488/ds/2645

@@ -1,0 +1,17 @@
+Loading model assets and testing one local singing-voice conversion. This may take several minutes.
+It is strongly recommended to pass the `sampling_rate` argument to this function. Failing to do so can result in silent errors that might be hard to debug.
+It is strongly recommended to pass the `sampling_rate` argument to this function. Failing to do so can result in silent errors that might be hard to debug.
+Warning: Skipped loading some keys due to shape mismatch: {'estimator.input_pos', 'estimator.t_embedder2.mlp.2.bias', 'estimator.conv1.bias', 'estimator.res_projection.weight', 'estimator.res_projection.bias', 'estimator.conv1.weight', 'estimator.t_embedder2.mlp.0.weight', 'estimator.conv2.weight', 'estimator.t_embedder2.mlp.0.bias', 'estimator.conv2.bias', 'estimator.t_embedder2.mlp.2.weight'}
+cfm loaded
+length_regulator loaded
+Loading weights from nvidia/bigvgan_v2_44khz_128band_512x
+Removing weight norm...
+
+  0%|          | 0/4 [00:00<?, ?it/s]
+ 25%|██▌       | 1/4 [00:00<00:00,  4.19it/s]
+ 50%|█████     | 2/4 [00:00<00:01,  1.87it/s]
+ 75%|███████▌  | 3/4 [00:01<00:00,  1.93it/s]
+100%|██████████| 4/4 [00:01<00:00,  1.96it/s]
+100%|██████████| 4/4 [00:01<00:00,  2.02it/s]
+RTF: 3.1891286360143227
+AI singers are ready. Enable AI singers on print in VoxGarden. Live playback remains the DSP preview.

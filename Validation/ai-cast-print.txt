@@ -1,0 +1,3 @@
+PASS Plugin launches local AI worker and receives two singers
+Saved mix + 2 stems: voxgarden-ai-cast-print
+PASS AI singers pass through native mixing and stem export

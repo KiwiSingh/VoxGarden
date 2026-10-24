@@ -1,0 +1,22 @@
+VoxGarden 1.0.0 / Kiwi Singh — audit release — 24 October 2026
+
+Apple Silicon Release VST3 and standalone. Native checks and pluginval
+strictness 5 (GUI tests skipped) passed. 62 factory sounds; all sixteen new
+raga voice-cast variants validated for Sa, cast, note-mask membership,
+AI enable/blend preservation and proper octave spacing. Bhupali uses five
+steps per octave; Malkauns does not gain Pa. Nested menu selection, project
+state, legacy states, capture, dry monitoring, aligned stems, mute/solo,
+scale targets, native AI mixing and host scan/load/state checks passed.
+No new parameters: 75 sound controls plus wrapper bypass = 76 host params.
+
+Updated screenshots generated for English/Hindi/German/Dutch/Russian in
+light/dark themes, with a raga female-choir variant selected. Existing
+translations cover the new compositional preset names. Language switching
+and per-instance persistence passed. See Media and Translations/catalog.json.
+
+The AI engine, worker, reference pack and raga routing are unchanged from
+0.6. Prior real neural Yaman/cast conversion and reference provenance remain
+in Validation/ai-raga-*. This 1.0 change adds factory configurations and menu
+grouping; it does not claim a new AI model or a fresh perceptual singing test.
+Please audit on your own vocal in Live. SnappySnap end-to-end morphing in an
+activated copy remains unverified. Validation records were prepared before repository publication.

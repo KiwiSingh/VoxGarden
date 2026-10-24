@@ -1,0 +1,9 @@
+build/
+ThirdParty/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.zip
+*.vst3/
+*.app/
+.env

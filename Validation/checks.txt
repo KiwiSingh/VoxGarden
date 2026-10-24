@@ -1,0 +1,69 @@
+PASS Every harmony target stays in every supported key/scale
+PASS Major/minor thirds and negative degrees
+PASS YIN detects A3 within 10 cents
+PASS Full state restores discrete and continuous controls
+PASS Starting sounds preserve the chosen key and scale
+PASS Eight-voice DSP produces finite, bounded audio
+DSP: 0.268473 seconds for 3.2 audio seconds; 8.38979% of one core; latency 9216 samples
+PASS Reset removes buffered audio
+Detected MIDI pitch: 57.001 confidence 0.99864
+A minor third output: 261.7 Hz (C4 expected 261.626)
+PASS Rendered A-minor harmony is C4 within 10 cents
+PASS File renderer writes mix + eight aligned stereo WAVs with four-second tails
+PASS MIDI mode waits for notes, voices a chord and releases on All Notes Off
+PASS Choir size restores from plugin state
+PASS Legacy states retain all eight slots without unexpectedly enabling AI
+PASS Seven new natural presets preserve song key and avoid Mutation
+PASS Choir size one silences the other seven parts
+PASS Channel capture arms its background disk writer
+PASS Channel capture drains and finalizes on Stop
+PASS Captured stereo samples match the dry track input, not the processed choir
+PASS Captured vocal renders a mix and exactly the three requested voice stems
+PASS Capture can start a second independent take
+PASS Audio reconfiguration safely finalizes the current captured take
+PASS AI print and blend controls restore from state
+PASS Native AI mixing preserves singer pitch without a second harmony transposition
+PASS Printing monitors unity dry stereo at the declared latency, independent of wet mix/output gain
+PASS All 38 presets preserve song key/scale and valid choir sizes
+PASS Theme preference restores from host state without adding sound parameters
+PASS Solo isolates an active choir voice and mute overrides it
+PASS Multiple solos combine
+PASS Muted solo remains silent while another solo plays
+PASS Solos outside choir size do not silence active singers
+PASS Mute/solo restore with project state without changing stored levels
+PASS Older project states clear mute/solo even after an auditioned state
+PASS Mute/solo parameters append after existing sound controls
+PASS AI job skips muted and non-solo singers while preserving slot identities
+PASS DSP and AI printed stems isolate soloed voice and retain aligned silent excluded slots
+PASS Opposite-register presets change formant, harmony and neural reference cast
+PASS Mixed choir preset selects alternating female/male references
+PASS AI cast survives project state and reaches the render job
+PASS Older projects restore original reference cast; existing parameter order remains stable
+PASS Existing factory sounds restore their original reference cast
+PASS Eight raga presets retain Sa and constrain every voice to the researched note set
+PASS Yaman sharp fourth, Bhairav flat second and Malkauns minor third map correctly
+PASS Western raga display uses consistent degree-based accidental spellings
+PASS Raga selection and per-instance language restore from project state
+PASS AI render job receives effective raga note set
+PASS Older projects retain their original Western scale and default to English
+PASS Raga parameter is appended without changing the original Western scale automation range
+PASS Already-localised menu labels do not translate proper names twice
+PASS Russian voice counts use the correct plural forms
+PASS Every translation catalog entry has Hindi, German, Dutch and Russian text
+PASS Translated controls and dynamic synthesis status preserve numbers
+PASS Translated controls and dynamic synthesis status preserve numbers
+PASS Translated controls and dynamic synthesis status preserve numbers
+PASS Translated controls and dynamic synthesis status preserve numbers
+PASS All sixteen raga voice-cast variants preserve Sa, AI blend, scale membership and true raga octaves
+PASS Bhupali female-choir octave uses five scale steps, not seven
+PASS Malkauns male-choir preset never introduces the omitted Pa
+PASS Raga voice-cast sound restores through project state
+PASS Built plugin scans through host API
+PASS Built plugin instantiates through host API
+Host parameter count: 76 (includes wrapper bypass)
+PASS Host exposes 75 sound parameters plus wrapper bypass
+PASS Host state chunk round trip
+PASS Plugin editor renders to image
+PASS Light and dark themes render independently
+PASS Nested raga preset menus expose all 62 sounds and select the correct voice casts
+PASS Language picker switches every locale and back without changing or duplicating selected raga names

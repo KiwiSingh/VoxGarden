@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "name": "VoxGarden VCTK Reference Pack",
+  "license": "CC-BY-4.0",
+  "attribution": "Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten (2019). CSTR VCTK Corpus version 0.92. University of Edinburgh, CSTR. DOI: 10.7488/ds/2645.",
+  "source": "https://doi.org/10.7488/ds/2645",
+  "mirror": "https://zenodo.org/records/10691876/files/VCTK-Corpus-0.92.zip?download=1",
+  "modifications": "Selected mic2 recordings concatenated with short silent gaps, cropped to at most 8 seconds, and peak reduced where necessary. No speaker names inferred.",
+  "voices": [
+    {
+      "id": "p225",
+      "name": "VCTK 225",
+      "file": "p225.wav",
+      "sha256": "ea8c7e1126447355ef6161de36242d34a55092e2876b1f1a8e88cdb4a03e40fc",
+      "source_clips": [
+        "wav48_silence_trimmed/p225/p225_001_mic2.flac",
+        "wav48_silence_trimmed/p225/p225_002_mic2.flac",
+        "wav48_silence_trimmed/p225/p225_003_mic2.flac"
+      ],
+      "corpus_gender": "F"
+    },
+    {
+      "id": "p228",
+      "name": "VCTK 228",
+      "file": "p228.wav",
+      "sha256": "8da73fc1593d348de87be40741d8a5ad642ee61c09c72dca23831246827fa6e5",
+      "source_clips": [
+        "wav48_silence_trimmed/p228/p228_001_mic2.flac",
+        "wav48_silence_trimmed/p228/p228_002_mic2.flac",
+        "wav48_silence_trimmed/p228/p228_003_mic2.flac"
+      ],
+      "corpus_gender": "F"
+    },
+    {
+      "id": "p230",
+      "name": "VCTK 230",
+      "file": "p230.wav",
+      "sha256": "08f349b3f1c048b3adf59712e5dffed0dea1ffe3fd668099540e3d004ff6f835",
+      "source_clips": [
+        "wav48_silence_trimmed/p230/p230_001_mic2.flac",
+        "wav48_silence_trimmed/p230/p230_002_mic2.flac",
+        "wav48_silence_trimmed/p230/p230_003_mic2.flac"
+      ],
+      "corpus_gender": "F"
+    },
+    {
+      "id": "p231",
+      "name": "VCTK 231",
+      "file": "p231.wav",
+      "sha256": "d59ddea0e96744ba1ba1a25b408f8980ecd5baa2ecd77175b01f13f83be71f53",
+      "source_clips": [
+        "wav48_silence_trimmed/p231/p231_001_mic2.flac",
+        "wav48_silence_trimmed/p231/p231_002_mic2.flac",
+        "wav48_silence_trimmed/p231/p231_003_mic2.flac",
+        "wav48_silence_trimmed/p231/p231_004_mic2.flac"
+      ],
+      "corpus_gender": "F"
+    },
+    {
+      "id": "p229",
+      "name": "VCTK 229",
+      "file": "p229.wav",
+      "sha256": "f833f4458f9aca85f59522d0b3c422473e2e315707c155d88b8bec6c90d9e1dd",
+      "source_clips": [
+        "wav48_silence_trimmed/p229/p229_001_mic2.flac",
+        "wav48_silence_trimmed/p229/p229_002_mic2.flac",
+        "wav48_silence_trimmed/p229/p229_003_mic2.flac"
+      ],
+      "corpus_gender": "F"
+    },
+    {
+      "id": "p232",
+      "name": "VCTK 232",
+      "file": "p232.wav",
+      "sha256": "f41614221afc4814a39a89bfd4dfa7e9f7ee8bffc868e68ed1449605be5ca477",
+      "source_clips": [
+        "wav48_silence_trimmed/p232/p232_001_mic2.flac",
+        "wav48_silence_trimmed/p232/p232_002_mic2.flac",
+        "wav48_silence_trimmed/p232/p232_003_mic2.flac"
+      ],
+      "corpus_gender": "M"
+    },
+    {
+      "id": "p226",
+      "name": "VCTK 226",
+      "file": "p226.wav",
+      "sha256": "05e0eeaacbac7ce263b4b1d87a409986df6f9bf5ff4e8627778f05a664f76f46",
+      "source_clips": [
+        "wav48_silence_trimmed/p226/p226_001_mic2.flac",
+        "wav48_silence_trimmed/p226/p226_002_mic2.flac",
+        "wav48_silence_trimmed/p226/p226_003_mic2.flac"
+      ],
+      "corpus_gender": "M"
+    },
+    {
+      "id": "p227",
+      "name": "VCTK 227",
+      "file": "p227.wav",
+      "sha256": "493038bd9aa7d41c1aea04a1d3fa187bf9c4cbf7aff1a8229dd2424f9efbf73f",
+      "source_clips": [
+        "wav48_silence_trimmed/p227/p227_001_mic2.flac",
+        "wav48_silence_trimmed/p227/p227_002_mic2.flac",
+        "wav48_silence_trimmed/p227/p227_003_mic2.flac"
+      ],
+      "corpus_gender": "M"
+    }
+  ],
+  "cast_metadata_source": "speaker-info.txt in CSTR VCTK Corpus 0.92; original F/M labels, not inferred from recordings."
+}

@@ -1,0 +1,92 @@
+{
+  "engine": "Seed-VC singing 44.1kHz",
+  "source": "fixtures/reference-input.wav",
+  "source_rate": 48000,
+  "source_samples": 153600,
+  "elapsed_seconds": 40.314309582987335,
+  "device": "mps",
+  "references": [
+    {
+      "slot": 1,
+      "reference": "p225",
+      "file": "fixtures/AI Sources/AI Singer 1.wav"
+    },
+    {
+      "slot": 2,
+      "reference": "p232",
+      "file": "fixtures/AI Sources/AI Singer 2.wav"
+    }
+  ],
+  "settings": {
+    "root": 9,
+    "scale": 1,
+    "mode": 0,
+    "count": 2,
+    "aiCast": 3,
+    "correction": 1.0,
+    "glide": 50.0,
+    "detune": 2.0,
+    "vibrato": 1.5,
+    "voices": [
+      {
+        "degree": 0,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.600000023841858
+      },
+      {
+        "degree": 2,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.600000023841858
+      },
+      {
+        "degree": 0,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      },
+      {
+        "degree": 2,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      },
+      {
+        "degree": 0,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      },
+      {
+        "degree": 2,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      },
+      {
+        "degree": 0,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      },
+      {
+        "degree": 2,
+        "stored_level": 0.600000023841858,
+        "mute": false,
+        "solo": false,
+        "level": 0.0
+      }
+    ]
+  },
+  "reference_license": "CC-BY-4.0",
+  "attribution": "Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten (2019). CSTR VCTK Corpus version 0.92. University of Edinburgh, CSTR. DOI: 10.7488/ds/2645.",
+  "timing": "End padded or cropped for model frame rounding; no global time stretching."
+}

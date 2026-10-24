@@ -1,0 +1,13 @@
+Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten (2019). CSTR VCTK Corpus version 0.92. University of Edinburgh, CSTR. DOI: 10.7488/ds/2645.
+CC BY 4.0
+Source: https://zenodo.org/records/10691876/files/VCTK-Corpus-0.92.zip?download=1
+Archive member: speaker-info.txt
+Selected rows (original corpus labels):
+p225  23  F    English    Southern  England
+p226  22  M    English    Surrey
+p227  38  M    English    Cumbria
+p228  22  F    English    Southern  England
+p229  23  F    English    Southern  England
+p230  22  F    English    Stockton-on-tees
+p231  23  F    English    Southern  England
+p232  23  M    English    Southern  England
