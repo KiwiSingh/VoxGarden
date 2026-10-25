@@ -2,34 +2,34 @@
 
 **English** · [हिन्दी](README.hi.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Русский](README.ru.md)
 
-A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 2.0.0** · Apple Silicon macOS · VST3 + standalone.
+A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 3.0.0 — Amphi** · Apple Silicon macOS · VST3 + standalone.
 
-## 2.1 source preview: 24 voices and remembered appearance
+## New in 3.0 “Amphi”: 24 voices and remembered appearance
 
-The current source and local preview add **1–24 choir voices**, edited in three banks of eight with independent mute/solo and voice controls. **Abbey Ensemble 24**, **Chamber Ensemble 16** and **Velvet Abbey 24** are original DSP choir textures with varied voicing, placement, formants and depth—not Cymatics recordings or an Abbey Road sample library. Unused voices skip pitch processing. The last explicitly chosen theme and light/dark setting become the default for fresh instances; saved projects keep their own appearance and do not replace that default. Original 2.0 parameter IDs, indices and ranges remain intact; extra controls are appended. Existing eight-voice sounds retain their sizes. These changes are not in the v2.0.0 release linked below.
+VoxGarden 3.0 Amphi adds **1–24 choir voices**, edited in three banks of eight with independent mute/solo and voice controls. **Abbey Ensemble 24**, **Chamber Ensemble 16** and **Velvet Abbey 24** are original DSP choir textures with varied voicing, placement, formants and depth—not Cymatics recordings or an Abbey Road sample library. Unused voices skip pitch processing. The last explicitly chosen theme and light/dark setting become the default for fresh instances; saved projects keep their own appearance and do not replace that default. Original 2.0 parameter IDs, indices and ranges remain intact; extra controls are appended. Existing eight-voice sounds retain their sizes.
 
-![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+![VoxGarden 3.0 Amphi — Abbey Ensemble 24](Media/VoxGarden-3.0-Amphi-abbey24.png)
 
 ### Amphitheatre and genre sounds
 
-The 2.1 preview also replaces the crowded stage with an original **perspective amphitheatre**: high/low viewing angles, numbered singer figures, click-to-select with matching bank/row highlighting, and direct **M/S** controls for the selected singer. Drag changes its pan and depth; clicking and changing the camera do not change the sound. Coincident singers receive display-only separation so every voice remains selectable.
+Amphi also replaces the crowded stage with an original **perspective amphitheatre**: high/low viewing angles, numbered singer figures, click-to-select with matching bank/row highlighting, and direct **M/S** controls for the selected singer. Drag changes its pan and depth; clicking and changing the camera do not change the sound. Coincident singers receive display-only separation so every voice remains selectable.
 
-Four genre menus add **12 starting sounds**: Bollywood (Intimate Backing, Cinematic Chorus, Raga Backing), Italodisco (Octave Lights, Silver Choir, Midnight Fifths), disco polo (Tight Doubles, Chorus Lift, Festival Stack), and classical (Chamber Voices, SATB Ensemble, Sacred Hall). There are now **77 factory sounds** in the source preview. Genre sounds preserve the chosen root and scale/raga; Raga Backing uses your selected note collection rather than automatically choosing a raga. These are DSP production starting points, not sampled choirs or complete genre arrangements.
+Four genre menus add **12 starting sounds**: Bollywood (Intimate Backing, Cinematic Chorus, Raga Backing), Italodisco (Octave Lights, Silver Choir, Midnight Fifths), disco polo (Tight Doubles, Chorus Lift, Festival Stack), and classical (Chamber Voices, SATB Ensemble, Sacred Hall). There are now **77 factory sounds** in Amphi. Genre sounds preserve the chosen root and scale/raga; Raga Backing uses your selected note collection rather than automatically choosing a raga. These are DSP production starting points, not sampled choirs or complete genre arrangements.
 
 ## Screenshots
 
-![VoxGarden in English, dark theme](Media/VoxGarden-2.0-en-rose.png)
+![VoxGarden in English, dark theme](Media/VoxGarden-3.0-Amphi-en-rose.png)
 
 ## New in 2.0: notes + lyrics and colourful themes
 
 VoxGarden 2.0 includes an **experimental score-to-singing workspace**: import standard MIDI, select a melody track, assign Unicode syllables and edit note names, start and duration in a table. Isolated audio supplies an editable monophonic pitch sketch. **Download voices inside the plugin** (~401 MB of models plus a private runtime/cache), choose from ten voices, render a dry vocal, then **Drag dry vocal to Live** onto the audio track containing VoxGarden to audition and adjust harmonies before printing. **Supertonic 3 neural pronunciation + PSOLA** retiming supports English, Hindi in Devanagari, German, Japanese, Russian and Dutch. **Core ML with GPU-preferred settings** handles neural inference; CPU handles score retiming and unsupported graph operations. This is speech adapted into singing, not a trained singing model; naturalness needs auditioning. **Rose, Ocean and Sunset** each offer light and dark variants. [Workflow, benchmarks and limits](Singing.md).
 
 
-![Notes and lyrics preview](Media/VoxGarden-2.0-en-score.png)
+![Notes and lyrics preview](Media/VoxGarden-3.0-Amphi-en-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-2.0-en-rose.png)
+![VoxGarden Rose](Media/VoxGarden-3.0-Amphi-en-rose.png)
 
 </details>
 
@@ -42,8 +42,8 @@ Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmon
 ## What it does
 
 - **SnappySnapFX support:** host VoxGarden and store different sound settings as Snaps; see the compatibility notes below.
-- **1–8 choir voices**, with individual harmony, level, pan, formant and depth controls; per-voice mute and additive solo.
-- **62 factory sounds**, including female-choir/male-lead and male-choir/female-lead textures.
+- **1–24 choir voices**, with individual harmony, level, pan, formant and depth controls; per-voice mute and additive solo.
+- **77 factory sounds**, including female-choir/male-lead and male-choir/female-lead textures.
 - **Eight raga-inspired families:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga and Hamsadhwani. Each has an original sound and both voice-cast variants, alongside Western note-set names and transposed notes.
 - Scale harmony, MIDI chords and chromatic intervals; timing, detune, vibrato, room and experimental Mutation.
 - **Capture the input of its own track**, then export a choir mix and aligned voice stems. Capture and printing monitor the dry vocal.
@@ -52,7 +52,7 @@ Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmon
 
 ## Download and install
 
-[**Download v2.0.0 for Apple Silicon macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [All releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**Download v3.0.0 for Apple Silicon macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v3.0.0/VoxGarden-3.0.0-Amphi-macOS-arm64.zip) · [All releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. Extract the ZIP and close your audio host.
 2. Run **Install.command**. It installs the VST3 in your user plugin folder and backs up an earlier VoxGarden installation.

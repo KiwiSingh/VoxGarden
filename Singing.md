@@ -1,4 +1,4 @@
-# Notes + lyrics — VoxGarden 2.0
+# Notes + lyrics — VoxGarden 3.0 Amphi
 
 This workspace prioritises **specified MIDI pitches and editable syllable timing**. The backend uses **Supertonic 3** for neural pronunciation, then **PSOLA** to set the score pitch and duration while preserving speech articulation. It is not a trained singing model: this first version still needs listening review, especially for long held notes and large pitch shifts. Automatic linguistic syllabification is not claimed.
 

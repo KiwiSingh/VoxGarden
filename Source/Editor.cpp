@@ -157,7 +157,7 @@ void VoxGardenEditor::paint(juce::Graphics& g){ VG_PALETTE
     g.setGradientFill(juce::ColourGradient(paper,0,0,palette.background,1100,900,false));g.fillAll();
     // Small botanical mark; drawn natively so it stays crisp on Retina displays.
     g.setColour(juce::Colour(0xff294f46));g.fillRoundedRectangle(24,23,47,47,14);g.setColour(juce::Colour(0xffd4dfbe));juce::Path stem;stem.startNewSubPath(47,61);stem.quadraticTo(42,42,57,31);g.strokePath(stem,juce::PathStrokeType(1.5f));g.fillEllipse(34,35,11,19);g.fillEllipse(49,31,10,16);
-    caption(g,t("KIWI SINGH  /  VOXGARDEN 2.1 PREVIEW"),83,76,300,muted);caption(g,t("START WITH A SOUND"),768,17,320,muted);caption(g,t("AI VOICE CAST"),768,78,100,muted);
+    caption(g,t("KIWI SINGH  /  VOXGARDEN 3.0.0 / AMPHI"),83,76,300,muted);caption(g,t("START WITH A SOUND"),768,17,320,muted);caption(g,t("AI VOICE CAST"),768,78,100,muted);
     g.setColour(palette.panel);g.fillRoundedRectangle(20,103,1080,126,13);caption(g,t("ROOT"),36,111,105,muted);caption(g,t("SCALE"),147,111,170,muted);caption(g,t("HARMONY MODE"),345,111,190,muted);caption(g,t("CHOIR SIZE"),565,111,125,muted);
     caption(g,t("RAGA / NOTE SET"),36,166,300,muted);
     g.setColour(palette.panel);g.fillRoundedRectangle(505,242,595,215,16);

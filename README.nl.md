@@ -2,34 +2,34 @@
 
 [English](README.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md) · **Nederlands** · [Русский](README.ru.md)
 
-Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 2.0.0** · Apple Silicon-macOS · VST3 + standalone.
+Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 3.0.0 — Amphi** · Apple Silicon-macOS · VST3 + standalone.
 
-## 2.1-broncodevoorbeeld: 24 stemmen en onthouden thema
+## Nieuw in 3.0 “Amphi”: 24 stemmen en onthouden thema
 
-De huidige broncode en lokale preview bieden **1–24 koorstemmen** in drie banken van acht, met individuele mute/solo en stemregelaars. **Abdij-ensemble 24**, **Kamerensemble 16** en **Fluwelen abdij 24** zijn eigen DSP-klanken, geen Cymatics-opnamen of Abbey Road-samples. Ongebruikte stemmen slaan toonhoogteverwerking over. Het laatst gekozen thema en licht/donker worden standaard voor nieuwe instanties; projecten bewaren hun eigen uiterlijk zonder die standaard te wijzigen. Oude 2.0-parameters en achtstemmige klanken blijven behouden; nieuwe regelaars worden toegevoegd. Niet inbegrepen in de onderstaande v2.0.0-download.
+VoxGarden 3.0 Amphi biedt **1–24 koorstemmen** in drie banken van acht, met individuele mute/solo en stemregelaars. **Abdij-ensemble 24**, **Kamerensemble 16** en **Fluwelen abdij 24** zijn eigen DSP-klanken, geen Cymatics-opnamen of Abbey Road-samples. Ongebruikte stemmen slaan toonhoogteverwerking over. Het laatst gekozen thema en licht/donker worden standaard voor nieuwe instanties; projecten bewaren hun eigen uiterlijk zonder die standaard te wijzigen. Oude 2.0-parameters en achtstemmige klanken blijven behouden; nieuwe regelaars worden toegevoegd.
 
-![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+![VoxGarden 3.0 Amphi — Abbey Ensemble 24](Media/VoxGarden-3.0-Amphi-abbey24.png)
 
 ### Amfitheater en genreklanken
 
-De 2.1-preview bevat een eigen **amfitheater in perspectief**: hoge/lage kijkhoek, genummerde zangers, klikselectie met bijbehorende bank/rij en directe **M/S**-knoppen voor de geselecteerde zanger. Slepen wijzigt pan en diepte; klikken en camerawissels wijzigen het geluid niet. Samenvallende stemmen worden alleen visueel gescheiden zodat elke stem selecteerbaar blijft.
+Amphi bevat een eigen **amfitheater in perspectief**: hoge/lage kijkhoek, genummerde zangers, klikselectie met bijbehorende bank/rij en directe **M/S**-knoppen voor de geselecteerde zanger. Slepen wijzigt pan en diepte; klikken en camerawissels wijzigen het geluid niet. Samenvallende stemmen worden alleen visueel gescheiden zodat elke stem selecteerbaar blijft.
 
 Bollywood, Italodisco, disco polo en klassiek krijgen **12 nieuwe beginklanken**, in totaal **77**. Grondtoon en gekozen toonladder/raga blijven behouden. Raga-achtergrondzang gebruikt de gekozen notenverzameling en kiest niet automatisch een raga. DSP-uitgangspunten, geen gesamplede koren of complete genre-arrangementen.
 
 ## Schermafbeeldingen
 
-![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-2.0-nl-rose.png)
+![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-3.0-Amphi-nl-rose.png)
 
 ## Nieuw in 2.0: noten + tekst en kleurrijke thema’s
 
 De broncode bevat een **experimentele werkruimte voor noten naar zang**: importeer standaard MIDI, kies een melodietrack, wijs Unicode-lettergrepen toe en bewerk nootnamen, start en duur in een tabel. Geïsoleerde audio levert een bewerkbare eenstemmige notenschets. **Download stemmen in de plugin** (~401 MB modellen plus eigen runtime/cache), kies uit tien stemmen en render droge zang en gebruik **Sleep droge zang naar Live** om deze op de audiotrack met VoxGarden te zetten en harmonieën vóór het printen te beluisteren en aan te passen. **Supertonic 3 voor neurale uitspraak + PSOLA** voor timing/toonhoogte ondersteunt Engels, Hindi in Devanagari, Duits, Japans, Russisch en Nederlands. **Core ML geeft de GPU voorrang**; timing en niet-ondersteunde graafbewerkingen gebruiken de CPU. Dit is spraak aangepast naar zang, geen getraind zangmodel; beluister de natuurlijkheid. **Roze, Oceaan en Zonsondergang** hebben lichte/donkere varianten. [Werkwijze, metingen en grenzen (Engels)](Singing.md).
 
 
-![Voorbeeld noten en tekst](Media/VoxGarden-2.0-nl-score.png)
+![Voorbeeld noten en tekst](Media/VoxGarden-3.0-Amphi-nl-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-2.0-nl-rose.png)
+![VoxGarden Rose](Media/VoxGarden-3.0-Amphi-nl-rose.png)
 
 </details>
 
@@ -42,8 +42,8 @@ Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende inste
 ## Functies
 
 - **SnappySnapFX-ondersteuning:** host VoxGarden en sla verschillende klankinstellingen op als Snaps; zie de compatibiliteitsnotities hieronder.
-- **1–8 koorstemmen**, elk met harmonie, niveau, pan, formanten en diepte; dempen en combineerbare solo per stem.
-- **62 fabrieksklanken**, waaronder vrouwenkoor voor mannenlead en mannenkoor voor vrouwenlead.
+- **1–24 koorstemmen**, elk met harmonie, niveau, pan, formanten en diepte; dempen en combineerbare solo per stem.
+- **77 fabrieksklanken**, waaronder vrouwenkoor voor mannenlead en mannenkoor voor vrouwenlead.
 - **Acht ragafamilies:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga en Hamsadhwani. Elke familie heeft de oorspronkelijke klank en beide stemvarianten, met westerse notensets en getransponeerde noten.
 - Toonladderharmonie, MIDI-akkoorden, chromatische intervallen, timing, ontstemming, vibrato, ruimte en experimentele Mutatie.
 - **De invoer van de eigen track opnemen**, daarna koormix en uitgelijnde losse stemmen renderen. Tijdens opname en renderen hoor je de droge zang.
@@ -52,7 +52,7 @@ Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende inste
 
 ## Downloaden en installeren
 
-[**Download v2.0.0 voor Apple Silicon-macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [Alle releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**Download v3.0.0 voor Apple Silicon-macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v3.0.0/VoxGarden-3.0.0-Amphi-macOS-arm64.zip) · [Alle releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. Pak de ZIP uit en sluit je audiohost.
 2. Voer **Install.command** uit. Het VST3 wordt in je gebruikersmap geïnstalleerd; een oudere VoxGarden-installatie krijgt een reservekopie.

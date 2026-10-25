@@ -2,34 +2,34 @@
 
 [English](README.md) · [हिन्दी](README.hi.md) · **Deutsch** · [Nederlands](README.nl.md) · [Русский](README.ru.md)
 
-Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 2.0.0** · Apple-Silicon-macOS · VST3 + Standalone.
+Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 3.0.0 — Amphi** · Apple-Silicon-macOS · VST3 + Standalone.
 
-## 2.1-Quellcode-Vorschau: 24 Stimmen und gemerktes Design
+## Neu in 3.0 „Amphi“: 24 Stimmen und gemerktes Design
 
-Der aktuelle Quellcode und die lokale Vorschau bieten **1–24 Chorstimmen** in drei Achterbänken mit separatem Mute/Solo und Stimmreglern. **Abtei-Ensemble 24**, **Kammerensemble 16** und **Samtige Abtei 24** sind eigene DSP-Klänge, keine Cymatics-Aufnahmen oder Abbey-Road-Samples. Ungenutzte Stimmen überspringen die Tonhöhenbearbeitung. Das zuletzt gewählte Design samt Hell/Dunkel wird Standard für neue Instanzen; Projekte behalten ihr eigenes Design, ohne den Standard zu ändern. Alte 2.0-Parameter und Achtstimmenklänge bleiben erhalten; neue Regler werden angehängt. Nicht im unten verlinkten v2.0.0-Download enthalten.
+VoxGarden 3.0 Amphi bietet **1–24 Chorstimmen** in drei Achterbänken mit separatem Mute/Solo und Stimmreglern. **Abtei-Ensemble 24**, **Kammerensemble 16** und **Samtige Abtei 24** sind eigene DSP-Klänge, keine Cymatics-Aufnahmen oder Abbey-Road-Samples. Ungenutzte Stimmen überspringen die Tonhöhenbearbeitung. Das zuletzt gewählte Design samt Hell/Dunkel wird Standard für neue Instanzen; Projekte behalten ihr eigenes Design, ohne den Standard zu ändern. Alte 2.0-Parameter und Achtstimmenklänge bleiben erhalten; neue Regler werden angehängt.
 
-![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+![VoxGarden 3.0 Amphi — Abbey Ensemble 24](Media/VoxGarden-3.0-Amphi-abbey24.png)
 
 ### Amphitheater und Genre-Klänge
 
-Die 2.1-Vorschau bietet ein eigenes **perspektivisches Amphitheater**: hohe/flache Ansicht, nummerierte Sänger, Auswahl per Klick mit passender Bank-/Zeilenmarkierung sowie direkte **M/S**-Regler für die gewählte Stimme. Ziehen ändert Pan und Tiefe; Klick und Kamera ändern den Klang nicht. Deckungsgleiche Stimmen werden nur visuell getrennt und bleiben einzeln auswählbar.
+Amphi bietet ein eigenes **perspektivisches Amphitheater**: hohe/flache Ansicht, nummerierte Sänger, Auswahl per Klick mit passender Bank-/Zeilenmarkierung sowie direkte **M/S**-Regler für die gewählte Stimme. Ziehen ändert Pan und Tiefe; Klick und Kamera ändern den Klang nicht. Deckungsgleiche Stimmen werden nur visuell getrennt und bleiben einzeln auswählbar.
 
 Bollywood, Italodisco, Disco polo und Klassik erhalten **12 neue Ausgangsklänge**, insgesamt **77**. Grundton und gewählte Tonleiter/Raga bleiben erhalten. Raga-Begleitung verwendet die gewählte Notensammlung statt automatisch eine Raga auszuwählen. DSP-Ausgangspunkte, keine gesampelten Chöre oder vollständigen Genre-Arrangements.
 
 ## Screenshots
 
-![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-2.0-de-rose.png)
+![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-3.0-Amphi-de-rose.png)
 
 ## Neu in 2.0: Noten + Liedtext und farbige Themen
 
 Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**: Standard-MIDI importieren, Melodiespur wählen, Unicode-Silben zuweisen und Notennamen, Start und Dauer in einer Tabelle bearbeiten. Isoliertes Audio liefert eine editierbare einstimmige Notenskizze. **Stimmen direkt im Plugin laden** (~401 MB Modelle plus eigene Laufzeit/Cache), eine von zehn Stimmen wählen und trockenen Gesang rendern und mit **Trockenen Gesang zu Live ziehen** auf die Audiospur mit VoxGarden ziehen, um Harmonien vor dem Rendern anzuhören und einzustellen. **Supertonic 3 für neuronale Aussprache + PSOLA** für Zeit/Tonhöhe unterstützt Englisch, Hindi in Devanagari, Deutsch, Japanisch, Russisch und Niederländisch. **Core ML bevorzugt die GPU**; Zeitbearbeitung und nicht unterstützte Graphoperationen laufen auf der CPU. Dies ist an Noten angepasste Sprache, kein trainiertes Gesangsmodell; Natürlichkeit bitte anhören. **Rosa, Ozean und Sonnenuntergang** bieten helle/dunkle Varianten. [Ablauf, Messwerte und Grenzen (Englisch)](Singing.md).
 
 
-![Vorschau Noten und Liedtext](Media/VoxGarden-2.0-de-score.png)
+![Vorschau Noten und Liedtext](Media/VoxGarden-3.0-Amphi-de-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-2.0-de-rose.png)
+![VoxGarden Rose](Media/VoxGarden-3.0-Amphi-de-rose.png)
 
 </details>
 
@@ -42,8 +42,8 @@ VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstel
 ## Funktionen
 
 - **SnappySnapFX-Unterstützung:** VoxGarden hosten und verschiedene Klangeinstellungen als Snaps speichern; Kompatibilitätshinweise unten.
-- **1–8 Chorstimmen**, jeweils mit Harmonie, Pegel, Panorama, Formanten und Tiefe; Stummschaltung und kombinierbare Solos pro Stimme.
-- **62 Werksklänge**, darunter Frauenchor für Männerlead und Männerchor für Frauenlead.
+- **1–24 Chorstimmen**, jeweils mit Harmonie, Pegel, Panorama, Formanten und Tiefe; Stummschaltung und kombinierbare Solos pro Stimme.
+- **77 Werksklänge**, darunter Frauenchor für Männerlead und Männerchor für Frauenlead.
 - **Acht Raga-Familien:** Yaman, Bhupali, Kafi, Bhairavi, Bhairav, Malkauns, Durga und Hamsadhwani. Jede bietet den Originalklang und beide Besetzungsvarianten, mit westlichen Tonvorräten und transponierten Noten.
 - Tonleiterharmonie, MIDI-Akkorde, chromatische Intervalle sowie Timing, Verstimmung, Vibrato, Raum und experimentelle Mutation.
 - **Eingang der eigenen Spur aufnehmen**, danach Chormix und zeitlich ausgerichtete Einzelspuren rendern. Aufnahme und Rendern verwenden trockenes Monitoring.
@@ -52,7 +52,7 @@ VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstel
 
 ## Download und Installation
 
-[**v2.0.0 für Apple-Silicon-macOS herunterladen**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [Alle Releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**v3.0.0 für Apple-Silicon-macOS herunterladen**](https://github.com/KiwiSingh/VoxGarden/releases/download/v3.0.0/VoxGarden-3.0.0-Amphi-macOS-arm64.zip) · [Alle Releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. ZIP entpacken und den Audiohost schließen.
 2. **Install.command** starten. Das VST3 wird im Benutzer-Pluginordner installiert; eine ältere VoxGarden-Installation wird gesichert.
