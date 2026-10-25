@@ -1,5 +1,6 @@
 #include "Processor.h"
 #include "Editor.h"
+#include "GenrePresets.h"
 namespace {
 const std::array<const char*,19> ids {"root","scale","mode","mix","gain","detune","vibrato","human","width","correction","glide","space","weird","formantLock","voiceCount","aiPrint","aiBlend","aiCast","raga"};
 }
@@ -64,6 +65,12 @@ void VoxGardenProcessor::applyPreset(int preset) {
     // Root and scale belong to the song, so starting sounds retain them.
     for(int v=1;v<=vg::voices;++v){auto prefix="v"+juce::String(v)+"_";setValue(prefix+"mute",0);setValue(prefix+"solo",0);}
     setValue("extraVoices",0);
+    if(preset>=65&&preset<77){auto profile=vg::genrePresets[(size_t)(preset-65)];auto current=settings();int octave=(int)vg::intervals[(size_t)current.scale].size();
+        setChoirSize(profile.count);setValue("mode",0);setValue("aiCast",0);setValue("mix",1);setValue("gain",.6f);setValue("space",profile.room);setValue("width",.94f);setValue("detune",profile.detune);setValue("human",profile.timing);setValue("vibrato",profile.vibrato);setValue("correction",1);setValue("glide",juce::String(profile.family)=="Classical"?85.f:35.f);setValue("weird",0);setValue("formantLock",1);
+        for(int v=0;v<vg::voices;++v){auto id="v"+juce::String(v+1)+"_";int part=std::min(3,v*4/profile.count);int degree=profile.degrees[(size_t)part];if(degree==7)degree=octave;else if(degree==-7)degree=-octave;
+            setValue(id+"degree",(float)degree);setValue(id+"level",.43f);setValue(id+"pan",-.88f+1.76f*(v%6)/5);setValue(id+"delay",part*17.f+(v%6)*1.7f);setValue(id+"formant",juce::jlimit(-12.f,12.f,profile.colour+(part-1.5f)*.45f+(v%2?.12f:-.12f)));}
+        return;
+    }
     if(preset>=62){
         int sound=juce::jlimit(0,2,preset-62);setChoirSize(sound==1?16:24);setValue("mode",0);setValue("raga",0);setValue("aiCast",sound==2?1:0);
         setValue("mix",1);setValue("gain",.6f);setValue("space",sound==1?.38f:.82f);setValue("width",.96f);setValue("detune",3.5f);setValue("human",22);setValue("vibrato",2.2f);setValue("correction",1);setValue("glide",65);setValue("weird",0);setValue("formantLock",1);

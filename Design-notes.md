@@ -32,3 +32,9 @@ The original Choir Voices parameter remains 1–8 to preserve normalized automat
 Appearance.json is an atomic user preference in Library/Application Support/VoxGarden. Only explicit theme/light-dark UI changes write it; construction reads it and project restore remains per-instance. No preferences I/O happens in processBlock.
 
 When an existing factory sound is selected, voices 9–24 are seeded from the original eight voice settings with small extra timing/pan/formant offsets. They remain inactive until the user increases the count. This preserves the older sound at its original size while retaining its voice-cast and raga character when expanded.
+
+## Perspective amphitheatre
+
+This is an original native 2.5D projection, not a mesh renderer or HRTF/spatial-audio engine. High/low view changes the projection only. Audio mapping remains pan and per-voice delay/depth. Selected singers show a tether to the true projected position when display-only collision avoidance displaces the marker. A guaranteed tiered seating fallback handles all-coincident voices without writing audio parameters. Mouse-down selects without moving; an actual drag starts host gestures. Empty-space drags are ignored. Selecting a singer opens its matching eight-voice bank and highlights the row. Stage M/S writes the same individual voice parameters as the existing table. No borrowed product artwork or new sound parameters are used.
+
+Genre starting sounds change voicing, count, formants, humanisation, room and placement while preserving root, Western scale and raga selection. Octave degrees use the selected note-set length. The classical SATB name describes a four-section voicing texture, not independent contrapuntal voice leading. The Raga Backing sound does not choose a raga or generate characteristic phrases.

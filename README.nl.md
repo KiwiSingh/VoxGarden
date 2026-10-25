@@ -10,6 +10,12 @@ De huidige broncode en lokale preview bieden **1–24 koorstemmen** in drie bank
 
 ![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
 
+### Amfitheater en genreklanken
+
+De 2.1-preview bevat een eigen **amfitheater in perspectief**: hoge/lage kijkhoek, genummerde zangers, klikselectie met bijbehorende bank/rij en directe **M/S**-knoppen voor de geselecteerde zanger. Slepen wijzigt pan en diepte; klikken en camerawissels wijzigen het geluid niet. Samenvallende stemmen worden alleen visueel gescheiden zodat elke stem selecteerbaar blijft.
+
+Bollywood, Italodisco, disco polo en klassiek krijgen **12 nieuwe beginklanken**, in totaal **77**. Grondtoon en gekozen toonladder/raga blijven behouden. Raga-achtergrondzang gebruikt de gekozen notenverzameling en kiest niet automatisch een raga. DSP-uitgangspunten, geen gesamplede koren of complete genre-arrangementen.
+
 ## Schermafbeeldingen
 
 ![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-2.0-nl-rose.png)

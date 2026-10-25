@@ -10,6 +10,12 @@ Der aktuelle Quellcode und die lokale Vorschau bieten **1–24 Chorstimmen** in 
 
 ![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
 
+### Amphitheater und Genre-Klänge
+
+Die 2.1-Vorschau bietet ein eigenes **perspektivisches Amphitheater**: hohe/flache Ansicht, nummerierte Sänger, Auswahl per Klick mit passender Bank-/Zeilenmarkierung sowie direkte **M/S**-Regler für die gewählte Stimme. Ziehen ändert Pan und Tiefe; Klick und Kamera ändern den Klang nicht. Deckungsgleiche Stimmen werden nur visuell getrennt und bleiben einzeln auswählbar.
+
+Bollywood, Italodisco, Disco polo und Klassik erhalten **12 neue Ausgangsklänge**, insgesamt **77**. Grundton und gewählte Tonleiter/Raga bleiben erhalten. Raga-Begleitung verwendet die gewählte Notensammlung statt automatisch eine Raga auszuwählen. DSP-Ausgangspunkte, keine gesampelten Chöre oder vollständigen Genre-Arrangements.
+
 ## Screenshots
 
 ![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-2.0-de-rose.png)

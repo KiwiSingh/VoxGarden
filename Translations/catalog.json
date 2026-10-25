@@ -1959,6 +1959,167 @@
       "Stimmen 17–24",
       "Stemmen 17–24",
       "Голоса 17–24"
+    ],
+    [
+      "AMPHITHEATRE",
+      "अर्धवृत्त मंच",
+      "AMPHITHEATER",
+      "AMFITHEATER",
+      "АМФИТЕАТР"
+    ],
+    [
+      "Low view",
+      "नीचा दृश्य",
+      "Flache Ansicht",
+      "Lage kijkhoek",
+      "Низкий ракурс"
+    ],
+    [
+      "High view",
+      "ऊँचा दृश्य",
+      "Hohe Ansicht",
+      "Hoge kijkhoek",
+      "Высокий ракурс"
+    ],
+    [
+      "Drag to position. Click to select.",
+      "स्थान बदलने के लिए खींचें। चुनने के लिए क्लिक करें।",
+      "Ziehen zum Platzieren. Klicken zum Auswählen.",
+      "Sleep om te plaatsen. Klik om te selecteren.",
+      "Тяните для перемещения. Нажмите для выбора."
+    ],
+    [
+      "Singer",
+      "गायक",
+      "Stimme",
+      "Zanger",
+      "Голос"
+    ],
+    [
+      "Mute the selected singer",
+      "चुने हुए गायक को म्यूट करें",
+      "Ausgewählte Stimme stummschalten",
+      "Demp de geselecteerde zanger",
+      "Отключить выбранный голос"
+    ],
+    [
+      "Solo the selected singer",
+      "चुने हुए गायक को अकेला सुनें",
+      "Ausgewählte Stimme solo hören",
+      "Beluister de geselecteerde zanger solo",
+      "Прослушать выбранный голос соло"
+    ],
+    [
+      "Bollywood",
+      "बॉलीवुड",
+      "Bollywood",
+      "Bollywood",
+      "Болливуд"
+    ],
+    [
+      "Italodisco",
+      "इटालोडिस्को",
+      "Italodisco",
+      "Italodisco",
+      "Итало-диско"
+    ],
+    [
+      "Disco polo",
+      "डिस्को पोलो",
+      "Disco polo",
+      "Disco polo",
+      "Диско-поло"
+    ],
+    [
+      "Classical",
+      "शास्त्रीय",
+      "Klassik",
+      "Klassiek",
+      "Классика"
+    ],
+    [
+      "Bollywood Intimate Backing",
+      "बॉलीवुड अंतरंग सहगान",
+      "Bollywood Intime Begleitung",
+      "Bollywood Intieme achtergrondzang",
+      "Болливуд: камерный бэк-вокал"
+    ],
+    [
+      "Bollywood Cinematic Chorus",
+      "बॉलीवुड सिनेमाई कोरस",
+      "Bollywood Filmchor",
+      "Bollywood Filmkoor",
+      "Болливуд: кинематографичный хор"
+    ],
+    [
+      "Bollywood Raga Backing",
+      "बॉलीवुड राग सहगान",
+      "Bollywood Raga-Begleitung",
+      "Bollywood Raga-achtergrondzang",
+      "Болливуд: рага-бэк-вокал"
+    ],
+    [
+      "Italodisco Octave Lights",
+      "इटालोडिस्को सप्तक रोशनी",
+      "Italodisco Oktavlichter",
+      "Italodisco Octaaflichten",
+      "Итало-диско: октавные огни"
+    ],
+    [
+      "Italodisco Silver Choir",
+      "इटालोडिस्को रजत मंडली",
+      "Italodisco Silberchor",
+      "Italodisco Zilverkoor",
+      "Итало-диско: серебряный хор"
+    ],
+    [
+      "Italodisco Midnight Fifths",
+      "इटालोडिस्को मध्यरात्रि पंचम",
+      "Italodisco Mitternachtsquinten",
+      "Italodisco Middernachtkwinten",
+      "Итало-диско: полуночные квинты"
+    ],
+    [
+      "Disco Polo Tight Doubles",
+      "डिस्को पोलो कसे हुए डबल",
+      "Disco Polo Enge Dopplungen",
+      "Disco Polo Strakke dubbels",
+      "Диско-поло: плотные дубли"
+    ],
+    [
+      "Disco Polo Chorus Lift",
+      "डिस्को पोलो उभरता कोरस",
+      "Disco Polo Refrain-Glanz",
+      "Disco Polo Refreinlift",
+      "Диско-поло: яркий припев"
+    ],
+    [
+      "Disco Polo Festival Stack",
+      "डिस्को पोलो उत्सव मंडली",
+      "Disco Polo Festival-Ensemble",
+      "Disco Polo Festivalensemble",
+      "Диско-поло: фестивальный ансамбль"
+    ],
+    [
+      "Classical Chamber Voices",
+      "शास्त्रीय चेम्बर स्वर",
+      "Klassische Kammerstimmen",
+      "Klassieke kamerstemmen",
+      "Классика: камерные голоса"
+    ],
+    [
+      "Classical SATB Ensemble",
+      "शास्त्रीय SATB मंडली",
+      "Klassisches SATB-Ensemble",
+      "Klassiek SATB-ensemble",
+      "Классика: ансамбль SATB"
+    ],
+    [
+      "Classical Sacred Hall",
+      "शास्त्रीय पवित्र सभागार",
+      "Klassischer Sakralchor",
+      "Klassieke gewijde hal",
+      "Классика: духовный зал"
     ]
   ]
 }

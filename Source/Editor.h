@@ -28,13 +28,16 @@ public:
     juce::Font getComboBoxFont(juce::ComboBox&)override{return juce::FontOptions(language==1?16:14);}
 };
 class Stage final:public juce::Component {
-    VoxGardenProcessor& p;int selected=-1;
+    VoxGardenProcessor& p;int selected=0;bool dragging=false,armed=false;juce::Point<float> origin;float panStart=0,depthStart=0;
+    juce::ComboBox view;juce::TextButton mute{"M"},solo{"S"};juce::Label selection;
+    void finishDrag();float depthSpan()const;juce::Point<float> project(float,float)const;
 public:
-    explicit Stage(VoxGardenProcessor& proc):p(proc){}
-    void paint(juce::Graphics&)override;
-    void mouseDown(const juce::MouseEvent&)override;
-    void mouseDrag(const juce::MouseEvent&)override;
-    void mouseUp(const juce::MouseEvent&)override;
+    explicit Stage(VoxGardenProcessor&);~Stage()override;
+    std::function<void(int)> onSelected;
+    int selectedSinger()const{return selected;}
+    std::array<juce::Point<float>,vg::voices> singerPositions()const;
+    void lookAndFeelChanged()override;void setLanguage();void refresh();void resized()override;void paint(juce::Graphics&)override;
+    void mouseDown(const juce::MouseEvent&)override;void mouseDrag(const juce::MouseEvent&)override;void mouseUp(const juce::MouseEvent&)override;
 };
 class VoxGardenEditor final:public juce::AudioProcessorEditor,public juce::FileDragAndDropTarget,private juce::Timer,private juce::Thread {
 public:

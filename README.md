@@ -10,6 +10,12 @@ The current source and local preview add **1–24 choir voices**, edited in thre
 
 ![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
 
+### Amphitheatre and genre sounds
+
+The 2.1 preview also replaces the crowded stage with an original **perspective amphitheatre**: high/low viewing angles, numbered singer figures, click-to-select with matching bank/row highlighting, and direct **M/S** controls for the selected singer. Drag changes its pan and depth; clicking and changing the camera do not change the sound. Coincident singers receive display-only separation so every voice remains selectable.
+
+Four genre menus add **12 starting sounds**: Bollywood (Intimate Backing, Cinematic Chorus, Raga Backing), Italodisco (Octave Lights, Silver Choir, Midnight Fifths), disco polo (Tight Doubles, Chorus Lift, Festival Stack), and classical (Chamber Voices, SATB Ensemble, Sacred Hall). There are now **77 factory sounds** in the source preview. Genre sounds preserve the chosen root and scale/raga; Raga Backing uses your selected note collection rather than automatically choosing a raga. These are DSP production starting points, not sampled choirs or complete genre arrangements.
+
 ## Screenshots
 
 ![VoxGarden in English, dark theme](Media/VoxGarden-2.0-en-rose.png)

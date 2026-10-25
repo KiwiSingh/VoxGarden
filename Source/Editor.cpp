@@ -2,6 +2,7 @@
 #include "Offline.h"
 #include "AI.h"
 #include "Composer.h"
+#include "GenrePresets.h"
 namespace {
 #define VG_PALETTE const auto& palette=static_cast<GardenLook&>(getLookAndFeel()).palette; const auto paper=palette.paper,ink=palette.ink,forest=palette.forest,sage=palette.sage,muted=palette.muted,line=palette.line,gold=palette.gold;
 void caption(juce::Graphics& g,const juce::String& s,int x,int y,int w,juce::Colour colour){g.setColour(colour);g.setFont(juce::FontOptions(vg::usesDevanagari(s)?12.f:10.f,juce::Font::bold));g.drawText(s,x,y,w,16,juce::Justification::centredLeft);}
@@ -32,27 +33,60 @@ void GardenLook::drawComboBox(juce::Graphics& g,int w,int h,bool,int,int,int,int
     auto a=juce::Rectangle<float>(0,0,(float)w,(float)h).reduced(.5f);g.setColour(b.findColour(juce::ComboBox::backgroundColourId));g.fillRoundedRectangle(a,8);g.setColour(line);g.drawRoundedRectangle(a,8,1);
     juce::Path arrow;arrow.startNewSubPath((float)w-20,(float)h*.43f);arrow.lineTo((float)w-15,(float)h*.58f);arrow.lineTo((float)w-10,(float)h*.43f);g.setColour(muted);g.strokePath(arrow,juce::PathStrokeType(1.4f));
 }
-void Stage::paint(juce::Graphics& g){ VG_PALETTE
-    auto t=[this](const juce::String& text){return vg::tr(p.language.load(),text);};
-    auto a=getLocalBounds().toFloat();g.setGradientFill(juce::ColourGradient(palette.forest.darker(.65f),0,0,palette.background.darker(.3f),a.getRight(),a.getBottom(),false));g.fillRoundedRectangle(a,16);
-    g.setColour(gold);g.setFont(juce::FontOptions(10,juce::Font::bold));g.drawText(t("THE SOUNDSTAGE"),18,12,200,18,juce::Justification::left);
-    g.setColour(juce::Colour(0xffe0e4e9));g.setFont(p.language.load()==1?13:11);g.drawText(t("Drag each singer to place their voice"),18,33,330,18,juce::Justification::left);
-    for(int i=0;i<5;++i){juce::Path arc;float y=70.f+i*32;arc.startNewSubPath(14,y+25);arc.quadraticTo(a.getCentreX(),y-28,a.getRight()-14,y+25);g.setColour(sage.withAlpha(.15f));g.strokePath(arc,juce::PathStrokeType(.8f));}
-    auto area=getLocalBounds().reduced(35,25).withTrimmedTop(40).withTrimmedBottom(10).toFloat();auto s=p.settings();
-    for(int v=0;v<std::max(8,s.count);++v){auto vs=s.voice[(size_t)v];bool active=vg::voiceAudible(s,v) && vs.level>.001f;float x=area.getCentreX()+vs.pan*area.getWidth()*.5f,y=area.getY()+vs.delay/80*area.getHeight();
-        if(active){g.setColour(gold.withAlpha(.07f));g.fillEllipse(x-21,y-21,42,42);g.setColour(ink.withAlpha(.25f));g.fillEllipse(x-12,y-9,26,26);}
-        g.setColour(active?juce::Colour(0xffdce9d7):sage.withAlpha(.17f));g.fillEllipse(x-12,y-12,24,24);g.setColour(active?juce::Colour(0xff294f46):sage.withAlpha(.4f));g.setFont(juce::FontOptions(11,juce::Font::bold));g.drawText(juce::String(v+1),(int)x-12,(int)y-12,24,24,juce::Justification::centred);
+Stage::Stage(VoxGardenProcessor& proc):p(proc){
+    addAndMakeVisible(view);addAndMakeVisible(mute);addAndMakeVisible(solo);addAndMakeVisible(selection);
+    view.setComponentID("stageView");view.addItem(vg::tr(p.language.load(),"Low view"),1);view.addItem(vg::tr(p.language.load(),"High view"),2);view.setSelectedId(2,juce::dontSendNotification);view.onChange=[this]{repaint();};
+    mute.setClickingTogglesState(true);solo.setClickingTogglesState(true);mute.setComponentID("stageMute");solo.setComponentID("stageSolo");
+    mute.setTooltip(vg::tr(p.language.load(),"Mute the selected singer"));solo.setTooltip(vg::tr(p.language.load(),"Solo the selected singer"));
+    mute.onClick=[this]{if(selected>=0)p.setValue("v"+juce::String(selected+1)+"_mute",mute.getToggleState()?1.f:0.f);refresh();};
+    solo.onClick=[this]{if(selected>=0)p.setValue("v"+juce::String(selected+1)+"_solo",solo.getToggleState()?1.f:0.f);refresh();};refresh();
+}
+void Stage::lookAndFeelChanged(){if(auto* look=dynamic_cast<GardenLook*>(&getLookAndFeel())){auto c=look->palette;selection.setColour(juce::Label::textColourId,c.muted);selection.setFont(juce::FontOptions(11));for(auto* button:{&mute,&solo}){button->setColour(juce::TextButton::buttonColourId,c.panel);button->setColour(juce::TextButton::buttonOnColourId,button==&mute?c.gold:c.forest);button->setColour(juce::TextButton::textColourOnId,c.background);}}}
+void Stage::setLanguage(){int id=view.getSelectedId();view.clear(juce::dontSendNotification);view.addItem(vg::tr(p.language.load(),"Low view"),1);view.addItem(vg::tr(p.language.load(),"High view"),2);view.setSelectedId(std::max(1,id),juce::dontSendNotification);mute.setTooltip(vg::tr(p.language.load(),"Mute the selected singer"));solo.setTooltip(vg::tr(p.language.load(),"Solo the selected singer"));refresh();}
+Stage::~Stage(){finishDrag();}
+void Stage::finishDrag(){if(dragging&&selected>=0)for(auto suffix:{"pan","delay"})p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix)->endChangeGesture();dragging=false;}
+float Stage::depthSpan()const{return std::max(20.f,(float)getHeight()-(view.getSelectedId()==1?138.f:112.f));}
+juce::Point<float> Stage::project(float pan,float depth)const{float z=juce::jlimit(0.f,1.f,depth/80);return {getWidth()*.5f+pan*(getWidth()*.5f-30)*(1-.28f*z),(float)getHeight()-49-z*depthSpan()+pan*pan*5};}
+std::array<juce::Point<float>,vg::voices> Stage::singerPositions()const{
+    auto sound=p.settings();std::array<juce::Point<float>,vg::voices> result{};
+    // Display-only separation keeps coincident singers selectable. Audio positions
+    // are unchanged; a selected displaced marker shows its true-position tether.
+    for(int v=0;v<sound.count;++v){auto target=project(sound.voice[(size_t)v].pan,sound.voice[(size_t)v].delay);auto candidate=target;
+        auto free=[&](juce::Point<float> point){for(int i=0;i<v;++i)if(point.getDistanceFrom(result[(size_t)i])<25)return false;return true;};
+        for(int step=0;step<600&&!free(candidate);++step){float radius=7*std::sqrt((float)(step+1)),angle=step*2.399963f;candidate={juce::jlimit(22.f,(float)getWidth()-22,target.x+radius*std::cos(angle)),juce::jlimit(66.f,(float)getHeight()-48,target.y+radius*.7f*std::sin(angle))};}
+        if(!free(candidate)){ // Guaranteed seats for pathological all-coincident input.
+            std::vector<int> seats;for(int i=0;i<sound.count;++i)seats.push_back(i);std::stable_sort(seats.begin(),seats.end(),[&](int x,int y){auto a=sound.voice[(size_t)x],b=sound.voice[(size_t)y];return a.delay==b.delay?a.pan<b.pan:a.delay>b.delay;});
+            int columns=std::min(6,sound.count),rows=(sound.count+columns-1)/columns;float front=(float)getHeight()-48,back=std::max(66.f,front-depthSpan());
+            for(int seat=0;seat<sound.count;++seat)result[(size_t)seats[(size_t)seat]]={columns==1?getWidth()*.5f:35+(getWidth()-70.f)*(seat%columns)/(columns-1),rows==1?front:back+(front-back)*(seat/columns)/(rows-1)};
+            return result;
+        }
+        result[(size_t)v]=candidate;
+    }return result;
+}
+void Stage::refresh(){auto sound=p.settings();if(selected>=sound.count)selected=std::max(0,sound.count-1);mute.setEnabled(selected>=0);solo.setEnabled(selected>=0);if(selected>=0){auto voice=sound.voice[(size_t)selected];mute.setToggleState(voice.mute,juce::dontSendNotification);solo.setToggleState(voice.solo,juce::dontSendNotification);selection.setText(vg::tr(p.language.load(),"Singer")+" "+juce::String(selected+1)+"  /  "+juce::String(voice.pan,2)+"  /  "+juce::String(voice.delay,0)+" ms",juce::dontSendNotification);}repaint();}
+void Stage::resized(){view.setBounds(getWidth()-122,8,110,23);selection.setBounds(16,getHeight()-30,getWidth()-118,24);mute.setBounds(getWidth()-94,getHeight()-30,34,24);solo.setBounds(getWidth()-54,getHeight()-30,34,24);}
+void Stage::paint(juce::Graphics& g){VG_PALETTE
+    auto t=[this](const char* text){return vg::tr(p.language.load(),text);};auto a=getLocalBounds().toFloat();
+    g.setGradientFill(juce::ColourGradient(palette.panel.brighter(.08f),0,0,palette.background,0,a.getBottom(),false));g.fillRoundedRectangle(a,16);
+    g.setColour(gold);g.setFont(juce::FontOptions(10,juce::Font::bold));g.drawText(t("AMPHITHEATRE"),16,10,getWidth()-150,17,juce::Justification::left);
+    g.setColour(ink.withAlpha(.8f));g.setFont(juce::FontOptions(11));g.drawText(t("Drag to position. Click to select."),16,33,getWidth()-25,18,juce::Justification::left);
+    // Tiered, perspective floor with a front fascia: entirely native geometry.
+    for(int tier=0;tier<4;++tier){float front=tier*20.f,back=(tier+1)*20.f;auto fl=project(-1,front),fr=project(1,front),bl=project(-1,back),br=project(1,back);juce::Path floor;floor.startNewSubPath(fl);floor.quadraticTo(getWidth()*.5f,fl.y-10,fr.x,fr.y);floor.lineTo(br);floor.quadraticTo(getWidth()*.5f,br.y-10,bl.x,bl.y);floor.closeSubPath();g.setColour(palette.forest.withAlpha(.07f+.018f*tier));g.fillPath(floor);g.setColour(sage.withAlpha(.3f));g.strokePath(floor,juce::PathStrokeType(.7f));}
+    for(float x:{-.75f,-.5f,-.25f,0.f,.25f,.5f,.75f}){g.setColour(sage.withAlpha(.11f));g.drawLine({project(x,0),project(x,80)},.7f);}
+    auto front=project(-1,0),right=project(1,0);juce::Path fascia;fascia.startNewSubPath(front);fascia.lineTo(right);fascia.lineTo(right.translated(0,8));fascia.lineTo(front.translated(0,8));fascia.closeSubPath();g.setColour(palette.forest.withAlpha(.22f));g.fillPath(fascia);
+    auto sound=p.settings();auto positions=singerPositions();std::vector<int> order;for(int v=0;v<sound.count;++v)order.push_back(v);std::stable_sort(order.begin(),order.end(),[&](int x,int y){return positions[(size_t)x].y<positions[(size_t)y].y;});
+    if(selected>=0&&selected<sound.count){auto actual=project(sound.voice[(size_t)selected].pan,sound.voice[(size_t)selected].delay);if(actual.getDistanceFrom(positions[(size_t)selected])>6){g.setColour(gold.withAlpha(.65f));g.drawLine({actual,positions[(size_t)selected]},1);g.fillEllipse(actual.x-2,actual.y-2,4,4);}}
+    for(int v:order){auto point=positions[(size_t)v];float z=sound.voice[(size_t)v].delay/80,r=8.4f-1.6f*z;bool audible=vg::voiceAudible(sound,v);auto colour=sound.voice[(size_t)v].mute?palette.muted:audible?palette.forest:palette.sage;float alpha=audible?1.f:.48f;
+        g.setColour(juce::Colours::black.withAlpha(.25f));g.fillEllipse(point.x-r-2,point.y+8,r*2+4,6);
+        if(v==selected){g.setColour(gold);g.drawEllipse(point.x-14,point.y-13,28,29,1.5f);}
+        g.setGradientFill(juce::ColourGradient(colour.brighter(.4f).withAlpha(alpha),point.x-r,point.y,colour.darker(.45f).withAlpha(alpha),point.x+r,point.y,false));g.fillRoundedRectangle(point.x-r,point.y-1,r*2,13,4);g.fillEllipse(point.x-4,point.y-10,8,8);
+        g.setColour(palette.background.withAlpha(.95f));g.fillRoundedRectangle(point.x-10,point.y+2,20,12,3);g.setColour(sound.voice[(size_t)v].solo?gold:ink.withAlpha(alpha));g.setFont(juce::FontOptions(10,juce::Font::bold));g.drawText(juce::String(v+1),(int)point.x-10,(int)point.y+2,20,12,juce::Justification::centred);
+        if(sound.voice[(size_t)v].mute){g.setColour(palette.muted);g.drawLine(point.x-7,point.y-7,point.x+7,point.y+7,1.4f);}
     }
-    g.setColour(sage);g.setFont(p.language.load()==1?11:9);g.drawText(t("L"),17,getHeight()-23,20,14,juce::Justification::left);g.drawText(t("R"),getWidth()-35,getHeight()-23,20,14,juce::Justification::right);g.drawText(t("CLOSE"),getWidth()-75,55,58,14,juce::Justification::right);g.drawText(t("DISTANT"),(getWidth()-80)/2,getHeight()-25,80,14,juce::Justification::centred);
 }
-void Stage::mouseDown(const juce::MouseEvent& e){
-    auto s=p.settings();auto a=getLocalBounds().reduced(35,25).withTrimmedTop(40).withTrimmedBottom(10).toFloat();float best=10000;
-    for(int i=0;i<s.count;++i){auto v=s.voice[(size_t)i];auto pt=juce::Point<float>{a.getCentreX()+v.pan*a.getWidth()*.5f,a.getY()+v.delay/80*a.getHeight()};float d=pt.getDistanceFrom(e.position);if(d<best){best=d;selected=i;}}
-    if(best>30){selected=-1;return;}for(auto suffix:{"pan","delay"})p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix)->beginChangeGesture();mouseDrag(e);
-}
-void Stage::mouseDrag(const juce::MouseEvent& e){if(selected<0)return;auto a=getLocalBounds().reduced(35,25).withTrimmedTop(40).withTrimmedBottom(10).toFloat();auto prefix="v"+juce::String(selected+1)+"_";
-    auto set=[&](const char* id,float val){auto* param=p.state.getParameter(prefix+id);param->setValueNotifyingHost(param->convertTo0to1(val));};set("pan",juce::jlimit(-1.f,1.f,(e.position.x-a.getCentreX())/(a.getWidth()*.5f)));set("delay",juce::jlimit(0.f,80.f,(e.position.y-a.getY())/a.getHeight()*80));repaint();}
-void Stage::mouseUp(const juce::MouseEvent&){if(selected>=0)for(auto suffix:{"pan","delay"})p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix)->endChangeGesture();selected=-1;}
+void Stage::mouseDown(const juce::MouseEvent& e){finishDrag();armed=false;auto sound=p.settings();auto positions=singerPositions();int hit=-1;float best=19;for(int v=0;v<sound.count;++v){float distance=positions[(size_t)v].getDistanceFrom(e.position);if(distance<best){best=distance;hit=v;}}if(hit<0)return;armed=true;selected=hit;origin=e.position;panStart=sound.voice[(size_t)selected].pan;depthStart=sound.voice[(size_t)selected].delay;if(onSelected)onSelected(selected);refresh();}
+void Stage::mouseDrag(const juce::MouseEvent& e){if(!armed||selected<0||e.getDistanceFromDragStart()<3)return;if(!dragging){dragging=true;for(auto suffix:{"pan","delay"})p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix)->beginChangeGesture();}auto delta=e.position-origin;float scale=(getWidth()*.5f-30)*(1-.28f*depthStart/80);auto set=[&](const char* suffix,float value){auto* parameter=p.state.getParameter("v"+juce::String(selected+1)+"_"+suffix);parameter->setValueNotifyingHost(parameter->convertTo0to1(value));};set("pan",juce::jlimit(-1.f,1.f,panStart+delta.x/scale));set("delay",juce::jlimit(0.f,80.f,depthStart-delta.y/depthSpan()*80));refresh();}
+void Stage::mouseUp(const juce::MouseEvent&){finishDrag();armed=false;}
 VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(proc),Thread("VoxGarden file renderer"),p(proc),stage(proc){
     look.palette=GardenPalette(p.darkMode.load(),p.themeAccent.load());const auto paper=look.palette.paper,ink=look.palette.ink,forest=look.palette.forest,sage=look.palette.sage,muted=look.palette.muted,line=look.palette.line;
     look.setColour(juce::Slider::textBoxTextColourId,ink);look.setColour(juce::Slider::textBoxOutlineColourId,juce::Colours::transparentBlack);look.setColour(juce::Slider::textBoxBackgroundColourId,juce::Colours::transparentBlack);look.setColour(juce::Slider::textBoxHighlightColourId,sage.withAlpha(.4f));look.setColour(juce::ComboBox::backgroundColourId,juce::Colours::white.withAlpha(.7f));look.setColour(juce::ComboBox::textColourId,ink);look.setColour(juce::ComboBox::outlineColourId,line);look.setColour(juce::TextButton::buttonColourId,juce::Colour(0xffe9e9df));look.setColour(juce::TextButton::textColourOffId,ink);look.setColour(juce::ToggleButton::textColourId,ink);look.setColour(juce::ToggleButton::tickColourId,forest);look.setColour(juce::PopupMenu::backgroundColourId,paper);look.setColour(juce::PopupMenu::textColourId,ink);look.setColour(juce::PopupMenu::highlightedBackgroundColourId,forest);look.setColour(juce::PopupMenu::highlightedTextColourId,paper);setLookAndFeel(&look);
@@ -79,7 +113,9 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
         presets.getRootMenu()->addSubMenu(name+" / "+vg::ragaWestern[(size_t)i],sounds);
     }
     presets.addSectionHeading("Large ensembles");presets.addItem("Abbey Ensemble 24",63);presets.addItem("Chamber Ensemble 16",64);presets.addItem("Velvet Abbey 24",65);
+    for(int family=0;family<4;++family){juce::PopupMenu group;for(int item=0;item<3;++item){int index=family*3+item;group.addItem(66+index,vg::genrePresets[(size_t)index].name);}presets.getRootMenu()->addSubMenu(vg::genrePresets[(size_t)(family*3)].family,group);}
     voiceBank.setComponentID("voiceBank");voiceBank.addItem("Voices 1-8",1);voiceBank.addItem("Voices 9-16",2);voiceBank.addItem("Voices 17-24",3);voiceBank.setSelectedId(1,juce::dontSendNotification);voiceBank.onChange=[this]{resized();repaint();};
+    stage.setComponentID("soundstage");stage.onSelected=[this](int singer){voiceBank.setSelectedId(singer/8+1,juce::sendNotificationSync);repaint();};
     voiceCount.setComponentID("voiceCount");voiceCount.onChange=[this]{p.setChoirSize(voiceCount.getSelectedId());};
     raga.onChange=[this]{if(raga.getSelectedId()>1)p.setValue("mode",0);};
     for(int i=0;i<5;++i)languageChoice.addItem(juce::String::fromUTF8(vg::languageNames[(size_t)i]),i+1);
@@ -128,7 +164,7 @@ void VoxGardenEditor::paint(juce::Graphics& g){ VG_PALETTE
     caption(g,t("YOUR ENSEMBLE"),25,481,300,muted);g.setColour(muted);g.setFont(12);g.drawText(t("0 = unison   /   2 = third   /   4 = fifth in seven-note scales"),440,478,650,22,juce::Justification::right);
     g.setColour(palette.panel);g.fillRoundedRectangle(20,512,1080,294,14);
     auto ensemble=p.settings();
-    for(int row=0;row<8;++row){int v=(voiceBank.getSelectedId()-1)*8+row;int y=540+row*32;bool active=vg::voiceAudible(ensemble,v);g.setColour(v%2==0?forest.withAlpha(.025f):juce::Colours::transparentBlack);g.fillRoundedRectangle(27,(float)y,1066,31,5);g.setColour(active?forest.withAlpha(.09f):line.withAlpha(.4f));g.fillEllipse(36,(float)y+7,22,22);g.setColour(active?forest:muted.withAlpha(.4f));g.setFont(juce::FontOptions(11,juce::Font::bold));g.drawText(juce::String(v+1),36,y+7,22,22,juce::Justification::centred);}
+    for(int row=0;row<8;++row){int v=(voiceBank.getSelectedId()-1)*8+row;int y=540+row*32;bool active=vg::voiceAudible(ensemble,v);g.setColour(v%2==0?forest.withAlpha(.025f):juce::Colours::transparentBlack);g.fillRoundedRectangle(27,(float)y,1066,31,5);g.setColour(active?forest.withAlpha(.09f):line.withAlpha(.4f));g.fillEllipse(36,(float)y+7,22,22);g.setColour(active?forest:muted.withAlpha(.4f));g.setFont(juce::FontOptions(11,juce::Font::bold));g.drawText(juce::String(v+1),36,y+7,22,22,juce::Justification::centred);if(v==stage.selectedSinger()){g.setColour(gold.withAlpha(.7f));g.drawRoundedRectangle(juce::Rectangle<float>(28,(float)y,1062,31),5,1);}}
     g.setColour(line);g.drawHorizontalLine(835,24,1096);
 }
 void VoxGardenEditor::resized(){
@@ -151,7 +187,7 @@ void VoxGardenEditor::timerCallback(){
     aiBlend.setEnabled(p.settings().aiPrint);
     int count=p.settings().count;voiceCount.setSelectedId(count,juce::dontSendNotification);if(lastCount!=count){lastCount=count;for(int v=0;v<vg::voices;++v)for(int k=0;k<5;++k)controls[(size_t)(10+v*5+k)]->slider.setEnabled(v<count);repaint();}
     for(int v=0;v<vg::voices;++v){muteButtons[(size_t)v].setEnabled(v<count);soloButtons[(size_t)v].setEnabled(v<count);}
-    repaint();stage.repaint();
+    repaint();stage.refresh();
     compose.setEnabled(!rendering.load()&&!capturePending);
     auto phase=p.capture.getPhase();
     if(capturePending){
@@ -228,6 +264,7 @@ void VoxGardenEditor::applyTheme(){
 }
 
 void VoxGardenEditor::applyLanguage(){
+    stage.setLanguage();
     lastLanguage=p.language.load();look.language=lastLanguage;languageChoice.setSelectedId(lastLanguage+1,juce::dontSendNotification);
     for(auto& pair:englishMenus){auto* combo=pair.first;int selected=combo->getSelectedId();*combo->getRootMenu()=pair.second;
         juce::PopupMenu::MenuItemIterator iterator(*combo->getRootMenu(),true);while(iterator.next()){auto& item=iterator.getItem();item.text=t(item.text);}
