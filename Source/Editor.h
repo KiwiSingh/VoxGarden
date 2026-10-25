@@ -50,7 +50,7 @@ private:
     Stage stage;
     std::unique_ptr<juce::DialogWindow> composer;
     juce::Label title,subtitle,pitch,status,ragaNotes;
-    juce::ComboBox root,scale,mode,presets,voiceCount,aiCast,raga,languageChoice,themeChoice;
+    juce::ComboBox root,scale,mode,presets,voiceCount,aiCast,raga,languageChoice,themeChoice,voiceBank;
     juce::ToggleButton theme{"Dark mode"};
     juce::ToggleButton formants{"Preserve formants"},aiPrint{"AI singers on print"};
     juce::Slider aiBlend;

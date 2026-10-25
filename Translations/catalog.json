@@ -1910,6 +1910,55 @@
       "Die angezeigte trockene WAV auf die Live-Audiospur mit VoxGarden ziehen, dann abspielen und den Chor einstellen.",
       "Sleep de getoonde droge WAV naar de Live-audiotrack met VoxGarden, speel af en pas het koor aan.",
       "Перетащите показанный сухой WAV на аудиодорожку Live с VoxGarden, затем воспроизводите и настраивайте хор."
+    ],
+    [
+      "Large ensembles",
+      "बड़ी स्वर-मंडलियाँ",
+      "Große Ensembles",
+      "Grote ensembles",
+      "Большие ансамбли"
+    ],
+    [
+      "Abbey Ensemble 24",
+      "ऐबी मंडली 24",
+      "Abtei-Ensemble 24",
+      "Abdij-ensemble 24",
+      "Аббатский ансамбль 24"
+    ],
+    [
+      "Chamber Ensemble 16",
+      "चेम्बर मंडली 16",
+      "Kammerensemble 16",
+      "Kamerensemble 16",
+      "Камерный ансамбль 16"
+    ],
+    [
+      "Velvet Abbey 24",
+      "मखमली ऐबी 24",
+      "Samtige Abtei 24",
+      "Fluwelen abdij 24",
+      "Бархатное аббатство 24"
+    ],
+    [
+      "Voices 1-8",
+      "स्वर 1–8",
+      "Stimmen 1–8",
+      "Stemmen 1–8",
+      "Голоса 1–8"
+    ],
+    [
+      "Voices 9-16",
+      "स्वर 9–16",
+      "Stimmen 9–16",
+      "Stemmen 9–16",
+      "Голоса 9–16"
+    ],
+    [
+      "Voices 17-24",
+      "स्वर 17–24",
+      "Stimmen 17–24",
+      "Stemmen 17–24",
+      "Голоса 17–24"
     ]
   ]
 }

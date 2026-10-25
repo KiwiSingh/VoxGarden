@@ -4,6 +4,12 @@
 
 Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 2.0.0** · Apple-Silicon-macOS · VST3 + Standalone.
 
+## 2.1-Quellcode-Vorschau: 24 Stimmen und gemerktes Design
+
+Der aktuelle Quellcode und die lokale Vorschau bieten **1–24 Chorstimmen** in drei Achterbänken mit separatem Mute/Solo und Stimmreglern. **Abtei-Ensemble 24**, **Kammerensemble 16** und **Samtige Abtei 24** sind eigene DSP-Klänge, keine Cymatics-Aufnahmen oder Abbey-Road-Samples. Ungenutzte Stimmen überspringen die Tonhöhenbearbeitung. Das zuletzt gewählte Design samt Hell/Dunkel wird Standard für neue Instanzen; Projekte behalten ihr eigenes Design, ohne den Standard zu ändern. Alte 2.0-Parameter und Achtstimmenklänge bleiben erhalten; neue Regler werden angehängt. Nicht im unten verlinkten v2.0.0-Download enthalten.
+
+![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+
 ## Screenshots
 
 ![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-2.0-de-rose.png)

@@ -24,3 +24,9 @@ Capture/printing monitor dry at unity gain using the existing compensated latenc
 0.6 adds eight independently selected raga note sets and eight restrained choir presets. See Ragas.md for primary sources and Western pitch relationships. Raga selection is appended rather than extending the original scale parameter, to preserve normalized automation. The English/Hindi/German/Dutch/Russian interface uses per-instance translation, with no global language state. Hindi glyphs and locale layouts are rendered for visual QA; native file dialogs and technical external diagnostics are outside the catalog.
 
 1.0 retains the 46 earlier preset IDs and adds 16 raga/cast sounds (indices 46–61). Each raga submenu groups its existing sound and both new cast variants. No sound parameters were added or reordered. Five-note raga octaves use five degrees; omitted Pa is not reintroduced. The existing translation keys cover the new compositional names in all four languages. Repository publication follows the v1.0 audit.
+
+## 2.1 ensemble expansion
+
+The original Choir Voices parameter remains 1–8 to preserve normalized automation. Additional Choir Voices is an appended 0–16 parameter; total count is their sum, bounded to 24. The UI sets the original control to min(total,8) and the additional control to max(total-8,0). The first 75 parameters are unchanged; voices 9–24 append seven controls each, then the additional count (188 sound controls total). Old state chunks reset absent added controls rather than inheriting them from an earlier 24-voice take. New controls may need exposing/configuring in existing SnappySnap collections; a full new 24-voice morphing session is not yet host-verified.
+
+Appearance.json is an atomic user preference in Library/Application Support/VoxGarden. Only explicit theme/light-dark UI changes write it; construction reads it and project restore remains per-instance. No preferences I/O happens in processBlock.

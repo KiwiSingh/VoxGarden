@@ -3,7 +3,7 @@
 #include <array>
 namespace vg {
 inline constexpr std::array<const char*,5> languageNames{"English","हिन्दी","Deutsch","Nederlands","Русский"};
-inline const std::array<std::array<const char*,5>,272> translations{{
+inline const std::array<std::array<const char*,5>,279> translations{{
     {"Reference voices for AI printing. DSP preview uses voicing and formant colour. New character presets set both. No input voice classification is performed.","AI रेंडर के संदर्भ स्वर। DSP में स्वर-विन्यास व रंग बदलते हैं। इनपुट की पहचान नहीं की जाती।","Referenzstimmen für KI-Rendern. DSP nutzt Voicings und Formanten. Keine Klassifizierung der Eingangsstimme.","Referentiestemmen voor AI-renderen. DSP gebruikt stemvoering en formanten. De invoerstem wordt niet geclassificeerd.","Референсы для ИИ-рендера. DSP меняет ноты и форманты. Входной голос не классифицируется."},
     {"Import a melody, align syllables, then render. Neural speech is retimed to your score; this is an experimental singing voice.","धुन आयात करें, अक्षरांश मिलाएँ और रेंडर करें। न्यूरल बोली का समय व सुर बदले जाते हैं; यह प्रयोगात्मक गायन है।","Melodie importieren, Silben zuweisen, rendern. Neuronale Sprache wird an die Noten angepasst; experimentelle Gesangsstimme.","Importeer een melodie, lijn lettergrepen uit en render. Neurale spraak wordt aan de noten aangepast; experimentele zangstem.","Импортируйте мелодию, назначьте слоги и создайте вокал. Нейронная речь подгоняется под ноты; это экспериментальное пение."},
     {"Import a monophonic melody or edit the example. This first voice is a synthetic vocoder, not a natural AI singer.","एक स्वर वाली धुन आयात करें या उदाहरण बदलें। यह पहला स्वर कृत्रिम वोकोडर है, प्राकृतिक AI गायक नहीं।","Einstimmige Melodie importieren oder Beispiel bearbeiten. Die erste Stimme ist ein synthetischer Vocoder, kein natürlicher KI-Gesang.","Importeer een eenstemmige melodie of bewerk het voorbeeld. De eerste stem is een synthetische vocoder, geen natuurlijke AI-zanger.","Импортируйте одноголосную мелодию или измените пример. Первый голос — синтетический вокодер, а не естественный ИИ-певец."},
@@ -130,6 +130,7 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"Render a vocal file","स्वर की फ़ाइल रेंडर करें","Gesangsdatei rendern","Zangbestand renderen","Рендер вокального файла"},
     {"CAPTURING DRY INPUT","मूल स्वर रिकॉर्ड हो रहा है","TROCKENSIGNAL WIRD AUFGENOMMEN","DROOG SIGNAAL OPNEMEN","ЗАПИСЬ СУХОГО ВХОДА"},
     {"Velocity-led chords","वेग-प्रधान कॉर्ड","Anschlaggeführte Akkorde","Akkoorden op aanslag","Аккорды по силе нажатия"},
+    {"Chamber Ensemble 16","चेम्बर मंडली 16","Kammerensemble 16","Kamerensemble 16","Камерный ансамбль 16"},
     {"START WITH A SOUND","ध्वनि से शुरू करें","MIT EINEM KLANG BEGINNEN","BEGIN MET EEN KLANK","ВЫБЕРИТЕ ЗВУЧАНИЕ"},
     {"Major pentatonic 7","मेजर पेंटाटोनिक 7","Dur-Pentatonik mit 7","Majeurpentatoniek met 7","Мажорная пентатоника с 7"},
     {"Cinematic ensemble","सिनेमाई मंडली","Filmensemble","Filmisch ensemble","Кинематографический ансамбль"},
@@ -146,6 +147,7 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"MIDI melody track","MIDI धुन ट्रैक","MIDI-Melodiespur","MIDI-melodietrack","Дорожка MIDI-мелодии"},
     {"Open model folder","मॉडल फ़ोल्डर खोलें","Modellordner öffnen","Modelmap openen","Открыть папку моделей"},
     {"Chord-root chords","कॉर्ड मूल स्वर","Grundtongeführte Akkorde","Akkoorden op grondtoon","Аккорды по основному тону"},
+    {"Abbey Ensemble 24","ऐबी मंडली 24","Abtei-Ensemble 24","Abdij-ensemble 24","Аббатский ансамбль 24"},
     {"Major pentatonic","मेजर पेंटाटोनिक","Dur-Pentatonik","Majeurpentatoniek","Мажорная пентатоника"},
     {"Minor pentatonic","माइनर पेंटाटोनिक","Moll-Pentatonik","Mineurpentatoniek","Минорная пентатоника"},
     {"Beyond the choir","मंडली से आगे","Jenseits des Chors","Voorbij het koor","За пределами хора"},
@@ -161,6 +163,8 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"RAGA / NOTE SET","राग / स्वर-समूह","RAGA / TONVORRAT","RAGA / NOTENSET","РАГА / НАБОР НОТ"},
     {"synthesis part ","रचना भाग ","Syntheseteil ","Synthesedeel ","часть синтеза "},
     {"Syllable / word","अक्षरांश / शब्द","Silbe / Wort","Lettergreep / woord","Слог / слово"},
+    {"Large ensembles","बड़ी स्वर-मंडलियाँ","Große Ensembles","Grote ensembles","Большие ансамбли"},
+    {"Velvet Abbey 24","मखमली ऐबी 24","Samtige Abtei 24","Fluwelen abdij 24","Бархатное аббатство 24"},
     {"THE SOUNDSTAGE","स्वर-मंच","DIE KLANGBÜHNE","HET KLANKPODIUM","ЗВУКОВАЯ СЦЕНА"},
     {"Harmonic minor","हार्मोनिक माइनर","Harmonisch Moll","Harmonisch mineur","Гармонический минор"},
     {"Natural voices","स्वाभाविक स्वर","Natürliche Stimmen","Natuurlijke stemmen","Естественные голоса"},
@@ -201,6 +205,7 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"Soprano halo","सोप्रानो प्रभामंडल","Sopranhalo","Sopraanhalo","Сопрановое сияние"},
     {"Pixie chorus","परी मंडली","Feenchor","Elfenkoor","Хор фей"},
     {"Saved mix + ","मिश्रण व सुरक्षित स्वर: ","Mix und Einzelspuren gespeichert: ","Mix en losse stemmen opgeslagen: ","Сохранён микс и партии: "},
+    {"Voices 17-24","स्वर 17–24","Stimmen 17–24","Stemmen 17–24","Голоса 17–24"},
     {"DETUNE / CT","सूक्ष्म अंतर / ct","VERSTIMMUNG / CT","ONTSTEMMING / CT","РАССТРОЙКА / ЦЕНТ"},
     {"TIMING / MS","समय-अंतर / ms","ZEITVERSATZ / MS","TIJDVARIATIE / MS","ВРЕМЯ / МС"},
     {"COLOUR / ST","स्वर-रंग / st","KLANGFARBE / HT","KLANKKLEUR / HT","ТЕМБР / ПОЛУТОН"},
@@ -211,6 +216,7 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"Hamsadhwani","हंसध्वनि (Hamsadhwani)","Hamsadhwani","Hamsadhwani","Хамсадхвани (Hamsadhwani)"},
     {"Import MIDI","MIDI आयात करें","MIDI importieren","MIDI importeren","Импорт MIDI"},
     {"Cancelling…","रद्द हो रहा है…","Wird abgebrochen…","Annuleren…","Отмена…"},
+    {"Voices 9-16","स्वर 9–16","Stimmen 9–16","Stemmen 9–16","Голоса 9–16"},
     {"CHOIR SIZE","गायकों की संख्या","CHORGRÖSSE","KOORGROOTTE","РАЗМЕР ХОРА"},
     {"SCALE LOCK","स्वर बंधन","TONARTBINDUNG","TOONLADDERBINDING","ПРИВЯЗКА К ЛАДУ"},
     {"GLIDE / MS","स्वर-सरकाव / ms","GLEITZEIT / MS","GLIJTIJD / MS","СКОЛЬЖЕНИЕ / МС"},
@@ -222,6 +228,7 @@ inline const std::array<std::array<const char*,5>,272> translations{{
     {"Length (s)","अवधि (से.)","Dauer (s)","Duur (s)","Длина (с)"},
     {"MIDI track","MIDI ट्रैक","MIDI-Spur","MIDI-track","MIDI-дорожка"},
     {"Exact MIDI","सटीक MIDI","Exaktes MIDI","Exacte MIDI","Точное MIDI"},
+    {"Voices 1-8","स्वर 1–8","Stimmen 1–8","Stemmen 1–8","Голоса 1–8"},
     {"Dark mode","डार्क मोड","Dunkelmodus","Donkere modus","Тёмная тема"},
     {"CHOIR MIX","मंडली मिश्रण","CHORMIX","KOORMIX","МИКС ХОРА"},
     {"Chromatic","क्रोमैटिक","Chromatisch","Chromatisch","Хроматический"},

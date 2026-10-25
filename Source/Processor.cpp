@@ -17,7 +17,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout VoxGardenProcessor::layout()
     f("space","Room",0,1,.12f);f("weird","Mutation",0,1,0);
     l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"formantLock",1},"Preserve Formants",true));
     constexpr std::array<int,8> degrees {0,0,2,2,4,4,-7,-7};
-    for(int i=0;i<vg::voices;++i) {
+    for(int i=0;i<8;++i) {
         juce::String prefix="v"+juce::String(i+1)+"_",name="Voice "+juce::String(i+1)+" ";
         f(prefix+"level",name+"Level",0,1,.6f);
         f(prefix+"pan",name+"Pan",-1,1,(i%2?1.f:-1.f)*(.25f+.09f*i));
@@ -29,28 +29,49 @@ juce::AudioProcessorValueTreeState::ParameterLayout VoxGardenProcessor::layout()
     l.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"voiceCount",1},"Choir Voices",1,8,6));
     l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{"aiPrint",1},"AI Singers on Render",false));
     f("aiBlend","AI Singer Blend",0,1,1);
-    for(int v=1;v<=vg::voices;++v){auto prefix="v"+juce::String(v)+"_",name="Voice "+juce::String(v)+" ";
+    for(int v=1;v<=8;++v){auto prefix="v"+juce::String(v)+"_",name="Voice "+juce::String(v)+" ";
         l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{prefix+"mute",1},name+"Mute",false));
         l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{prefix+"solo",1},name+"Solo",false));
     }
     l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"aiCast",1},"AI Voice Cast",juce::StringArray{"Original mixed cast","Female voices","Male voices","Alternating female / male"},0));
     juce::StringArray ragas{"Off"};for(auto name:vg::ragaNames)ragas.add(name);l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"raga",1},"Raga Note Set",ragas,0));
+    // 2.1 additions are appended after every 2.0 parameter. Legacy voiceCount
+    // retains its 1..8 range and normalisation for saved automation/Snaps.
+    for(int i=8;i<vg::voices;++i){auto prefix="v"+juce::String(i+1)+"_",name="Voice "+juce::String(i+1)+" ";
+        f(prefix+"level",name+"Level",0,1,.6f);f(prefix+"pan",name+"Pan",-1,1,(i%2?1.f:-1.f)*(.25f+.09f*(i%8)));
+        f(prefix+"formant",name+"Formant",-12,12,(i%2?1.f:-1.f)*(.4f+.15f*(i/8)),.01f);f(prefix+"delay",name+"Delay ms",0,80,(float)(i/8)*8,.1f);
+        l.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{prefix+"degree",1},name+"Degree / Semitones",-14,14,degrees[(size_t)(i%8)]));
+        l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{prefix+"mute",1},name+"Mute",false));l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{prefix+"solo",1},name+"Solo",false));
+    }
+    l.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"extraVoices",1},"Additional Choir Voices",0,16,0));
     return l;
 }
-VoxGardenProcessor::VoxGardenProcessor():AudioProcessor(BusesProperties().withInput("Vocal",juce::AudioChannelSet::stereo(),true).withOutput("Choir",juce::AudioChannelSet::stereo(),true)),state(*this,nullptr,"VoxGardenState",layout()) {
+VoxGardenProcessor::VoxGardenProcessor(juce::File preferences):AudioProcessor(BusesProperties().withInput("Vocal",juce::AudioChannelSet::stereo(),true).withOutput("Choir",juce::AudioChannelSet::stereo(),true)),state(*this,nullptr,"VoxGardenState",layout()),appearanceFile(std::move(preferences)) {
+    auto appearance=vg::loadAppearance(appearanceFile);themeAccent=appearance.accent;darkMode=appearance.dark;extraVoices=state.getRawParameterValue("extraVoices");
     for(size_t i=0;i<19;++i)cached[i]=state.getRawParameterValue(ids[i]);
     for(int v=0;v<vg::voices;++v) {auto p="v"+juce::String(v+1)+"_";cachedVoice[(size_t)v]={state.getRawParameterValue(p+"level"),state.getRawParameterValue(p+"pan"),state.getRawParameterValue(p+"formant"),state.getRawParameterValue(p+"delay"),state.getRawParameterValue(p+"degree"),state.getRawParameterValue(p+"mute"),state.getRawParameterValue(p+"solo")};}
 }
 vg::Settings VoxGardenProcessor::settings() const {
     vg::Settings s;auto val=[&](int i){return cached[(size_t)i]->load(std::memory_order_relaxed);};
-    s.root=(int)val(0);s.scale=(int)val(1);s.mode=(int)val(2);s.mix=val(3);s.gain=val(4);s.detune=val(5);s.vibrato=val(6);s.human=val(7);s.width=val(8);s.correction=val(9);s.glide=val(10);s.space=val(11);s.weird=val(12);s.formantLock=val(13)>.5f;s.count=(int)val(14);s.aiPrint=val(15)>.5f;s.aiBlend=val(16);s.aiCast=(int)val(17);s.raga=(int)val(18);if(s.raga>0)s.scale=vg::ragaScales[(size_t)(s.raga-1)];
+    s.root=(int)val(0);s.scale=(int)val(1);s.mode=(int)val(2);s.mix=val(3);s.gain=val(4);s.detune=val(5);s.vibrato=val(6);s.human=val(7);s.width=val(8);s.correction=val(9);s.glide=val(10);s.space=val(11);s.weird=val(12);s.formantLock=val(13)>.5f;s.count=juce::jlimit(1,vg::voices,(int)val(14)+(int)extraVoices->load());s.aiPrint=val(15)>.5f;s.aiBlend=val(16);s.aiCast=(int)val(17);s.raga=(int)val(18);if(s.raga>0)s.scale=vg::ragaScales[(size_t)(s.raga-1)];
     for(int v=0;v<vg::voices;++v) {const auto& c=cachedVoice[(size_t)v];s.voice[(size_t)v]={c.level->load(),c.pan->load(),c.formant->load(),c.delay->load(),(int)c.degree->load(),c.mute->load()>.5f,c.solo->load()>.5f};}
     return s;
 }
 void VoxGardenProcessor::setValue(const juce::String& id,float v) {if(auto* p=state.getParameter(id)){p->beginChangeGesture();p->setValueNotifyingHost(p->convertTo0to1(v));p->endChangeGesture();}}
+bool VoxGardenProcessor::setAppearance(int accent,bool dark){themeAccent=juce::jlimit(0,3,accent);darkMode=dark;return vg::saveAppearance(appearanceFile,{themeAccent.load(),dark});}
+void VoxGardenProcessor::setChoirSize(int total){total=juce::jlimit(1,vg::voices,total);setValue("voiceCount",(float)std::min(8,total));setValue("extraVoices",(float)std::max(0,total-8));}
 void VoxGardenProcessor::applyPreset(int preset) {
     // Root and scale belong to the song, so starting sounds retain them.
     for(int v=1;v<=vg::voices;++v){auto prefix="v"+juce::String(v)+"_";setValue(prefix+"mute",0);setValue(prefix+"solo",0);}
+    setValue("extraVoices",0);
+    if(preset>=62){
+        int sound=juce::jlimit(0,2,preset-62);setChoirSize(sound==1?16:24);setValue("mode",0);setValue("raga",0);setValue("aiCast",sound==2?1:0);
+        setValue("mix",1);setValue("gain",.6f);setValue("space",sound==1?.38f:.82f);setValue("width",.96f);setValue("detune",3.5f);setValue("human",22);setValue("vibrato",2.2f);setValue("correction",1);setValue("glide",65);setValue("weird",0);setValue("formantLock",1);
+        const int degrees[]{-7,-3,0,2};for(int v=0;v<vg::voices;++v){auto id="v"+juce::String(v+1)+"_";int section=v/6;
+            setValue(id+"degree",sound==1?(float)(v%4==0?-7:v%4==1?0:v%4==2?2:4):(float)degrees[section]);
+            setValue(id+"level",.42f);setValue(id+"pan",-.9f+1.8f*(float)(v%6)/5);setValue(id+"delay",(float)(section*18+(v%6)*2));setValue(id+"formant",(section-1.5f)*.65f+(v%2?.15f:-.15f)+(sound==2?2.f:0.f));}
+        return;
+    }
     preset=juce::jlimit(0,61,preset);
     const int ragaCast=preset>=54?2:preset>=46?1:0;
     const int ragaPreset=preset>=46?(preset-46)%8:preset>=38?preset-38:-1;
@@ -163,9 +184,12 @@ void VoxGardenProcessor::processBlock(juce::AudioBuffer<float>& b,juce::MidiBuff
     for(const auto metadata:midi) {int at=juce::jlimit(cursor,b.getNumSamples(),metadata.samplePosition);processRange(cursor,at-cursor);cursor=at;auto m=metadata.getMessage();if(m.isNoteOn())held[(size_t)m.getNoteNumber()]=true;else if(m.isNoteOff())held[(size_t)m.getNoteNumber()]=false;else if(m.isAllNotesOff()||m.isAllSoundOff())held.fill(false);}
     processRange(cursor,b.getNumSamples()-cursor);midi.clear();
 }
-void VoxGardenProcessor::getStateInformation(juce::MemoryBlock& out) {auto tree=state.copyState();const juce::ScopedLock lock(scoreLock);tree.setProperty("schemaVersion",9,nullptr);tree.setProperty("themeAccent",themeAccent.load(),nullptr);tree.setProperty("scoreDraft",scoreDraft,nullptr);tree.setProperty("scoreLanguage",scoreLanguage,nullptr);tree.setProperty("scoreVoice",scoreVoice,nullptr);tree.setProperty("scoreChordMode",scoreChordMode,nullptr);tree.setProperty("darkMode",darkMode.load(),nullptr);tree.setProperty("language",language.load(),nullptr);if(auto xml=tree.createXml())copyXmlToBinary(*xml,out);}
-void VoxGardenProcessor::setStateInformation(const void* data,int size) {if(auto xml=getXmlFromBinary(data,size))if(xml->hasTagName(state.state.getType())){auto tree=juce::ValueTree::fromXml(*xml);{const juce::ScopedLock lock(scoreLock);scoreDraft=tree.getProperty("scoreDraft",scoreDraft).toString();scoreLanguage=juce::jlimit(0,5,(int)tree.getProperty("scoreLanguage",0));scoreVoice=juce::jlimit(0,9,(int)tree.getProperty("scoreVoice",0));scoreChordMode=juce::jlimit(0,2,(int)tree.getProperty("scoreChordMode",0));}themeAccent.store(juce::jlimit(0,3,(int)tree.getProperty("themeAccent",0)));darkMode.store((bool)tree.getProperty("darkMode",true));language.store(juce::jlimit(0,4,(int)tree.getProperty("language",0)));bool hasCount=false,hasAI=false,hasCast=false,hasRaga=false;for(int i=0;i<tree.getNumChildren();++i){auto id=tree.getChild(i).getProperty("id").toString();hasCount|=id=="voiceCount";hasAI|=id=="aiPrint";hasCast|=id=="aiCast";hasRaga|=id=="raga";}std::array<bool,16> auditionPresent{};
+void VoxGardenProcessor::getStateInformation(juce::MemoryBlock& out) {auto tree=state.copyState();const juce::ScopedLock lock(scoreLock);tree.setProperty("schemaVersion",10,nullptr);tree.setProperty("themeAccent",themeAccent.load(),nullptr);tree.setProperty("scoreDraft",scoreDraft,nullptr);tree.setProperty("scoreLanguage",scoreLanguage,nullptr);tree.setProperty("scoreVoice",scoreVoice,nullptr);tree.setProperty("scoreChordMode",scoreChordMode,nullptr);tree.setProperty("darkMode",darkMode.load(),nullptr);tree.setProperty("language",language.load(),nullptr);if(auto xml=tree.createXml())copyXmlToBinary(*xml,out);}
+void VoxGardenProcessor::setStateInformation(const void* data,int size) {if(auto xml=getXmlFromBinary(data,size))if(xml->hasTagName(state.state.getType())){auto tree=juce::ValueTree::fromXml(*xml);{const juce::ScopedLock lock(scoreLock);scoreDraft=tree.getProperty("scoreDraft",scoreDraft).toString();scoreLanguage=juce::jlimit(0,5,(int)tree.getProperty("scoreLanguage",0));scoreVoice=juce::jlimit(0,9,(int)tree.getProperty("scoreVoice",0));scoreChordMode=juce::jlimit(0,2,(int)tree.getProperty("scoreChordMode",0));}themeAccent.store(juce::jlimit(0,3,(int)tree.getProperty("themeAccent",0)));darkMode.store((bool)tree.getProperty("darkMode",true));language.store(juce::jlimit(0,4,(int)tree.getProperty("language",0)));bool hasCount=false,hasAI=false,hasCast=false,hasRaga=false;for(int i=0;i<tree.getNumChildren();++i){auto id=tree.getChild(i).getProperty("id").toString();hasCount|=id=="voiceCount";hasAI|=id=="aiPrint";hasCast|=id=="aiCast";hasRaga|=id=="raga";}std::array<bool,vg::voices*2> auditionPresent{};
     for(int v=1;v<=vg::voices;++v)for(int k=0;k<2;++k){auto id="v"+juce::String(v)+(k==0?"_mute":"_solo");for(int i=0;i<tree.getNumChildren();++i)if(tree.getChild(i).getProperty("id").toString()==id)auditionPresent[(size_t)((v-1)*2+k)]=true;}
+    auto defaults=state.copyState();for(int i=0;i<defaults.getNumChildren();++i){auto id=defaults.getChild(i).getProperty("id").toString();bool extra=id=="extraVoices";if(id.startsWith("v"))extra|=id.substring(1).getIntValue()>8;if(!extra)continue;
+        bool present=false;for(int k=0;k<tree.getNumChildren();++k)present|=tree.getChild(k).getProperty("id").toString()==id;
+        if(!present){auto node=defaults.getChild(i).createCopy();auto* parameter=state.getParameter(id);node.setProperty("value",parameter->convertFrom0to1(parameter->getDefaultValue()),nullptr);tree.addChild(node,-1,nullptr);}}
     state.replaceState(tree);
     for(int v=1;v<=vg::voices;++v)for(int k=0;k<2;++k)if(!auditionPresent[(size_t)((v-1)*2+k)])state.getParameter("v"+juce::String(v)+(k==0?"_mute":"_solo"))->setValueNotifyingHost(0);if(!hasRaga)state.getParameter("raga")->setValueNotifyingHost(0);if(!hasCast)state.getParameter("aiCast")->setValueNotifyingHost(0);if(!hasAI){state.getParameter("aiPrint")->setValueNotifyingHost(0);state.getParameter("aiBlend")->setValueNotifyingHost(1);}if(!hasCount)if(auto* param=state.getParameter("voiceCount"))param->setValueNotifyingHost(param->convertTo0to1(8));}}
 juce::AudioProcessorEditor* VoxGardenProcessor::createEditor(){return new VoxGardenEditor(*this);}

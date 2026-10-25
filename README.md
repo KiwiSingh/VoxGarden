@@ -4,6 +4,12 @@
 
 A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 2.0.0** · Apple Silicon macOS · VST3 + standalone.
 
+## 2.1 source preview: 24 voices and remembered appearance
+
+The current source and local preview add **1–24 choir voices**, edited in three banks of eight with independent mute/solo and voice controls. **Abbey Ensemble 24**, **Chamber Ensemble 16** and **Velvet Abbey 24** are original DSP choir textures with varied voicing, placement, formants and depth—not Cymatics recordings or an Abbey Road sample library. Unused voices skip pitch processing. The last explicitly chosen theme and light/dark setting become the default for fresh instances; saved projects keep their own appearance and do not replace that default. Original 2.0 parameter IDs, indices and ranges remain intact; extra controls are appended. Existing eight-voice sounds retain their sizes. These changes are not in the v2.0.0 release linked below.
+
+![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+
 ## Screenshots
 
 ![VoxGarden in English, dark theme](Media/VoxGarden-2.0-en-rose.png)

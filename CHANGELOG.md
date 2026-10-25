@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 — source preview
+
+- Up to 24 choir voices, with three banks of eight individual controls, mute and solo.
+- Abbey Ensemble 24, Chamber Ensemble 16 and Velvet Abbey 24 original DSP starting sounds (65 total).
+- Last user-chosen theme/light-dark mode becomes the default for new instances. Project restoration does not overwrite that preference.
+- Original 75 sound parameters retain IDs, order and ranges; 112 extra voice controls and Additional Choir Voices are appended (188 total). Original Choir Voices remains 1–8; total is Choir Voices + Additional Choir Voices. The UI provides one 1–24 selector.
+- 24 aligned stereo stem outputs and expanded optional AI input buffers. Inactive voices skip pitch shifting.
+
 ## 2.0.0 — 2026-10-25
 
 - Notes + lyrics workspace with MIDI import, editable syllable timing and velocity, overlapping-note support and monophonic audio transcription.

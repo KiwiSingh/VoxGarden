@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 namespace vg {
-inline constexpr int voices = 8;
+inline constexpr int voices = 24;
 inline constexpr std::array<const char*, 12> roots {"C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"};
 inline constexpr std::array<const char*, 9> scales {"Major", "Natural minor", "Harmonic minor", "Melodic minor", "Dorian", "Mixolydian", "Major pentatonic", "Minor pentatonic", "Chromatic"};
 inline const std::array<std::vector<int>, 15> intervals {{{0,2,4,5,7,9,11}, {0,2,3,5,7,8,10}, {0,2,3,5,7,8,11}, {0,2,3,5,7,9,11}, {0,2,3,5,7,9,10}, {0,2,4,5,7,9,10}, {0,2,4,7,9}, {0,3,5,7,10}, {0,1,2,3,4,5,6,7,8,9,10,11}, {0,2,4,6,7,9,11}, {0,1,3,5,7,8,10}, {0,1,4,5,7,8,11}, {0,3,5,8,10}, {0,2,5,7,9}, {0,2,4,7,11}}};

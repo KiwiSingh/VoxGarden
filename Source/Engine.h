@@ -63,6 +63,7 @@ class Engine {
     std::array<std::array<float,128>,voices> shifted{};
     std::array<std::vector<float>,voices> delay;
     std::array<int,voices> pos{};
+    std::array<bool,voices> running{};
     std::array<float,voices> smoothShift{}, phase{},smoothLevel{},smoothPan{},smoothDelay{};
     std::array<float,128> mono{};
     std::array<std::vector<float>,2> dryDelay;
@@ -82,13 +83,13 @@ public:
             shifters[(size_t)v].configure(1,window,window/8,true);
             shifters[(size_t)v].reset();
             lat=shifters[(size_t)v].inputLatency()+shifters[(size_t)v].outputLatency();
-            delay[(size_t)v].assign((size_t)(sr*.16)+256,0);pos[(size_t)v]=0;
+            delay[(size_t)v].assign((size_t)(sr*.16)+256,0);pos[(size_t)v]=0;running[(size_t)v]=false;
             smoothShift[(size_t)v]=0;phase[(size_t)v]=v*.618f;smoothLevel[(size_t)v]=0;smoothPan[(size_t)v]=0;smoothDelay[(size_t)v]=0;
         }
         for(auto& d:dryDelay)d.assign((size_t)lat+1,0);
         dryPos=0;mixSmooth=1;gainSmooth=.7f;reverb.setSampleRate(sr);reverb.reset();
     }
-    // Optional stems: 16 channels, stereo per voice. Caller preallocates and clears.
+    // Optional stems: 48 channels, stereo per voice. Caller preallocates and clears.
     void process(float* left,float* right,int count,const Settings& s,float* const* stems=nullptr,const float* const* voiceInputs=nullptr,bool dryMonitor=false) {
         std::array<bool,voices> audible{};for(int v=0;v<voices;++v)audible[(size_t)v]=voiceAudible(s,v);
         juce::Reverb::Parameters rp;rp.roomSize=.72f;rp.damping=.6f;rp.wetLevel=s.space*.32f;rp.dryLevel=1;rp.width=1;reverb.setParameters(rp);
@@ -97,6 +98,9 @@ public:
             for(int i=0;i<n;++i) {mono[(size_t)i]=.5f*(left[start+i]+right[start+i]);pitch.push(mono[(size_t)i]);}
             detectedNote.store(pitch.note,std::memory_order_relaxed);pitchConfidence.store(pitch.confidence,std::memory_order_relaxed);
             for(int v=0;v<voices;++v) {
+                bool needed=v<s.count||smoothLevel[(size_t)v]>1e-5f;
+                if(!needed){shifted[(size_t)v].fill(0);if(running[(size_t)v]){shifters[(size_t)v].reset();std::fill(delay[(size_t)v].begin(),delay[(size_t)v].end(),0.f);running[(size_t)v]=false;}continue;}
+                running[(size_t)v]=true;
                 const auto& vs=s.voice[(size_t)v];
                 float target=pitch.note;
                 if(s.mode==1) {
@@ -111,7 +115,7 @@ public:
                 phase[(size_t)v]+=(float)(n/sr)*(4.7f+.13f*v);
                 phase[(size_t)v]-=std::floor(phase[(size_t)v]);
                 float wave=std::sin(phase[(size_t)v]*juce::MathConstants<float>::twoPi);
-                float cents=s.detune*((v%2?1.f:-1.f)*(.35f+.65f*v/7.f))+s.vibrato*wave;
+                float cents=s.detune*((v%2?1.f:-1.f)*(.35f+.65f*(v%8)/7.f))+s.vibrato*wave;
                 float desired=voiceInputs?0.f:std::clamp(target-pitch.note+cents*.01f,-24.f,24.f);
                 if(!pitch.voiced) desired=smoothShift[(size_t)v];
                 float coeff=1-std::exp(-(float)n/((float)sr*std::max(.005f,s.glide*.001f)));
@@ -131,7 +135,7 @@ public:
                 for(int v=0;v<voices;++v) {
                     const auto& vs=s.voice[(size_t)v];auto& d=delay[(size_t)v];int& p=pos[(size_t)v];
                     d[(size_t)p]=shifted[(size_t)v][(size_t)i];
-                    float ms=vs.delay+s.human*(.1f+.9f*v/7.f);
+                    float ms=vs.delay+s.human*(.1f+.9f*(v%8)/7.f);
                     smoothDelay[(size_t)v]+=.001f*(ms-smoothDelay[(size_t)v]);
                     float offset=std::clamp(smoothDelay[(size_t)v]*(float)sr*.001f,0.f,(float)d.size()-2);
                     float read=(float)p-offset;while(read<0)read+=(float)d.size();

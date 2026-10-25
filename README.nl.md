@@ -4,6 +4,12 @@
 
 Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 2.0.0** · Apple Silicon-macOS · VST3 + standalone.
 
+## 2.1-broncodevoorbeeld: 24 stemmen en onthouden thema
+
+De huidige broncode en lokale preview bieden **1–24 koorstemmen** in drie banken van acht, met individuele mute/solo en stemregelaars. **Abdij-ensemble 24**, **Kamerensemble 16** en **Fluwelen abdij 24** zijn eigen DSP-klanken, geen Cymatics-opnamen of Abbey Road-samples. Ongebruikte stemmen slaan toonhoogteverwerking over. Het laatst gekozen thema en licht/donker worden standaard voor nieuwe instanties; projecten bewaren hun eigen uiterlijk zonder die standaard te wijzigen. Oude 2.0-parameters en achtstemmige klanken blijven behouden; nieuwe regelaars worden toegevoegd. Niet inbegrepen in de onderstaande v2.0.0-download.
+
+![VoxGarden 2.1 — Abbey Ensemble 24](Media/VoxGarden-2.1-preview-abbey24.png)
+
 ## Schermafbeeldingen
 
 ![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-2.0-nl-rose.png)

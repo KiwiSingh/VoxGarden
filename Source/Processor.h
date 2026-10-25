@@ -2,9 +2,12 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include "Engine.h"
 #include "Capture.h"
+#include "Appearance.h"
 class VoxGardenProcessor final : public juce::AudioProcessor {
 public:
-    VoxGardenProcessor();
+    explicit VoxGardenProcessor(juce::File preferences=vg::appearancePreferencesFile());
+    bool setAppearance(int accent,bool dark);
+    void setChoirSize(int total);
     juce::AudioProcessorValueTreeState state;
     vg::Engine engine;
     TrackCapture capture;
@@ -37,6 +40,8 @@ public:
     void getStateInformation(juce::MemoryBlock&) override;
     void setStateInformation(const void*,int) override;
 private:
+    juce::File appearanceFile;
+    std::atomic<float>* extraVoices=nullptr;
     std::array<bool,128> held{};
     // Cache parameter pointers once. Never look up strings or allocate in processBlock.
     struct CachedVoice {std::atomic<float> *level,*pan,*formant,*delay,*degree,*mute,*solo;};
