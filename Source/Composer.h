@@ -2,15 +2,16 @@
 #include "Editor.h"
 #include "Neural.h"
 #include "ScoreGrid.h"
+#include "DryVocalButton.h"
 class ScoreComposer final:public juce::Component,public juce::FileDragAndDropTarget,private juce::Thread,private juce::Timer {
     VoxGardenProcessor& processor;
     GardenLook look;
-    std::function<void(const juce::File&)> sendToChoir;
     ScoreGrid grid;
     juce::TextEditor lyrics;
     juce::Label intro,columns,message;
     juce::ComboBox language,tracks,singingVoice,chordMode;
-    juce::TextButton importMidi{"Import MIDI"},importAudio{"Audio to notes"},assign{"Assign syllables"},generate{"Render dry singing"},choir{"Send dry to choir"},reveal{"Show dry vocal"},download{"Download voices (~401 MB)"},licence{"Model licence"},addNote{"Add note"},deleteNote{"Delete selected notes"},modelFolder{"Open model folder"};
+    juce::TextButton importMidi{"Import MIDI"},importAudio{"Audio to notes"},assign{"Assign syllables"},generate{"Render dry singing"},reveal{"Show dry vocal"},download{"Download voices (~401 MB)"},licence{"Model licence"},addNote{"Add note"},deleteNote{"Delete selected notes"},modelFolder{"Open model folder"};
+    DryVocalButton choir;
     juce::Label modelStatus;
     std::unique_ptr<juce::FileChooser> chooser;
     std::vector<vg::ScoreTrack> midiTracks;
@@ -22,7 +23,7 @@ class ScoreComposer final:public juce::Component,public juce::FileDragAndDropTar
     juce::String tr(const juce::String& s)const{return vg::tr(processor.language.load(),s);}
     void report(const char* s){report(juce::String::fromUTF8(s));}
     void report(const juce::String& s){message.setText(tr(s),juce::dontSendNotification);}
-    void saveDraft(){{const juce::ScopedLock lock(processor.scoreLock);processor.scoreDraft=grid.getText();processor.scoreChordMode=chordMode.getSelectedId()-1;processor.scoreLanguage=language.getSelectedId()-1;processor.scoreVoice=juce::jlimit(0,9,singingVoice.getSelectedId()-1);}dry=juce::File{};choir.setEnabled(false);reveal.setEnabled(false);processor.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));}
+    void saveDraft(){{const juce::ScopedLock lock(processor.scoreLock);processor.scoreDraft=grid.getText();processor.scoreChordMode=chordMode.getSelectedId()-1;processor.scoreLanguage=language.getSelectedId()-1;processor.scoreVoice=juce::jlimit(0,9,singingVoice.getSelectedId()-1);}dry=juce::File{};choir.setFile(dry);reveal.setEnabled(false);processor.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));}
     void busy(bool on){for(auto* b:{&importMidi,&importAudio,&assign,&addNote,&deleteNote})b->setEnabled(!on);grid.setReadOnly(on);lyrics.setReadOnly(on);language.setEnabled(!on);singingVoice.setEnabled(!on);tracks.setEnabled(!on);chordMode.setEnabled(!on);deleteNote.setEnabled(!on&&grid.hasSelection());download.setEnabled(!on);download.setButtonText(tr(vg::singingReady()?"Check / repair models":"Download voices (~401 MB)"));generate.setButtonText(tr(on?"Cancel":"Render dry singing"));choir.setEnabled(!on&&dry.existsAsFile());reveal.setEnabled(!on&&dry.existsAsFile());}
     void import(const juce::File& f){if(pending)return;
         if(f.hasFileExtension("mid;midi")){auto result=vg::readMidiScore(f,midiTracks);if(result.isNotEmpty()){report(result);return;}tracks.clear();for(int i=0;i<(int)midiTracks.size();++i)tracks.addItem(midiTracks[(size_t)i].name,i+1);tracks.setSelectedId(1,juce::sendNotificationSync);report("Choose a MIDI track. Overlapping notes are rendered together.");}
@@ -40,10 +41,10 @@ class ScoreComposer final:public juce::Component,public juce::FileDragAndDropTar
     void timerCallback()override{
         if(!pending)return;
         if(isThreadRunning()){if(job==setup){auto root=vg::singingRoot();auto state=juce::JSON::parse(root.getChildFile("Setup Status.json"));modelStatus.setText(tr(state.getProperty("message",root.getChildFile("Setup Stage.txt").loadFileAsString()).toString()),juce::dontSendNotification);}else if(job==sing){auto state=juce::JSON::parse(folder.getChildFile("Singing Status.json"));auto message=state.getProperty("message","Loading the GPU speech model…").toString();report(message+(progress.load()>=0?" "+juce::String(progress.load()*100,0)+"%":""));}return;}
-        pending=false;if(error.isEmpty()){if(job==transcribe){tracks.clear();midiTracks.clear();grid.setText(vg::scoreText(transcribed));report("Pitch sketch ready. Check notes and timing before assigning lyrics.");}else if(job==sing)report("Dry singing saved. Use it directly or send it to the choir.");else modelStatus.setText(tr("Ready • Core ML GPU preferred"),juce::dontSendNotification);}else{report(error);if(job==setup)modelStatus.setText(tr(error),juce::dontSendNotification);}busy(false);generate.setEnabled(true);job=none;
+        pending=false;if(error.isEmpty()){if(job==transcribe){tracks.clear();midiTracks.clear();grid.setText(vg::scoreText(transcribed));report("Pitch sketch ready. Check notes and timing before assigning lyrics.");}else if(job==sing){choir.setFile(dry);report("Dry singing saved. Drag the dry vocal onto the Live audio track containing VoxGarden, then play to audition.");}else modelStatus.setText(tr("Ready • Core ML GPU preferred"),juce::dontSendNotification);}else{report(error);if(job==setup)modelStatus.setText(tr(error),juce::dontSendNotification);}busy(false);generate.setEnabled(true);job=none;
     }
 public:
-    ScoreComposer(VoxGardenProcessor& p,std::function<void(const juce::File&)> callback,const juce::File& initial):Thread("VoxGarden score renderer"),processor(p),sendToChoir(std::move(callback)){
+    ScoreComposer(VoxGardenProcessor& p,const juce::File& initial):Thread("VoxGarden score renderer"),processor(p){
         look.palette=GardenPalette(p.darkMode.load(),p.themeAccent.load());look.language=p.language.load();auto colours=look.palette;
         look.setColour(juce::ResizableWindow::backgroundColourId,colours.paper);look.setColour(juce::Label::textColourId,colours.ink);
         look.setColour(juce::TextEditor::backgroundColourId,colours.panel);look.setColour(juce::TextEditor::textColourId,colours.ink);look.setColour(juce::TextEditor::highlightColourId,colours.forest.withAlpha(.4f));look.setColour(juce::TextEditor::outlineColourId,colours.line);look.setColour(juce::TextEditor::focusedOutlineColourId,colours.forest);
@@ -68,7 +69,7 @@ public:
         tracks.setTextWhenNothingSelected(tr("MIDI track"));importMidi.onClick=[this]{choose(true);};importAudio.onClick=[this]{choose(false);};
         assign.onClick=[this]{vg::Score notes;auto result=vg::parseScore(grid.getText(),notes);if(result.isNotEmpty()){report(result);return;}auto syllables=juce::StringArray::fromTokens(lyrics.getText(),"|","");for(auto& s:syllables)s=s.trim();if(!vg::assignScoreSyllables(notes,syllables,chordMode.getSelectedId()-1)){report("Supply one syllable per note or simultaneous chord, separated by |.");return;}grid.setText(vg::scoreText(notes));report("Syllables assigned. Adjust note start and duration in seconds.");};
         generate.onClick=[this]{if(pending){signalThreadShouldExit();generate.setEnabled(false);report("Cancelling…");return;}if(!vg::singingReady()){report("Download the singing models in this window first.");return;}error=vg::parseScore(grid.getText(),jobScore);if(error.isNotEmpty()){report(error);return;}vg::prepareScoreChords(jobScore,chordMode.getSelectedId()-1);folder=juce::File::getSpecialLocation(juce::File::userMusicDirectory).getChildFile("VoxGarden Renders").getNonexistentChildFile("Singing "+juce::Time::getCurrentTime().formatted("%Y-%m-%d %H-%M-%S"),"");jobLanguage=language.getSelectedId()-1;jobVoice=singingVoice.getText();job=sing;pending=true;progress=0;busy(true);startThread();};
-        choir.onClick=[this]{if(dry.existsAsFile())sendToChoir(dry);};reveal.onClick=[this]{if(dry.existsAsFile())dry.revealToUser();};
+        choir.setTooltip(tr("Drag the dry WAV onto the Live audio track containing VoxGarden. Click to reveal the file."));choir.onTransfer=[this](bool started){report(started?"Drop onto an audio clip lane or empty Session slot on the VoxGarden track, then play and adjust the choir.":"Could not start the drag. Click to reveal the dry WAV, then drag it from Finder.");};choir.onClick=[this]{if(dry.existsAsFile()){dry.revealToUser();report("Drag the revealed dry WAV onto the Live audio track containing VoxGarden, then play and adjust the choir.");}};reveal.onClick=[this]{if(dry.existsAsFile())dry.revealToUser();};
         busy(false);report("Import a melody, align syllables, then render. Neural speech is retimed to your score; this is an experimental singing voice.");
         vg::localiseComponent(*this,p.language.load());setSize(920,750);startTimerHz(8);if(initial.existsAsFile())import(initial);
     }
@@ -80,11 +81,11 @@ public:
 };
 class ComposerWindow final:public juce::DialogWindow {
 public:
-    ComposerWindow(VoxGardenProcessor& p,std::function<void(const juce::File&)> callback,const juce::File& initial):DialogWindow(vg::tr(p.language.load(),"Notes + lyrics"),juce::Colour(0xff20292d),true){
+    ComposerWindow(VoxGardenProcessor& p,const juce::File& initial):DialogWindow(vg::tr(p.language.load(),"Notes + lyrics"),juce::Colour(0xff20292d),true){
         // Keep the drop target above the host when the user clicks a source clip.
         // Do not grab focus while a drag is in progress.
-        setAlwaysOnTop(true);setUsingNativeTitleBar(true);auto* content=new ScoreComposer(p,std::move(callback),initial);setContentOwned(content,true);centreWithSize(920,750);setVisible(true);
+        setAlwaysOnTop(true);setUsingNativeTitleBar(true);auto* content=new ScoreComposer(p,initial);setContentOwned(content,true);centreWithSize(920,750);setVisible(true);
     }
     void closeButtonPressed()override{setVisible(false);}
 };
-inline std::unique_ptr<juce::DialogWindow> showComposer(VoxGardenProcessor& p,std::function<void(const juce::File&)> callback,const juce::File& initial={}){return std::make_unique<ComposerWindow>(p,std::move(callback),initial);}
+inline std::unique_ptr<juce::DialogWindow> showComposer(VoxGardenProcessor& p,const juce::File& initial={}){return std::make_unique<ComposerWindow>(p,initial);}

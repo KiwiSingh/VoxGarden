@@ -76,7 +76,7 @@ private:
     void applyTheme();
     void addControl(const juce::String&,const juce::String&);
     void beginRender();
-    void renderFile(const juce::File&,bool trackTake=false,bool scoreTake=false);
+    void renderFile(const juce::File&,bool trackTake=false);
     void chooseFile();
     void run()override;
     void timerCallback()override;

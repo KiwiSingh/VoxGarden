@@ -1868,6 +1868,48 @@
       "Anschlagstärke muss eine ganze Zahl von 1 bis 127 sein.",
       "Aanslagsterkte moet een geheel getal van 1 tot 127 zijn.",
       "Сила нажатия должна быть целым числом от 1 до 127."
+    ],
+    [
+      "Drag dry vocal to Live",
+      "मूल स्वर Live में खींचें",
+      "Trockenen Gesang zu Live ziehen",
+      "Sleep droge zang naar Live",
+      "Перетащить сухой вокал в Live"
+    ],
+    [
+      "Drag the dry WAV onto the Live audio track containing VoxGarden. Click to reveal the file.",
+      "मूल WAV को VoxGarden वाले Live ऑडियो ट्रैक पर खींचें। फ़ाइल दिखाने के लिए क्लिक करें।",
+      "Trockene WAV auf die Live-Audiospur mit VoxGarden ziehen. Klicken zeigt die Datei.",
+      "Sleep de droge WAV naar de Live-audiotrack met VoxGarden. Klik om het bestand te tonen.",
+      "Перетащите сухой WAV на аудиодорожку Live с VoxGarden. Нажмите, чтобы показать файл."
+    ],
+    [
+      "Dry singing saved. Drag the dry vocal onto the Live audio track containing VoxGarden, then play to audition.",
+      "मूल गायन सुरक्षित है। इसे VoxGarden वाले Live ऑडियो ट्रैक पर खींचें और सुनने के लिए चलाएँ।",
+      "Trockener Gesang gespeichert. Auf die Live-Audiospur mit VoxGarden ziehen und zum Anhören abspielen.",
+      "Droge zang opgeslagen. Sleep naar de Live-audiotrack met VoxGarden en speel af om te beluisteren.",
+      "Сухой вокал сохранён. Перетащите его на аудиодорожку Live с VoxGarden и включите воспроизведение."
+    ],
+    [
+      "Drop onto an audio clip lane or empty Session slot on the VoxGarden track, then play and adjust the choir.",
+      "VoxGarden ट्रैक की ऑडियो क्लिप लेन या खाली Session स्लॉट पर छोड़ें, फिर चलाकर मंडली बदलें।",
+      "Auf die Audiospur oder einen leeren Session-Slot der VoxGarden-Spur ziehen, dann abspielen und den Chor einstellen.",
+      "Zet neer op de audiobaan of een leeg Session-vak van de VoxGarden-track, speel af en pas het koor aan.",
+      "Поместите в аудиолинию или пустой слот Session дорожки VoxGarden, затем воспроизводите и настраивайте хор."
+    ],
+    [
+      "Could not start the drag. Click to reveal the dry WAV, then drag it from Finder.",
+      "खींचना शुरू नहीं हुआ। मूल WAV दिखाने के लिए क्लिक करें, फिर Finder से खींचें।",
+      "Ziehen konnte nicht starten. Klicken zeigt die trockene WAV; dann aus dem Finder ziehen.",
+      "Slepen kon niet starten. Klik om de droge WAV te tonen en sleep vanuit Finder.",
+      "Не удалось начать перенос. Нажмите, чтобы показать сухой WAV, и перетащите его из Finder."
+    ],
+    [
+      "Drag the revealed dry WAV onto the Live audio track containing VoxGarden, then play and adjust the choir.",
+      "दिखाई गई मूल WAV को VoxGarden वाले Live ऑडियो ट्रैक पर खींचें, फिर चलाकर मंडली बदलें।",
+      "Die angezeigte trockene WAV auf die Live-Audiospur mit VoxGarden ziehen, dann abspielen und den Chor einstellen.",
+      "Sleep de getoonde droge WAV naar de Live-audiotrack met VoxGarden, speel af en pas het koor aan.",
+      "Перетащите показанный сухой WAV на аудиодорожку Live с VoxGarden, затем воспроизводите и настраивайте хор."
     ]
   ]
 }

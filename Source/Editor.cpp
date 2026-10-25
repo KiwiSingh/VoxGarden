@@ -106,7 +106,7 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
     capturePending=p.capture.getPhase()==TrackCapture::starting||p.capture.getPhase()==TrackCapture::recording||p.capture.getPhase()==TrackCapture::stopping||p.capture.getPhase()==TrackCapture::complete;
     themeChoice.addItemList({"Garden","Rose","Ocean","Sunset"},1);themeChoice.setComponentID("themeChoice");
     themeChoice.onChange=[this]{p.themeAccent.store(themeChoice.getSelectedId()-1);applyTheme();p.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));};
-    compose.onClick=[this]{if(composer){composer->setVisible(true);composer->toFront(true);return;}composer=showComposer(p,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::File& file){if(safe)safe->renderFile(file,false,true);});};
+    compose.onClick=[this]{if(composer){composer->setVisible(true);composer->toFront(true);return;}composer=showComposer(p);};
     theme.onClick=[this]{p.darkMode.store(theme.getToggleState());applyTheme();p.updateHostDisplay(juce::AudioProcessor::ChangeDetails{}.withNonParameterStateChanged(true));};applyTheme();
     for(auto* combo:{&root,&scale,&mode,&presets,&voiceCount,&aiCast,&raga,&themeChoice})englishMenus.emplace(combo,*combo->getRootMenu());
     ragaNotes.setFont(juce::FontOptions(12));ragaNotes.setColour(juce::Label::textColourId,muted);
@@ -188,11 +188,11 @@ void VoxGardenEditor::beginRender(){
 }
 void VoxGardenEditor::chooseFile(){chooser=std::make_unique<juce::FileChooser>(t("Render a vocal file"),juce::File{},"*.wav;*.aif;*.aiff;*.flac");chooser->launchAsync(juce::FileBrowserComponent::openMode|juce::FileBrowserComponent::canSelectFiles,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::FileChooser& c){if(safe&&c.getResult().existsAsFile())safe->renderFile(c.getResult());});}
 bool VoxGardenEditor::isInterestedInFileDrag(const juce::StringArray& files){return files.size()==1&&juce::File(files[0]).hasFileExtension("wav;aif;aiff;flac;mid;midi")&&!rendering.load()&&!capturePending;}
-void VoxGardenEditor::filesDropped(const juce::StringArray& files,int,int){if(isInterestedInFileDrag(files)){auto file=juce::File(files[0]);if(file.hasFileExtension("mid;midi")){if(composer){composer->setVisible(true);composer->toFront(true);if(auto* content=dynamic_cast<ScoreComposer*>(composer->getContentComponent()))content->filesDropped(files,0,0);return;}composer=showComposer(p,[safe=juce::Component::SafePointer<VoxGardenEditor>(this)](const juce::File& f){if(safe)safe->renderFile(f,false,true);},file);}else renderFile(file);}}
-void VoxGardenEditor::renderFile(const juce::File& f,bool trackTake,bool scoreTake){ VG_PALETTE
+void VoxGardenEditor::filesDropped(const juce::StringArray& files,int,int){if(isInterestedInFileDrag(files)){auto file=juce::File(files[0]);if(file.hasFileExtension("mid;midi")){if(composer){composer->setVisible(true);composer->toFront(true);if(auto* content=dynamic_cast<ScoreComposer*>(composer->getContentComponent()))content->filesDropped(files,0,0);return;}composer=showComposer(p,file);}else renderFile(file);}}
+void VoxGardenEditor::renderFile(const juce::File& f,bool trackTake){ VG_PALETTE
     if(capturePending&&!trackTake){status.setText(t("Stop the channel capture before rendering another file."),juce::dontSendNotification);return;}
     if(isThreadRunning()||rendering.load())return;inputFile=f;
-    if(!trackTake)renderSettings=p.settings();if(scoreTake)renderSettings.aiPrint=false;
+    if(!trackTake)renderSettings=p.settings();
     if(renderSettings.aiPrint && renderSettings.aiBlend>0 && !vg::aiReady()){status.setText("AI runtime is not ready. Turn off AI singers for a DSP print, or run Setup AI.command.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");return;}
     if(renderSettings.mode==1){status.setText("Choose Scale harmony or Chromatic mode to render a vocal.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");render.setColour(juce::TextButton::buttonColourId,forest);return;}
     outputFolder=trackTake?f.getParentDirectory():f.getParentDirectory().getNonexistentChildFile(f.getFileNameWithoutExtension()+" - VoxGarden","");progress=0;rendering=true;p.printInProgress=true;render.setEnabled(false);importFile.setEnabled(false);reveal.setEnabled(false);render.setButtonText("Cancel print");render.setEnabled(true);startThread();
