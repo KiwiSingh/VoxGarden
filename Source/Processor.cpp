@@ -163,6 +163,11 @@ void VoxGardenProcessor::applyPreset(int preset) {
                 setValue(id+"level",v<2?.55f:.38f);}
         }
     }
+    // Seed the added banks from this sound's original voicing, so increasing
+    // choir size after selecting an older sound retains its cast and raga.
+    auto sound=settings();for(int v=8;v<vg::voices;++v){auto id="v"+juce::String(v+1)+"_";auto source=sound.voice[(size_t)(v%8)];
+        setValue(id+"degree",(float)source.degree);setValue(id+"level",source.level);setValue(id+"pan",juce::jlimit(-1.f,1.f,source.pan+(v%2?.02f:-.02f)*(v/8)));
+        setValue(id+"formant",juce::jlimit(-12.f,12.f,source.formant+(v%2?.08f:-.08f)*(v/8)));setValue(id+"delay",juce::jlimit(0.f,80.f,source.delay+(v/8)*8.f));}
 }
 void VoxGardenProcessor::prepareToPlay(double sr,int block) {capture.prepare(sr,block);engine.prepare(sr);held.fill(false);setLatencySamples(engine.latency());}
 void VoxGardenProcessor::reset() {if(getSampleRate()>0) {engine.prepare(getSampleRate());held.fill(false);}}
