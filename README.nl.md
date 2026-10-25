@@ -2,28 +2,22 @@
 
 [English](README.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md) · **Nederlands** · [Русский](README.ru.md)
 
-Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 1.0.0** · Apple Silicon-macOS · VST3 + standalone.
+Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 2.0.0** · Apple Silicon-macOS · VST3 + standalone.
 
 ## Schermafbeeldingen
 
-![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-1.0-nl-dark.png)
+![VoxGarden in het Nederlands, donker thema](Media/VoxGarden-2.0-nl-rose.png)
 
-<details><summary>Licht thema</summary>
+## Nieuw in 2.0: noten + tekst en kleurrijke thema’s
 
-![VoxGarden in het Nederlands, licht thema](Media/VoxGarden-1.0-nl-light.png)
-
-</details>
-
-## Broncodevoorbeeld: noten + tekst en kleurrijke thema’s
-
-De broncode bevat een **experimentele werkruimte voor noten naar zang**: importeer standaard MIDI, kies een melodietrack, wijs Unicode-lettergrepen toe en bewerk nootnamen, start en duur in een tabel. Geïsoleerde audio levert een bewerkbare eenstemmige notenschets. **Download stemmen in de plugin** (~401 MB modellen plus eigen runtime/cache), kies uit tien stemmen en render droge zang en gebruik **Sleep droge zang naar Live** om deze op de audiotrack met VoxGarden te zetten en harmonieën vóór het printen te beluisteren en aan te passen. **Supertonic 3 voor neurale uitspraak + PSOLA** voor timing/toonhoogte ondersteunt Engels, Hindi in Devanagari, Duits, Japans, Russisch en Nederlands. **Core ML geeft de GPU voorrang**; timing en niet-ondersteunde graafbewerkingen gebruiken de CPU. Dit is spraak aangepast naar zang, geen getraind zangmodel; beluister de natuurlijkheid. **Roze, Oceaan en Zonsondergang** hebben lichte/donkere varianten. Niet inbegrepen in de onderstaande v1.0.0-download. [Werkwijze, metingen en grenzen (Engels)](Singing.md).
+De broncode bevat een **experimentele werkruimte voor noten naar zang**: importeer standaard MIDI, kies een melodietrack, wijs Unicode-lettergrepen toe en bewerk nootnamen, start en duur in een tabel. Geïsoleerde audio levert een bewerkbare eenstemmige notenschets. **Download stemmen in de plugin** (~401 MB modellen plus eigen runtime/cache), kies uit tien stemmen en render droge zang en gebruik **Sleep droge zang naar Live** om deze op de audiotrack met VoxGarden te zetten en harmonieën vóór het printen te beluisteren en aan te passen. **Supertonic 3 voor neurale uitspraak + PSOLA** voor timing/toonhoogte ondersteunt Engels, Hindi in Devanagari, Duits, Japans, Russisch en Nederlands. **Core ML geeft de GPU voorrang**; timing en niet-ondersteunde graafbewerkingen gebruiken de CPU. Dit is spraak aangepast naar zang, geen getraind zangmodel; beluister de natuurlijkheid. **Roze, Oceaan en Zonsondergang** hebben lichte/donkere varianten. [Werkwijze, metingen en grenzen (Engels)](Singing.md).
 
 
-![Voorbeeld noten en tekst](Media/VoxGarden-1.1-preview-nl-score.png)
+![Voorbeeld noten en tekst](Media/VoxGarden-2.0-nl-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-1.1-preview-nl-rose.png)
+![VoxGarden Rose](Media/VoxGarden-2.0-nl-rose.png)
 
 </details>
 
@@ -46,7 +40,7 @@ Laad VoxGarden VST3 als effect in **SnappySnapFX** en bewaar verschillende inste
 
 ## Downloaden en installeren
 
-[**Download v1.0.0 voor Apple Silicon-macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v1.0.0/VoxGarden-1.0-macOS-arm64.zip) · [Alle releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**Download v2.0.0 voor Apple Silicon-macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [Alle releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. Pak de ZIP uit en sluit je audiohost.
 2. Voer **Install.command** uit. Het VST3 wordt in je gebruikersmap geïnstalleerd; een oudere VoxGarden-installatie krijgt een reservekopie.
@@ -64,7 +58,7 @@ Klik op **Koor en losse stemmen renderen**, speel de passage in Live af en klik 
 
 Laat Delay Compensation aan: ongeveer **192 ms DSP-vertraging bij 48 kHz**. Neem de lead eerst droog op. Neem MIDI-akkoorden met de recorder van Live op. SnappySnapFX kan verschillende parameterstanden als Snaps hosten. De gebruiker heeft morphing bevestigd met de officiële proefversie van Electric Smudge.
 
-Zet voor slepen vanaf een andere track in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** uit en open **Noten + tekst**. Dit venster blijft boven de host. Rechtstreekse overdracht van interne clips is nog niet geverifieerd; gebruik geëxporteerde MIDI-/audiobestanden als de drop niet wordt geaccepteerd.
+Zet voor slepen vanaf een andere track in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** uit en open **Noten + tekst**. Dit venster blijft boven de host. Exporteer MIDI-clips eerst als .mid; rechtstreeks slepen van interne MIDI-clips blijft een bekende beperking.
 
 ## Optionele AI-stemmen
 
@@ -98,6 +92,8 @@ VoxGarden gebruikt **GNU AGPL v3**: [LICENSE](LICENSE). Afhankelijkheden behoude
 ## Zang op basis van akkoorden
 
 Kies in **Notes + lyrics** exacte MIDI, akkoorden op aanslag of op grondtoon. MIDI-aanslagsterkte (1–127) wordt geïmporteerd en is bewerkbaar. Akkoordmodi groeperen noten met minstens 30 ms gezamenlijke overlap of een start binnen 2 ms. Ze delen het woord van de leidende noot en mengen die luider dan de harmonieën. Wijs één lettergreep per groep of noot toe. Aanslagmodus kiest de sterkste noot; bij gelijke aanslag de laagste. Grondtoonmodus herkent gangbare drie- en septiemklanken, ook omkeringen; bij twijfel wordt de bas gebruikt. Oorspronkelijke noten en lengtes blijven behouden. Dit regelt woorden en mengbalans, geen expressieve neurale klemtoon.
+
+**Ableton-MIDI-import:** exporteer de clip eerst als `.mid` en importeer of sleep dat bestand naar VoxGarden. Rechtstreeks slepen van interne MIDI-clips blijft een bekende beperking. Droge WAV-overdracht en beluisteren in Live zijn door de gebruiker bevestigd. Neurale zang vereist Apple Silicon macOS 14+; de DSP-plugin richt zich op macOS 12+.
 
 ## ☕️ Steun het project
 

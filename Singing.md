@@ -1,4 +1,4 @@
-# Notes + lyrics — experimental source preview
+# Notes + lyrics — VoxGarden 2.0
 
 This workspace prioritises **specified MIDI pitches and editable syllable timing**. The backend uses **Supertonic 3** for neural pronunciation, then **PSOLA** to set the score pitch and duration while preserving speech articulation. It is not a trained singing model: this first version still needs listening review, especially for long held notes and large pitch shifts. Automatic linguistic syllabification is not claimed.
 
@@ -41,3 +41,7 @@ Natural trained singing voices, a dedicated phoneme editor and legato/melisma sy
 In **Notes + lyrics**, choose **Exact MIDI**, **Velocity-led chords** or **Chord-root chords**. MIDI velocity (1–127) is imported and editable. Chord modes group notes sharing at least 30 ms of overlap (or an onset within 2 ms), share the leader’s word, and render the leader louder than its harmonies. Assign one lyric per grouped chord or per note. Velocity mode chooses the strongest note; ties use the lowest. Root mode recognises common triads/sevenths, including inversions, and falls back to bass for uncertain roots. Pitches, note lengths and the original score stay intact. These modes control lyric sharing and mix balance, not expressive neural stress or automatic chord composition.
 
 Grouping uses a common overlap, rather than transitively connecting every touching note. Brief legato overlaps below 30 ms remain separate. Held notes are not split or retriggered at each harmonic change. Root recognition matches exact pitch-class sets for major/minor/diminished/augmented/suspended triads and common seventh chords; it is a deterministic aid, not a contextual harmonic analyser. Chord-mode leader gain is 1, other parts are 0.55 × their velocity relative to the strongest note. Exact MIDI uses velocity/127. Final peak attenuation is shared by the entire mix. Mode and editable velocities are saved with the Live set; older four-column drafts default to velocity 127.
+
+## Release 2.0 host check
+
+On 2026-10-25 the user confirmed the updated workflow works as intended in Ableton Live, including dry-WAV handoff for auditioning. MIDI import still requires exporting a Live MIDI clip to a standard MIDI file first. Internal Live MIDI-clip dragging is a known limitation, not a supported release feature.

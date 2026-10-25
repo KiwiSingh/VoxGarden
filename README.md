@@ -2,28 +2,22 @@
 
 **English** · [हिन्दी](README.hi.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Русский](README.ru.md)
 
-A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 1.0.0** · Apple Silicon macOS · VST3 + standalone.
+A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 2.0.0** · Apple Silicon macOS · VST3 + standalone.
 
 ## Screenshots
 
-![VoxGarden in English, dark theme](Media/VoxGarden-1.0-en-dark.png)
+![VoxGarden in English, dark theme](Media/VoxGarden-2.0-en-rose.png)
 
-<details><summary>Light theme</summary>
+## New in 2.0: notes + lyrics and colourful themes
 
-![VoxGarden in English, light theme](Media/VoxGarden-1.0-en-light.png)
-
-</details>
-
-## Source preview: notes + lyrics and colourful themes
-
-The source tree now includes an **experimental score-to-singing workspace**: import standard MIDI, select a melody track, assign Unicode syllables and edit note names, start and duration in a table. Isolated audio supplies an editable monophonic pitch sketch. **Download voices inside the plugin** (~401 MB of models plus a private runtime/cache), choose from ten voices, then render a dry vocal, then **Drag dry vocal to Live** onto the audio track containing VoxGarden to audition and adjust harmonies before printing. **Supertonic 3 neural pronunciation + PSOLA** retiming supports English, Hindi in Devanagari, German, Japanese, Russian and Dutch. **Core ML with GPU-preferred settings** handles neural inference; CPU handles score retiming and unsupported graph operations. This is speech adapted into singing, not a trained singing model; naturalness needs auditioning. **Rose, Ocean and Sunset** each offer light and dark variants. These additions are not in the v1.0.0 download below. [Workflow, benchmarks and limits](Singing.md).
+VoxGarden 2.0 includes an **experimental score-to-singing workspace**: import standard MIDI, select a melody track, assign Unicode syllables and edit note names, start and duration in a table. Isolated audio supplies an editable monophonic pitch sketch. **Download voices inside the plugin** (~401 MB of models plus a private runtime/cache), choose from ten voices, render a dry vocal, then **Drag dry vocal to Live** onto the audio track containing VoxGarden to audition and adjust harmonies before printing. **Supertonic 3 neural pronunciation + PSOLA** retiming supports English, Hindi in Devanagari, German, Japanese, Russian and Dutch. **Core ML with GPU-preferred settings** handles neural inference; CPU handles score retiming and unsupported graph operations. This is speech adapted into singing, not a trained singing model; naturalness needs auditioning. **Rose, Ocean and Sunset** each offer light and dark variants. [Workflow, benchmarks and limits](Singing.md).
 
 
-![Notes and lyrics preview](Media/VoxGarden-1.1-preview-en-score.png)
+![Notes and lyrics preview](Media/VoxGarden-2.0-en-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-1.1-preview-en-rose.png)
+![VoxGarden Rose](Media/VoxGarden-2.0-en-rose.png)
 
 </details>
 
@@ -46,7 +40,7 @@ Load VoxGarden VST3 as an effect in **SnappySnapFX**, then save different harmon
 
 ## Download and install
 
-[**Download v1.0.0 for Apple Silicon macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v1.0.0/VoxGarden-1.0-macOS-arm64.zip) · [All releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**Download v2.0.0 for Apple Silicon macOS**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [All releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. Extract the ZIP and close your audio host.
 2. Run **Install.command**. It installs the VST3 in your user plugin folder and backs up an earlier VoxGarden installation.
@@ -64,7 +58,7 @@ Click **Render vocal + stems**, play the passage in Live, then **Stop + render**
 
 Keep Delay Compensation enabled: DSP latency is about **192 ms at 48 kHz**. Record a lead dry, then add the choir. Print MIDI-chord performances with Live's recorder. SnappySnapFX can host different parameter states as Snaps. The user has confirmed morphing with Electric Smudge's official trial.
 
-For cross-track dragging, turn off **Settings → Plug-Ins → Auto-Hide Plug-In Windows** in Live, then open **Notes + lyrics**. The lyrics workspace floats above the host. Direct internal clip transfer remains unverified; use exported MIDI/audio files if the drag is not accepted.
+For cross-track dragging, turn off **Settings → Plug-Ins → Auto-Hide Plug-In Windows** in Live, then open **Notes + lyrics**. The lyrics workspace floats above the host. Export MIDI clips to `.mid` before importing them; direct internal MIDI-clip transfer is a known limitation.
 
 ## Optional AI singers
 
@@ -98,6 +92,8 @@ VoxGarden uses the **GNU AGPL v3** license included in [LICENSE](LICENSE). Depen
 ## Chord-led singing
 
 In **Notes + lyrics**, choose **Exact MIDI**, **Velocity-led chords** or **Chord-root chords**. MIDI velocity (1–127) is imported and editable. Chord modes group notes sharing at least 30 ms of overlap (or an onset within 2 ms), share the leader’s word, and render the leader louder than its harmonies. Assign one lyric per grouped chord or per note. Velocity mode chooses the strongest note; ties use the lowest. Root mode recognises common triads/sevenths, including inversions, and falls back to bass for uncertain roots. Pitches, note lengths and the original score stay intact. These modes control lyric sharing and mix balance, not expressive neural stress or automatic chord composition.
+
+**Ableton MIDI import:** export the MIDI clip to a `.mid` file first, then import or drag that file into VoxGarden. Direct internal MIDI-clip dragging is a known limitation. Dry WAV transfer back to Live and auditioning are user-confirmed. Neural score singing needs Apple Silicon macOS 14+; the DSP plugin targets macOS 12+.
 
 ## ☕️ Support the Project
 

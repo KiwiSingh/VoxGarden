@@ -2,28 +2,22 @@
 
 [English](README.md) · [हिन्दी](README.hi.md) · **Deutsch** · [Nederlands](README.nl.md) · [Русский](README.ru.md)
 
-Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 1.0.0** · Apple-Silicon-macOS · VST3 + Standalone.
+Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 2.0.0** · Apple-Silicon-macOS · VST3 + Standalone.
 
 ## Screenshots
 
-![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-1.0-de-dark.png)
+![VoxGarden auf Deutsch, dunkles Thema](Media/VoxGarden-2.0-de-rose.png)
 
-<details><summary>Helles Thema</summary>
+## Neu in 2.0: Noten + Liedtext und farbige Themen
 
-![VoxGarden auf Deutsch, helles Thema](Media/VoxGarden-1.0-de-light.png)
-
-</details>
-
-## Quellcode-Vorschau: Noten + Liedtext und farbige Themen
-
-Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**: Standard-MIDI importieren, Melodiespur wählen, Unicode-Silben zuweisen und Notennamen, Start und Dauer in einer Tabelle bearbeiten. Isoliertes Audio liefert eine editierbare einstimmige Notenskizze. **Stimmen direkt im Plugin laden** (~401 MB Modelle plus eigene Laufzeit/Cache), eine von zehn Stimmen wählen und trockenen Gesang rendern und mit **Trockenen Gesang zu Live ziehen** auf die Audiospur mit VoxGarden ziehen, um Harmonien vor dem Rendern anzuhören und einzustellen. **Supertonic 3 für neuronale Aussprache + PSOLA** für Zeit/Tonhöhe unterstützt Englisch, Hindi in Devanagari, Deutsch, Japanisch, Russisch und Niederländisch. **Core ML bevorzugt die GPU**; Zeitbearbeitung und nicht unterstützte Graphoperationen laufen auf der CPU. Dies ist an Noten angepasste Sprache, kein trainiertes Gesangsmodell; Natürlichkeit bitte anhören. **Rosa, Ozean und Sonnenuntergang** bieten helle/dunkle Varianten. Nicht im folgenden v1.0.0-Download enthalten. [Ablauf, Messwerte und Grenzen (Englisch)](Singing.md).
+Der Quellcode enthält einen **experimentellen Noten-zu-Gesang-Arbeitsbereich**: Standard-MIDI importieren, Melodiespur wählen, Unicode-Silben zuweisen und Notennamen, Start und Dauer in einer Tabelle bearbeiten. Isoliertes Audio liefert eine editierbare einstimmige Notenskizze. **Stimmen direkt im Plugin laden** (~401 MB Modelle plus eigene Laufzeit/Cache), eine von zehn Stimmen wählen und trockenen Gesang rendern und mit **Trockenen Gesang zu Live ziehen** auf die Audiospur mit VoxGarden ziehen, um Harmonien vor dem Rendern anzuhören und einzustellen. **Supertonic 3 für neuronale Aussprache + PSOLA** für Zeit/Tonhöhe unterstützt Englisch, Hindi in Devanagari, Deutsch, Japanisch, Russisch und Niederländisch. **Core ML bevorzugt die GPU**; Zeitbearbeitung und nicht unterstützte Graphoperationen laufen auf der CPU. Dies ist an Noten angepasste Sprache, kein trainiertes Gesangsmodell; Natürlichkeit bitte anhören. **Rosa, Ozean und Sonnenuntergang** bieten helle/dunkle Varianten. [Ablauf, Messwerte und Grenzen (Englisch)](Singing.md).
 
 
-![Vorschau Noten und Liedtext](Media/VoxGarden-1.1-preview-de-score.png)
+![Vorschau Noten und Liedtext](Media/VoxGarden-2.0-de-score.png)
 
 <details><summary>Rose / 🌸</summary>
 
-![VoxGarden Rose](Media/VoxGarden-1.1-preview-de-rose.png)
+![VoxGarden Rose](Media/VoxGarden-2.0-de-rose.png)
 
 </details>
 
@@ -46,7 +40,7 @@ VoxGarden VST3 als Effekt in **SnappySnapFX** laden und unterschiedliche Einstel
 
 ## Download und Installation
 
-[**v1.0.0 für Apple-Silicon-macOS herunterladen**](https://github.com/KiwiSingh/VoxGarden/releases/download/v1.0.0/VoxGarden-1.0-macOS-arm64.zip) · [Alle Releases](https://github.com/KiwiSingh/VoxGarden/releases)
+[**v2.0.0 für Apple-Silicon-macOS herunterladen**](https://github.com/KiwiSingh/VoxGarden/releases/download/v2.0.0/VoxGarden-2.0.0-macOS-arm64.zip) · [Alle Releases](https://github.com/KiwiSingh/VoxGarden/releases)
 
 1. ZIP entpacken und den Audiohost schließen.
 2. **Install.command** starten. Das VST3 wird im Benutzer-Pluginordner installiert; eine ältere VoxGarden-Installation wird gesichert.
@@ -64,7 +58,7 @@ Eine Standalone-App ist enthalten. Ziel des nativen Builds ist macOS 12+; die Bi
 
 Delay Compensation aktivieren: etwa **192 ms DSP-Latenz bei 48 kHz**. Lead zunächst trocken aufnehmen. MIDI-Akkorde mit Lives Recorder aufzeichnen. SnappySnapFX kann unterschiedliche Parameterzustände als Snaps hosten. Der Nutzer hat Morphing mit der offiziellen Testversion von Electric Smudge bestätigt.
 
-Zum Ziehen von einer anderen Spur in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** ausschalten und **Noten + Liedtext** öffnen. Dieses Fenster bleibt über dem Host. Interne Clip-Übertragung ist noch nicht verifiziert; wenn der Drop nicht angenommen wird, exportierte MIDI-/Audiodateien verwenden.
+Zum Ziehen von einer anderen Spur in Live **Settings → Plug-Ins → Auto-Hide Plug-In Windows** ausschalten und **Noten + Liedtext** öffnen. Dieses Fenster bleibt über dem Host. MIDI-Clips zuerst als .mid exportieren; direktes Ziehen interner MIDI-Clips ist eine bekannte Einschränkung.
 
 ## Optionale KI-Stimmen
 
@@ -98,6 +92,8 @@ VoxGarden nutzt **GNU AGPL v3**, siehe [LICENSE](LICENSE). Abhängigkeiten behal
 ## Akkordgeführter Gesang
 
 Unter **Notes + lyrics** stehen exaktes MIDI, anschlaggeführte und grundtongeführte Akkorde bereit. MIDI-Anschlagstärke (1–127) wird importiert und ist editierbar. Akkordmodi gruppieren Noten mit mindestens 30 ms gemeinsamer Überlappung oder höchstens 2 ms Startabstand. Sie teilen das Wort der führenden Note und mischen diese lauter als die Harmonien. Eine Silbe pro Gruppe oder Note zuweisen. Der Anschlagmodus wählt die stärkste Note, bei Gleichstand die tiefste. Der Grundtonmodus erkennt gängige Drei- und Septakkorde samt Umkehrungen; unsichere Grundtöne fallen auf den Bass zurück. Originalnoten und Dauern bleiben erhalten. Gesteuert werden Wortverteilung und Pegel, keine expressive neuronale Betonung.
+
+**Ableton-MIDI-Import:** Clip zuerst als `.mid` exportieren, dann diese Datei in VoxGarden importieren oder hineinziehen. Direktes Ziehen interner MIDI-Clips ist eine bekannte Einschränkung. Trockene WAV-Übertragung und Anhören in Live sind vom Nutzer bestätigt. Neuronaler Gesang benötigt Apple Silicon macOS 14+; das DSP-Plugin zielt auf macOS 12+.
 
 ## ☕️ Das Projekt unterstützen
 

@@ -25,6 +25,7 @@ class OverlapTests(unittest.TestCase):
             self.assertLess(json.loads((out/'Render Stats.json').read_text())['mix_gain'],1.)
         runtime.ROOT=original
     def test_velocity_and_leader_gain_reach_audio(self):
+        from unittest.mock import patch
         original=runtime.ROOT
         with tempfile.TemporaryDirectory() as temporary:
             self.addCleanup(setattr,runtime,'ROOT',original)
@@ -35,7 +36,10 @@ class OverlapTests(unittest.TestCase):
             def render(velocity,gain=1):
                 runtime.render(dict(notes=[dict(start=0,duration=.5,midi=60,syllable='la',velocity=velocity,gain=gain)],language='en',voice='F1',output=str(out)),runtime.ROOT/'status.json')
                 return sf.read(out/'Dry Singing.wav')[0]
-            full=render(127);quiet=render(64);harmony=render(127,.55)
+            # PSOLA can vary its pulse placement between calls. Isolate mixer
+            # gain here; the preceding test exercises real PSOLA chord pitches.
+            with patch.object(runtime,'retime',side_effect=lambda audio,rate,midi,duration:audio[:round(rate*duration)]):
+                full=render(127);quiet=render(64);harmony=render(127,.55)
             self.assertAlmostEqual(np.linalg.norm(quiet)/np.linalg.norm(full),64/127,places=3)
             self.assertAlmostEqual(np.linalg.norm(harmony)/np.linalg.norm(full),.55,places=3)
             with self.assertRaises(ValueError):render(128)
