@@ -2,7 +2,7 @@
 score pitch/duration via PSOLA. No Seed-VC and no user-audio network requests.
 """
 from pathlib import Path
-import argparse, hashlib, json, os, sys, time, traceback
+import argparse, hashlib, json, os, sys, time, traceback, uuid
 ROOT=Path(__file__).resolve().parent
 REVISION='724fb5abbf5502583fb520898d45929e62f02c0b'
 
@@ -68,7 +68,7 @@ def engine(profile=False):
     class MetalPreferredSession(original):
         def __init__(self,path,sess_options=None,providers=None,**kwargs):
             opts=ort.SessionOptions();opts.intra_op_num_threads=2;opts.inter_op_num_threads=1;opts.log_severity_level=3
-            opts.enable_profiling=profile;opts.profile_file_prefix=str(ROOT/'diagnostics/ort')
+            opts.enable_profiling=profile;opts.profile_file_prefix=str(ROOT/'diagnostics'/('ort-'+uuid.uuid4().hex))
             actual=[('CoreMLExecutionProvider',{'ModelFormat':'NeuralNetwork','MLComputeUnits':'CPUAndGPU','RequireStaticInputShapes':'0','ModelCacheDirectory':str(ROOT/'coreml-cache')}),'CPUExecutionProvider']
             if windows:
                 opts.enable_mem_pattern=False;opts.execution_mode=ort.ExecutionMode.ORT_SEQUENTIAL
@@ -90,10 +90,14 @@ def profile_report():
         for event in json.loads(Path(filename).read_text()):
             provider=event.get('args',{}).get('provider')
             if provider:totals[provider]=totals.get(provider,0)+event.get('dur',0)
-        Path(filename).unlink(missing_ok=True)
+        try:Path(filename).unlink(missing_ok=True)
+        except PermissionError:pass # Windows ORT may hold the profile until the session exits.
     return totals
 
 def _setup_locked(report):
+    for previous in (ROOT/'diagnostics').glob('ort*.json'):
+        try:previous.unlink()
+        except OSError:pass
     download(report);status(report,'testing',-1,'Checking the neural backend and a first voice…')
     import numpy as np
     tts=engine(profile=True);style=tts.get_voice_style('F1');measurements=[]

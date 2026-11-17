@@ -29,8 +29,9 @@ inline int runSingingProcess(const juce::StringArray& args,const juce::File& log
     SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES),nullptr,TRUE};auto output=CreateFileW(log.getFullPathName().toWideCharPointer(),GENERIC_WRITE,FILE_SHARE_READ,&security,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);if(output==INVALID_HANDLE_VALUE)return -1;
     auto job=CreateJobObjectW(nullptr,nullptr);JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits{};limits.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
     if(!job||!SetInformationJobObject(job,JobObjectExtendedLimitInformation,&limits,sizeof(limits))){if(job)CloseHandle(job);CloseHandle(output);return -1;}
-    STARTUPINFOW startup{};startup.cb=sizeof(startup);startup.dwFlags=STARTF_USESTDHANDLES;startup.hStdOutput=output;startup.hStdError=output;startup.hStdInput=nullptr;PROCESS_INFORMATION process{};
-    bool started=CreateProcessW(args[0].toWideCharPointer(),command.data(),nullptr,nullptr,TRUE,CREATE_NO_WINDOW|CREATE_SUSPENDED,nullptr,nullptr,&startup,&process)!=FALSE;CloseHandle(output);
+    auto input=CreateFileW(L"NUL",GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,&security,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);if(input==INVALID_HANDLE_VALUE){CloseHandle(output);CloseHandle(job);return -1;}
+    STARTUPINFOW startup{};startup.cb=sizeof(startup);startup.dwFlags=STARTF_USESTDHANDLES;startup.hStdOutput=output;startup.hStdError=output;startup.hStdInput=input;PROCESS_INFORMATION process{};
+    bool started=CreateProcessW(args[0].toWideCharPointer(),command.data(),nullptr,nullptr,TRUE,CREATE_NO_WINDOW|CREATE_SUSPENDED,nullptr,nullptr,&startup,&process)!=FALSE;CloseHandle(output);CloseHandle(input);
     if(!started){CloseHandle(job);return -1;}if(!AssignProcessToJobObject(job,process.hProcess)){TerminateProcess(process.hProcess,1);CloseHandle(process.hThread);CloseHandle(process.hProcess);CloseHandle(job);return -1;}ResumeThread(process.hThread);CloseHandle(process.hThread);
     int result=1;while(WaitForSingleObject(process.hProcess,100)==WAIT_TIMEOUT){if(cancelled()){TerminateJobObject(job,2);WaitForSingleObject(process.hProcess,2000);result=-2;break;}poll();}
     if(result!=-2){DWORD code=1;GetExitCodeProcess(process.hProcess,&code);result=(int)code;}CloseHandle(process.hProcess);CloseHandle(job);poll();return result;

@@ -7,7 +7,11 @@ Copy-Item "$BuildDir/VoxGarden_artefacts/Release/VST3/VoxGarden.vst3" "$Root/Plu
 Copy-Item "$BuildDir/VoxGarden_artefacts/Release/Standalone/VoxGarden.exe" "$Root/Standalone"
 Copy-Item "$Repo/Windows/Install.ps1","$Repo/Windows/Install.cmd","$Repo/Windows/README.md","$Repo/LICENSE" $Root
 Copy-Item "$Repo/Licenses" $Root -Recurse
-if (Test-Path validation) { Copy-Item validation/* "$Root/Validation" -Recurse }
+if (Test-Path validation) {
+  Get-ChildItem validation -File | Where-Object { $_.Extension -in '.log','.json' } | Copy-Item -Destination "$Root/Validation"
+  if (Test-Path validation/screenshots) { Copy-Item validation/screenshots "$Root/Validation" -Recurse }
+  if (Test-Path validation/neural) { Copy-Item validation/neural "$Root/Validation" -Recurse }
+}
 git archive --format=zip --output="$Root/Source/VoxGarden-source.zip" HEAD
 if ($LASTEXITCODE) { throw 'Source archive failed' }
 Expand-Archive -Path "$Root/Source/VoxGarden-source.zip" -DestinationPath "$Root/Source/VoxGarden"
