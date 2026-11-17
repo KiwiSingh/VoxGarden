@@ -10,10 +10,12 @@ Download singing voices inside Notes + lyrics (~401 MB models plus a private Pyt
 
 Export Live MIDI clips to .mid before import. Render dry, then drag the dry WAV onto the audio track containing VoxGarden to audition. The older optional Seed-VC voice-conversion workflow and its macOS setup script are not included in this Windows preview; DSP choir printing and modern score singing are included.
 
-The installer requires administrator rights only for the common VST3 folder. Singing setup does not. Keep the complete VST3 directory structure. If Windows requests the Microsoft Visual C++ runtime, install Microsoft's current x64 redistributable.
+The installer requires administrator rights only for the common VST3 folder. Singing setup does not. Keep the complete VST3 directory structure. If Windows requests the Microsoft Visual C++ runtime, install [Microsoft's current x64 redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).
 
 Source, licences and automated validation logs are included. Source: https://github.com/KiwiSingh/VoxGarden
 
 ## ☕️ Support the Project
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/kiwisingh)
+
+[Windows validation procedure](VALIDATION.md) · [Windows preview releases](https://github.com/KiwiSingh/VoxGarden/releases)

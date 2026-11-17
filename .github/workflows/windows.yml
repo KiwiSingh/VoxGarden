@@ -45,6 +45,8 @@ jobs:
         run: |
           & build/VoxGardenCheck_artefacts/Release/VoxGardenCheck.exe --neural-setup 2>&1 | Tee-Object validation/Neural-setup.log
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          & "$env:APPDATA/VoxGarden/Singing/python/Scripts/python.exe" -X utf8 Singing/test_runtime.py 2>&1 | Tee-Object validation/Singing-runtime-checks.log
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
           & build/VoxGardenCheck_artefacts/Release/VoxGardenCheck.exe --neural-smoke "$pwd/validation/neural" 2>&1 | Tee-Object validation/Neural-smoke.log
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Collect setup diagnostics

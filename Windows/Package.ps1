@@ -5,7 +5,7 @@ $Root=Join-Path $OutputDir 'VoxGarden-3.0.0-Windows-x64-preview'
 New-Item -ItemType Directory -Force "$Root/Plugins","$Root/Standalone","$Root/Source","$Root/Validation" | Out-Null
 Copy-Item "$BuildDir/VoxGarden_artefacts/Release/VST3/VoxGarden.vst3" "$Root/Plugins" -Recurse
 Copy-Item "$BuildDir/VoxGarden_artefacts/Release/Standalone/VoxGarden.exe" "$Root/Standalone"
-Copy-Item "$Repo/Windows/Install.ps1","$Repo/Windows/Install.cmd","$Repo/Windows/README.md","$Repo/LICENSE" $Root
+Copy-Item "$Repo/Windows/Install.ps1","$Repo/Windows/Install.cmd","$Repo/Windows/README.md","$Repo/Windows/VALIDATION.md","$Repo/LICENSE" $Root
 Copy-Item "$Repo/Licenses" $Root -Recurse
 if (Test-Path validation) {
   Get-ChildItem validation -File | Where-Object { $_.Extension -in '.log','.json' } | Copy-Item -Destination "$Root/Validation"
