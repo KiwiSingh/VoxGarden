@@ -6,7 +6,7 @@
 
 ## Windows preview
 
-`windows-port` शाखा पर **Windows 10/11 x64 पूर्वावलोकन** बन रहा है: VST3, स्टैंडअलोन, 24-स्वर DSP मंडली और प्लगइन में स्वर-गीत गायन। DirectML उपलब्ध होने पर GPU, अन्यथा CPU चलता है। पुराना वैकल्पिक Seed-VC रूपांतरण अभी केवल macOS के लिए है। [Windows निर्देश व सीमाएँ (अंग्रेज़ी)](Windows/README.md)। macOS रिलीज़ नहीं बदली है।
+**Windows 10/11 x64 पूर्वावलोकन** अब उपलब्ध है: [Windows VST3 व स्टैंडअलोन डाउनलोड करें](https://github.com/KiwiSingh/VoxGarden/releases/tag/v3.0.0-windows-preview.1)। इसमें 24-स्वर DSP मंडली और प्लगइन में स्वर-गीत गायन है। DirectML उपलब्ध होने पर GPU, अन्यथा CPU चलता है। पुराना वैकल्पिक Seed-VC रूपांतरण अभी केवल macOS के लिए है। [Windows निर्देश व सीमाएँ (अंग्रेज़ी)](Windows/README.md)। macOS स्थिर रिलीज़ नहीं बदली है।
 
 ## 3.0 “Amphi” में नया: 24 स्वर और याद रहने वाली थीम
 

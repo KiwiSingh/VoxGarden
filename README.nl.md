@@ -6,7 +6,7 @@ Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergro
 
 ## Windows preview
 
-Op `windows-port` wordt een **Windows 10/11 x64-preview** gebouwd: VST3, standalone, 24-stemmig DSP-koor en geïntegreerde zang uit noten. Windows gebruikt DirectML waar beschikbaar, anders CPU. Oudere optionele Seed-VC-conversie blijft alleen voor macOS. [Windows-instructies en beperkingen (Engels)](Windows/README.md). De macOS-release blijft ongewijzigd.
+De **Windows 10/11 x64-preview** is beschikbaar: [download Windows VST3 + standalone](https://github.com/KiwiSingh/VoxGarden/releases/tag/v3.0.0-windows-preview.1). Met 24-stemmig DSP-koor en geïntegreerde zang uit noten. Windows gebruikt DirectML waar beschikbaar, anders CPU. Oudere optionele Seed-VC-conversie blijft alleen voor macOS. [Windows-instructies en beperkingen (Engels)](Windows/README.md). De stabiele macOS-release blijft ongewijzigd.
 
 ## Nieuw in 3.0 “Amphi”: 24 stemmen en onthouden thema
 

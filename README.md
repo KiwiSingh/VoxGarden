@@ -6,7 +6,7 @@ A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, pl
 
 ## Windows preview
 
-A **Windows 10/11 x64 preview** is being built on the `windows-port` branch: VST3 + standalone, 24-voice DSP choir and in-plugin score singing. Windows uses DirectML when available and CPU otherwise; the older optional Seed-VC conversion remains macOS-only. See [Windows setup and limits](Windows/README.md). The existing macOS release is unchanged.
+A **Windows 10/11 x64 preview** is now available: [download Windows VST3 + standalone](https://github.com/KiwiSingh/VoxGarden/releases/tag/v3.0.0-windows-preview.1). It includes the 24-voice DSP choir and in-plugin score singing. Windows uses DirectML when available and CPU otherwise; the older optional Seed-VC conversion remains macOS-only. See [Windows setup and limits](Windows/README.md). The existing macOS stable release is unchanged.
 
 ## New in 3.0 “Amphi”: 24 voices and remembered appearance
 

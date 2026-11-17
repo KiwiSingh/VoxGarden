@@ -6,7 +6,7 @@ Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitst
 
 ## Windows preview
 
-Auf `windows-port` entsteht eine **Windows-10/11-x64-Vorschau**: VST3, Standalone, 24-stimmiger DSP-Chor und integrierter Noten-Gesang. Windows nutzt DirectML, falls verfügbar, sonst CPU. Die ältere optionale Seed-VC-Konvertierung bleibt macOS-exklusiv. [Windows-Anleitung und Grenzen (Englisch)](Windows/README.md). Die macOS-Veröffentlichung bleibt unverändert.
+Die **Windows-10/11-x64-Vorschau** ist verfügbar: [Windows VST3 + Standalone herunterladen](https://github.com/KiwiSingh/VoxGarden/releases/tag/v3.0.0-windows-preview.1). Mit 24-stimmigem DSP-Chor und integriertem Noten-Gesang. Windows nutzt DirectML, falls verfügbar, sonst CPU. Die ältere optionale Seed-VC-Konvertierung bleibt macOS-exklusiv. [Windows-Anleitung und Grenzen (Englisch)](Windows/README.md). Die stabile macOS-Veröffentlichung bleibt unverändert.
 
 ## Neu in 3.0 „Amphi“: 24 Stimmen und gemerktes Design
 
