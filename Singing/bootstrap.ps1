@@ -7,7 +7,13 @@ if (!(Test-Path $Uv)) {
     Stage 'Downloading the private Windows runtime manager...'
     $Archive = Join-Path $Root 'tools/uv.zip.download'
     Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/astral-sh/uv/releases/download/0.8.22/uv-x86_64-pc-windows-msvc.zip' -OutFile $Archive -TimeoutSec 300
-    if ((Get-FileHash $Archive -Algorithm SHA256).Hash.ToLower() -ne '5049375aa2a5162f132b2c1cb992e25d42d47d934cab8c174dbe6f60973dcc12') { throw 'Runtime download checksum failed.' }
+    # Hash via .NET: Get-FileHash can fail to autoload when a DAW inherits
+    # PowerShell 7 module paths but launches the built-in Windows PowerShell 5.
+    $Algorithm = [Security.Cryptography.SHA256]::Create()
+    $Stream = [IO.File]::OpenRead($Archive)
+    try { $Digest = [BitConverter]::ToString($Algorithm.ComputeHash($Stream)).Replace('-', '').ToLower() }
+    finally { $Stream.Dispose(); $Algorithm.Dispose() }
+    if ($Digest -ne '5049375aa2a5162f132b2c1cb992e25d42d47d934cab8c174dbe6f60973dcc12') { throw 'Runtime download checksum failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [IO.Compression.ZipFile]::ExtractToDirectory($Archive, (Join-Path $Root 'tools'))
     Remove-Item $Archive
