@@ -126,7 +126,7 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
     aiCast.setTooltip("Reference voices for AI printing. DSP preview uses voicing and formant colour. New character presets set both. No input voice classification is performed.");
     presets.setComponentID("presets");presets.setText("Explore the choir...",juce::dontSendNotification);presets.onChange=[this]{p.applyPreset(presets.getSelectedId()-1);};
     for(auto pair:std::initializer_list<std::pair<const char*,juce::ComboBox*>>{{"root",&root},{"scale",&scale},{"mode",&mode},{"aiCast",&aiCast},{"raga",&raga}})choices.push_back(std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,pair.first,*pair.second));
-    aiPrint.setEnabled(!JUCE_WINDOWS);
+    aiPrint.setEnabled(!vg::windowsBuild);
 #if JUCE_WINDOWS
     aiPrint.setTooltip("Legacy Seed-VC conversion is macOS-only in this preview. Use Notes + lyrics for Windows neural singing.");
 #endif
@@ -188,7 +188,7 @@ void VoxGardenEditor::timerCallback(){
     if(theme.getToggleState()!=p.darkMode.load()||lastAccent!=p.themeAccent.load())applyTheme();
     VG_PALETTE
     auto note=p.engine.detectedNote.load();auto conf=p.engine.pitchConfidence.load();int n=(int)std::round(note);pitch.setText(conf>.8f?"Input  "+juce::String(vg::roots[(size_t)((n%12+12)%12)])+juce::String(n/12-1)+" / "+juce::String((note-n)*100,0)+" ct":"Listening for your vocal",juce::dontSendNotification);
-    aiBlend.setEnabled(p.settings().aiPrint&&!JUCE_WINDOWS);
+    aiBlend.setEnabled(p.settings().aiPrint&&!vg::windowsBuild);
     int count=p.settings().count;voiceCount.setSelectedId(count,juce::dontSendNotification);if(lastCount!=count){lastCount=count;for(int v=0;v<vg::voices;++v)for(int k=0;k<5;++k)controls[(size_t)(10+v*5+k)]->slider.setEnabled(v<count);repaint();}
     for(int v=0;v<vg::voices;++v){muteButtons[(size_t)v].setEnabled(v<count);soloButtons[(size_t)v].setEnabled(v<count);}
     repaint();stage.refresh();
