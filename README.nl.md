@@ -4,6 +4,10 @@
 
 Een toonsoortbewust zangkooreffect van **Kiwi Singh**, met natuurlijke achtergrondzang, speelse stemtransformaties en optioneel lokaal AI-renderen. **Versie 3.0.0 — Amphi** · Apple Silicon-macOS · VST3 + standalone.
 
+## Windows preview
+
+Op `windows-port` wordt een **Windows 10/11 x64-preview** gebouwd: VST3, standalone, 24-stemmig DSP-koor en geïntegreerde zang uit noten. Windows gebruikt DirectML waar beschikbaar, anders CPU. Oudere optionele Seed-VC-conversie blijft alleen voor macOS. [Windows-instructies en beperkingen (Engels)](Windows/README.md). De macOS-release blijft ongewijzigd.
+
 ## Nieuw in 3.0 “Amphi”: 24 stemmen en onthouden thema
 
 VoxGarden 3.0 Amphi biedt **1–24 koorstemmen** in drie banken van acht, met individuele mute/solo en stemregelaars. **Abdij-ensemble 24**, **Kamerensemble 16** en **Fluwelen abdij 24** zijn eigen DSP-klanken, geen Cymatics-opnamen of Abbey Road-samples. Ongebruikte stemmen slaan toonhoogteverwerking over. Het laatst gekozen thema en licht/donker worden standaard voor nieuwe instanties; projecten bewaren hun eigen uiterlijk zonder die standaard te wijzigen. Oude 2.0-parameters en achtstemmige klanken blijven behouden; nieuwe regelaars worden toegevoegd.

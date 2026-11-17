@@ -1,8 +1,8 @@
 #pragma once
-#include <juce_core/juce_core.h>
+#include "Platform.h"
 namespace vg {
 struct Appearance { int accent=0;bool dark=true; };
-inline juce::File appearancePreferencesFile(){return juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile("Application Support/VoxGarden/Appearance.json");}
+inline juce::File appearancePreferencesFile(){return dataRoot().getChildFile("Appearance.json");}
 inline Appearance loadAppearance(const juce::File& file){
     Appearance result;if(!file.existsAsFile()||file.getSize()>4096)return result;
     auto data=juce::JSON::parse(file);if(!data.isObject())return result;

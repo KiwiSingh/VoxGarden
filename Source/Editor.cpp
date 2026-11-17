@@ -126,6 +126,10 @@ VoxGardenEditor::VoxGardenEditor(VoxGardenProcessor& proc):AudioProcessorEditor(
     aiCast.setTooltip("Reference voices for AI printing. DSP preview uses voicing and formant colour. New character presets set both. No input voice classification is performed.");
     presets.setComponentID("presets");presets.setText("Explore the choir...",juce::dontSendNotification);presets.onChange=[this]{p.applyPreset(presets.getSelectedId()-1);};
     for(auto pair:std::initializer_list<std::pair<const char*,juce::ComboBox*>>{{"root",&root},{"scale",&scale},{"mode",&mode},{"aiCast",&aiCast},{"raga",&raga}})choices.push_back(std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,pair.first,*pair.second));
+    aiPrint.setEnabled(!vg::windowsBuild);
+#if JUCE_WINDOWS
+    aiPrint.setTooltip("Legacy Seed-VC conversion is macOS-only in this preview. Use Notes + lyrics for Windows neural singing.");
+#endif
     aiAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"aiPrint",aiPrint);
     aiBlend.setLookAndFeel(&look);aiBlend.setSliderStyle(juce::Slider::LinearHorizontal);aiBlend.setTextBoxStyle(juce::Slider::TextBoxRight,false,42,20);aiBlend.setTooltip("AI singer blend for printed audio. Live playback remains the DSP preview.");aiBlendAttachment=std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(p.state,"aiBlend",aiBlend);
     formantAttachment=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"formantLock",formants);
@@ -184,7 +188,7 @@ void VoxGardenEditor::timerCallback(){
     if(theme.getToggleState()!=p.darkMode.load()||lastAccent!=p.themeAccent.load())applyTheme();
     VG_PALETTE
     auto note=p.engine.detectedNote.load();auto conf=p.engine.pitchConfidence.load();int n=(int)std::round(note);pitch.setText(conf>.8f?"Input  "+juce::String(vg::roots[(size_t)((n%12+12)%12)])+juce::String(n/12-1)+" / "+juce::String((note-n)*100,0)+" ct":"Listening for your vocal",juce::dontSendNotification);
-    aiBlend.setEnabled(p.settings().aiPrint);
+    aiBlend.setEnabled(p.settings().aiPrint&&!vg::windowsBuild);
     int count=p.settings().count;voiceCount.setSelectedId(count,juce::dontSendNotification);if(lastCount!=count){lastCount=count;for(int v=0;v<vg::voices;++v)for(int k=0;k<5;++k)controls[(size_t)(10+v*5+k)]->slider.setEnabled(v<count);repaint();}
     for(int v=0;v<vg::voices;++v){muteButtons[(size_t)v].setEnabled(v<count);soloButtons[(size_t)v].setEnabled(v<count);}
     repaint();stage.refresh();
@@ -233,6 +237,9 @@ void VoxGardenEditor::renderFile(const juce::File& f,bool trackTake){ VG_PALETTE
     if(capturePending&&!trackTake){status.setText(t("Stop the channel capture before rendering another file."),juce::dontSendNotification);return;}
     if(isThreadRunning()||rendering.load())return;inputFile=f;
     if(!trackTake)renderSettings=p.settings();
+#if JUCE_WINDOWS
+    renderSettings.aiPrint=false; // Modern score singing is supported; legacy Seed-VC printing is not.
+#endif
     if(renderSettings.aiPrint && renderSettings.aiBlend>0 && !vg::aiReady()){status.setText("AI runtime is not ready. Turn off AI singers for a DSP print, or run Setup AI.command.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");return;}
     if(renderSettings.mode==1){status.setText("Choose Scale harmony or Chromatic mode to render a vocal.",juce::dontSendNotification);render.setEnabled(true);importFile.setEnabled(true);render.setButtonText("Render vocal + stems");render.setColour(juce::TextButton::buttonColourId,forest);return;}
     outputFolder=trackTake?f.getParentDirectory():f.getParentDirectory().getNonexistentChildFile(f.getFileNameWithoutExtension()+" - VoxGarden","");progress=0;rendering=true;p.printInProgress=true;render.setEnabled(false);importFile.setEnabled(false);reveal.setEnabled(false);render.setButtonText("Cancel print");render.setEnabled(true);startThread();
