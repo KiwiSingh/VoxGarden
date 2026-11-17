@@ -1,5 +1,7 @@
 # VoxGarden — Windows x64 preview
 
+**English** · [हिन्दी](../README.hi.md) · [Deutsch](../README.de.md) · [Nederlands](../README.nl.md) · [Русский](../README.ru.md)
+
 VST3 + standalone for Windows 10/11 x64. Same 24-voice Amphi stage, 77 sounds, individual mute/solo, themes and MIDI/lyrics workspace. This is a Windows preview, not a claim of manual Ableton/SnappySnap testing on every PC.
 
 Close your audio host. Run Install.cmd and accept the administrator prompt to install into C:\Program Files\Common Files\VST3. The previous plugin is backed up first. Alternatively copy the whole Plugins/VoxGarden.vst3 bundle there manually. Reopen/rescan Live; load VST3 → Kiwi Singh → VoxGarden. Standalone/VoxGarden.exe can run from the extracted folder. The binaries are unsigned.

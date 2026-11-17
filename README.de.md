@@ -4,6 +4,10 @@
 
 Ein tonartbezogener Gesangschor-Effekt von **Kiwi Singh**: natürliche Begleitstimmen, kreative Stimmverwandlungen und optionales lokales KI-Rendern. **Version 3.0.0 — Amphi** · Apple-Silicon-macOS · VST3 + Standalone.
 
+## Windows preview
+
+Auf `windows-port` entsteht eine **Windows-10/11-x64-Vorschau**: VST3, Standalone, 24-stimmiger DSP-Chor und integrierter Noten-Gesang. Windows nutzt DirectML, falls verfügbar, sonst CPU. Die ältere optionale Seed-VC-Konvertierung bleibt macOS-exklusiv. [Windows-Anleitung und Grenzen (Englisch)](Windows/README.md). Die macOS-Veröffentlichung bleibt unverändert.
+
 ## Neu in 3.0 „Amphi“: 24 Stimmen und gemerktes Design
 
 VoxGarden 3.0 Amphi bietet **1–24 Chorstimmen** in drei Achterbänken mit separatem Mute/Solo und Stimmreglern. **Abtei-Ensemble 24**, **Kammerensemble 16** und **Samtige Abtei 24** sind eigene DSP-Klänge, keine Cymatics-Aufnahmen oder Abbey-Road-Samples. Ungenutzte Stimmen überspringen die Tonhöhenbearbeitung. Das zuletzt gewählte Design samt Hell/Dunkel wird Standard für neue Instanzen; Projekte behalten ihr eigenes Design, ohne den Standard zu ändern. Alte 2.0-Parameter und Achtstimmenklänge bleiben erhalten; neue Regler werden angehängt.

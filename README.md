@@ -4,6 +4,10 @@
 
 A key-aware vocal choir effect by **Kiwi Singh**, with natural backing parts, playful voice transformations and optional local AI printing. **Version 3.0.0 — Amphi** · Apple Silicon macOS · VST3 + standalone.
 
+## Windows preview
+
+A **Windows 10/11 x64 preview** is being built on the `windows-port` branch: VST3 + standalone, 24-voice DSP choir and in-plugin score singing. Windows uses DirectML when available and CPU otherwise; the older optional Seed-VC conversion remains macOS-only. See [Windows setup and limits](Windows/README.md). The existing macOS release is unchanged.
+
 ## New in 3.0 “Amphi”: 24 voices and remembered appearance
 
 VoxGarden 3.0 Amphi adds **1–24 choir voices**, edited in three banks of eight with independent mute/solo and voice controls. **Abbey Ensemble 24**, **Chamber Ensemble 16** and **Velvet Abbey 24** are original DSP choir textures with varied voicing, placement, formants and depth—not Cymatics recordings or an Abbey Road sample library. Unused voices skip pitch processing. The last explicitly chosen theme and light/dark setting become the default for fresh instances; saved projects keep their own appearance and do not replace that default. Original 2.0 parameter IDs, indices and ranges remain intact; extra controls are appended. Existing eight-voice sounds retain their sizes.
