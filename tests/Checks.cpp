@@ -10,7 +10,7 @@ static void check(bool pass,const char* message){std::cout<<(pass?"PASS ":"FAIL 
 int main(int argc,char** argv) {
     juce::ScopedJuceInitialiser_GUI gui;
     if(argc>1 && juce::String(argv[1])=="--neural-setup"){
-        check(vg::installSingingHelpers(),"Embedded model helpers install without a separate script package");auto root=vg::singingRoot();int code=vg::runSingingProcess({"/bin/sh",root.getChildFile("bootstrap.sh").getFullPathName(),root.getFullPathName()},root.getChildFile("Setup.log"),[]{return false;},[]{});check(code==0&&vg::singingReady(),"Integrated setup verifies models and confirms Core ML execution");return failures?1:0;
+        check(vg::installSingingHelpers(),"Embedded model helpers install without a separate script package");auto root=vg::singingRoot();int code=vg::runSingingProcess(vg::singingSetupCommand(),root.getChildFile("Setup.log"),[]{return false;},[]{});check(code==0&&vg::singingReady(),"Integrated setup verifies models and confirms Core ML execution");return failures?1:0;
     }
     if(argc>2 && juce::String(argv[1])=="--neural-smoke"){
         auto folder=juce::File(juce::String(argv[2]));std::atomic<float> progress{0};constexpr const char* words[]{"la","सा","la","ら","ла","la"};
@@ -57,7 +57,13 @@ int main(int argc,char** argv) {
             auto file=juce::File::getSpecialLocation(juce::File::tempDirectory).getNonexistentChildFile("VoxGarden melody test",".wav");juce::AudioBuffer<float> audio(1,48000*2);audio.clear();for(int n=0;n<audio.getNumSamples();++n){double seconds=n/48000.;if(seconds<.7||(seconds>=1&&seconds<1.7)){double hz=seconds<.7?293.6647679:261.6255653;audio.setSample(0,n,.25f*std::sin(juce::MathConstants<double>::twoPi*hz*n/48000));}}
             {juce::WavAudioFormat wav;auto stream=file.createOutputStream();std::unique_ptr<juce::AudioFormatWriter> writer(wav.createWriterFor(stream.release(),48000,1,24,{},0));writer->writeFromAudioSampleBuffer(audio,0,audio.getNumSamples());}
             vg::Score sketch;auto result=vg::transcribeScore(file,sketch,[]{return false;});check(result.isEmpty()&&sketch.size()==2&&sketch[0].midi==62&&sketch[1].midi==60&&sketch[1].start>sketch[0].start+sketch[0].duration,"Audio pitch sketch detects isolated D4/C4 and retains a rest");file.deleteFile();
-            auto log=file.withFileExtension(".log");auto start=juce::Time::getMillisecondCounterHiRes();auto code=vg::runSingingProcess({"/bin/sh","-c","sleep 30"},log,[&]{return juce::Time::getMillisecondCounterHiRes()-start>150;},[]{});check(code==-2&&juce::Time::getMillisecondCounterHiRes()-start<2000,"Cancelling setup/render stops the child process group promptly");log.deleteFile();
+            auto log=file.withFileExtension(".log");auto start=juce::Time::getMillisecondCounterHiRes();juce::StringArray sleeper;
+#if JUCE_WINDOWS
+            sleeper={juce::File::getSpecialLocation(juce::File::windowsSystemDirectory).getChildFile("WindowsPowerShell/v1.0/powershell.exe").getFullPathName(),"-NoProfile","-Command","Start-Sleep -Seconds 30"};
+#else
+            sleeper={"/bin/sh","-c","sleep 30"};
+#endif
+            auto code=vg::runSingingProcess(sleeper,log,[&]{return juce::Time::getMillisecondCounterHiRes()-start>150;},[]{});check(code==-2&&juce::Time::getMillisecondCounterHiRes()-start<2000,"Cancelling setup/render stops the child process group promptly");log.deleteFile();
         }
         {
             ScoreGrid grid;grid.setSize(880,220);grid.setText("0\t1\t62\tfirst\n1\t1\t60\tmiddle\n2\t1\t69\tlast",false);grid.createComponentSnapshot(grid.getLocalBounds());

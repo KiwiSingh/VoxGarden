@@ -1,10 +1,15 @@
 #pragma once
 #include "Engine.h"
+#include "Platform.h"
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <functional>
 namespace vg {
-inline juce::File aiRoot(){return juce::File::getSpecialLocation(juce::File::userHomeDirectory).getChildFile("Library/Application Support/VoxGarden/AI");}
-inline bool aiReady(){auto r=aiRoot();return r.getChildFile("READY.json").existsAsFile() && r.getChildFile("python/bin/python").existsAsFile() && r.getChildFile("choir_worker.py").existsAsFile() && r.getChildFile("voices/manifest.json").existsAsFile();}
+inline juce::File aiRoot(){return dataRoot().getChildFile("AI");}
+inline bool aiReady(){
+#if JUCE_WINDOWS
+return false; // Legacy Seed-VC setup is not included in the first Windows port.
+#endif
+auto r=aiRoot();return r.getChildFile("READY.json").existsAsFile() && r.getChildFile("python/bin/python").existsAsFile() && r.getChildFile("choir_worker.py").existsAsFile() && r.getChildFile("voices/manifest.json").existsAsFile();}
 inline juce::var aiSettings(const Settings& s){
     auto obj=new juce::DynamicObject;juce::var result(obj);
     obj->setProperty("root",s.root);obj->setProperty("scale",s.scale);obj->setProperty("mode",s.mode);obj->setProperty("count",s.count);obj->setProperty("aiCast",s.aiCast);obj->setProperty("raga",s.raga);

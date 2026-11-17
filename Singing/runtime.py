@@ -10,6 +10,29 @@ def status(path,phase,progress,message,**extra):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     temporary=path.with_suffix('.tmp');temporary.write_text(json.dumps(dict(phase=phase,progress=progress,message=message,**extra)),encoding='utf-8');temporary.replace(path)
 
+from contextlib import contextmanager
+@contextmanager
+def renderer_lock():
+    with (ROOT/'renderer.lock').open('a+b') as lock:
+        if sys.platform=='win32':
+            import msvcrt
+            lock.seek(0,2)
+            if lock.tell()==0:lock.write(b'0');lock.flush()
+            while True:
+                try:lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_NBLCK,1);break
+                except OSError:time.sleep(.1)
+            try:yield
+            finally:lock.seek(0);msvcrt.locking(lock.fileno(),msvcrt.LK_UNLCK,1)
+        else:
+            import fcntl
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            yield
+
+def backend_label():
+    if sys.platform!='win32':return 'Core ML GPU preferred'
+    ready=ROOT/'READY.json'
+    return json.loads(ready.read_text(encoding='utf-8')).get('backend','Windows DirectML / CPU') if ready.exists() else 'Windows DirectML / CPU'
+
 def download(report):
     import urllib.request,truststore
     truststore.inject_into_ssl()
@@ -38,7 +61,8 @@ def download(report):
 SESSIONS=[]
 def engine(profile=False):
     import onnxruntime as ort
-    if 'CoreMLExecutionProvider' not in ort.get_available_providers():
+    windows=sys.platform=='win32'
+    if not windows and 'CoreMLExecutionProvider' not in ort.get_available_providers():
         raise RuntimeError('Core ML GPU backend is unavailable. CPU-only neural rendering is not enabled.')
     original=ort.InferenceSession
     class MetalPreferredSession(original):
@@ -46,8 +70,12 @@ def engine(profile=False):
             opts=ort.SessionOptions();opts.intra_op_num_threads=2;opts.inter_op_num_threads=1;opts.log_severity_level=3
             opts.enable_profiling=profile;opts.profile_file_prefix=str(ROOT/'diagnostics/ort')
             actual=[('CoreMLExecutionProvider',{'ModelFormat':'NeuralNetwork','MLComputeUnits':'CPUAndGPU','RequireStaticInputShapes':'0','ModelCacheDirectory':str(ROOT/'coreml-cache')}),'CPUExecutionProvider']
+            if windows:
+                opts.enable_mem_pattern=False;opts.execution_mode=ort.ExecutionMode.ORT_SEQUENTIAL
+                actual=['DmlExecutionProvider','CPUExecutionProvider'] if 'DmlExecutionProvider' in ort.get_available_providers() else ['CPUExecutionProvider']
+                if os.environ.get('VOXGARDEN_CPU_ONLY')=='1':actual=['CPUExecutionProvider']
             super().__init__(str(path),sess_options=opts,providers=actual)
-            if 'CoreMLExecutionProvider' not in self.get_providers():raise RuntimeError('Core ML could not initialise; refusing a silent CPU-only render.')
+            if not windows and 'CoreMLExecutionProvider' not in self.get_providers():raise RuntimeError('Core ML could not initialise; refusing a silent CPU-only render.')
             SESSIONS.append(self)
     ort.InferenceSession=MetalPreferredSession
     from supertonic import TTS
@@ -66,22 +94,21 @@ def profile_report():
     return totals
 
 def _setup_locked(report):
-    download(report);status(report,'testing',-1,'Compiling GPU models and checking a first voice…')
+    download(report);status(report,'testing',-1,'Checking the neural backend and a first voice…')
     import numpy as np
     tts=engine(profile=True);style=tts.get_voice_style('F1');measurements=[]
     for i in range(2):
         np.random.seed(42);start=time.perf_counter();audio,duration=tts.synthesize('Hello my new choir.',voice_style=style,lang='en',total_steps=5);elapsed=time.perf_counter()-start
         measurements.append(dict(seconds=elapsed,audio_seconds=float(np.asarray(duration).flat[0])))
     providers=profile_report()
-    if providers.get('CoreMLExecutionProvider',0)<=0:raise RuntimeError('GPU check found no Core ML execution. Models were kept, but setup is not marked ready.')
-    ready=dict(schema=1,engine='Supertonic 3 + PSOLA',model_revision=REVISION,backend='Core ML • GPU preferred',providers_microseconds=providers,benchmarks=measurements,tested_at=time.time())
-    (ROOT/'READY.json').write_text(json.dumps(ready,indent=2));status(report,'ready',1,'Ready • Core ML GPU preferred',benchmark=ready)
+    if sys.platform!='win32' and providers.get('CoreMLExecutionProvider',0)<=0:raise RuntimeError('GPU check found no Core ML execution. Models were kept, but setup is not marked ready.')
+    backend=('DirectML GPU + CPU' if providers.get('DmlExecutionProvider',0)>0 else 'CPU (no DirectML GPU execution)') if sys.platform=='win32' else 'Core ML GPU preferred'
+    ready=dict(schema=1,engine='Supertonic 3 + PSOLA',model_revision=REVISION,backend=backend,providers_microseconds=providers,benchmarks=measurements,tested_at=time.time())
+    (ROOT/'READY.json').write_text(json.dumps(ready,indent=2));status(report,'ready',1,'Ready / '+backend,benchmark=ready)
 
 def setup(report):
-    import fcntl
-    status(report,'waiting',-1,'Waiting for the GPU singing renderer…')
-    with (ROOT/'renderer.lock').open('w') as lock:
-        fcntl.flock(lock,fcntl.LOCK_EX)
+    status(report,'waiting',-1,'Waiting for the singing renderer…')
+    with renderer_lock():
         _setup_locked(report)
 
 
@@ -107,7 +134,7 @@ def retime(audio,sr,note,duration):
     peak=np.max(np.abs(sung));return (sung*min(1,.95/max(peak,1e-8))).astype('float32')
 
 def render(job,report):
-    import numpy as np,soundfile as sf,fcntl
+    import numpy as np,soundfile as sf
     score=job['notes'];language=job['language'];voice=job.get('voice','F1')
     if language not in ('en','hi','de','ja','ru','nl') or voice not in [f'{s}{i}' for s in ('F','M') for i in range(1,6)]:raise ValueError('Invalid pronunciation language or voice.')
     if not 1<=len(score)<=2048:raise ValueError('Use 1–2048 notes.')
@@ -118,14 +145,13 @@ def render(job,report):
         if not np.isfinite(velocity) or not 1<=velocity<=127 or int(velocity)!=velocity or not np.isfinite(gain) or not 0<=gain<=1:raise ValueError('Invalid velocity or chord gain.')
         if not all(np.isfinite(x) for x in (start,duration,pitch)) or start<0 or duration<.06 or start+duration>300 or not 36<=pitch<=96 or pitch!=int(pitch) or not note['syllable'].strip() or len(note['syllable'])>160:raise ValueError('Invalid score.')
         end=max(end,start+duration)
-    started=time.perf_counter();status(report,'waiting',-1,'Waiting for the GPU singing renderer…')
-    with (ROOT/'renderer.lock').open('w') as lock:
-        fcntl.flock(lock,fcntl.LOCK_EX)
-        status(report,'loading',0,'Loading the GPU speech model…');tts=None;sr=44100;cache=ROOT/'syllable-cache';cache.mkdir(exist_ok=True)
+    started=time.perf_counter();status(report,'waiting',-1,'Waiting for the singing renderer…')
+    with renderer_lock():
+        status(report,'loading',0,'Loading the speech model…');tts=None;sr=44100;cache=ROOT/'syllable-cache';cache.mkdir(exist_ok=True)
         output=np.zeros(round(end*sr),dtype='float32');neural_seconds=0;new_syllables=0
         for i,note in enumerate(score):
             key=hashlib.sha256(json.dumps([REVISION,voice,language,note['syllable'],5],ensure_ascii=False).encode()).hexdigest();path=cache/f'{key}.wav'
-            status(report,'rendering',i/len(score),f'Syllable {i+1}/{len(score)} • Core ML GPU preferred')
+            status(report,'rendering',i/len(score),f'Syllable {i+1}/{len(score)} / {backend_label()}')
             if not path.exists():
                 if tts is None:tts=engine();sr=tts.sample_rate
                 np.random.seed(int(key[:8],16));start=time.perf_counter();audio,duration=tts.synthesize(note['syllable'],voice_style=tts.get_voice_style(voice),lang=language,total_steps=5)
@@ -142,7 +168,7 @@ def render(job,report):
         for entry in entries:
             if size<=512*1024*1024:break
             size-=entry.stat().st_size;entry.unlink()
-        stats=dict(mix_gain=mix_gain,wall_seconds=time.perf_counter()-started,neural_seconds=neural_seconds,new_syllables=new_syllables,cached_syllables=len(score)-new_syllables,audio_seconds=len(output)/sr,backend='Core ML GPU preferred; CPU PSOLA timing/pitch')
+        stats=dict(mix_gain=mix_gain,wall_seconds=time.perf_counter()-started,neural_seconds=neural_seconds,new_syllables=new_syllables,cached_syllables=len(score)-new_syllables,audio_seconds=len(output)/sr,backend=backend_label()+'; CPU PSOLA timing/pitch')
         (folder/'Render Stats.json').write_text(json.dumps(stats,indent=2));status(report,'complete',1,'Dry singing saved.',**stats)
 
 if __name__=='__main__':

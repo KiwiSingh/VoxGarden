@@ -1,0 +1,46 @@
+name: Windows x64
+on:
+  workflow_dispatch:
+  push:
+    branches: [windows-port]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pinned dependencies
+        shell: bash
+        run: bash prepare-deps.sh
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+      - name: Build VST3, standalone and checks
+        run: cmake --build build --config Release --target VoxGarden_VST3 VoxGarden_Standalone VoxGardenCheck --parallel 4
+      - name: Native checks and screenshots
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force validation | Out-Null
+          & build/VoxGardenCheck_artefacts/Release/VoxGardenCheck.exe "$pwd/build/VoxGarden_artefacts/Release/VST3/VoxGarden.vst3" "$pwd/validation/screenshots" 2>&1 | Tee-Object validation/Native-checks.log
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: In-plugin neural setup (CPU test runner)
+        shell: pwsh
+        env:
+          VOXGARDEN_CPU_ONLY: '1'
+        run: |
+          & build/VoxGardenCheck_artefacts/Release/VoxGardenCheck.exe --neural-setup 2>&1 | Tee-Object validation/Neural-setup.log
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          & build/VoxGardenCheck_artefacts/Release/VoxGardenCheck.exe --neural-smoke "$pwd/validation/neural" 2>&1 | Tee-Object validation/Neural-smoke.log
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Package
+        shell: pwsh
+        run: ./Windows/Package.ps1 -BuildDir build -OutputDir dist
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: VoxGarden-Windows-x64
+          path: |
+            dist/*
+            validation/**
+            build/**/*.log
